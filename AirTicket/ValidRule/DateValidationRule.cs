@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Controls;
 
-namespace AirTicket.Utilty
+namespace AirTicket.ValidRule
 {
     public class DateValidationRule : ValidationRule
     {

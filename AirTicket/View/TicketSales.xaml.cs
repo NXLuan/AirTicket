@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AirTicket
+namespace AirTicket.View
 {
     /// <summary>
     /// Interaction logic for TicketSales.xaml
