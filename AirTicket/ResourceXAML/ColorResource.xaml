@@ -28,4 +28,11 @@
 
     <SolidColorBrush x:Key="TextNormalColor"
                      Color="#7D8287" />
+
+    <SolidColorBrush x:Key="TitleDarkBrush"
+                     Color="#637484" />
+    <SolidColorBrush x:Key="TitleLightBrush"
+                     Color="#6F8294" />
+    <SolidColorBrush x:Key="MoneyBrush"
+                     Color="#FB7604" />
 </ResourceDictionary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using AirTicket.Model;
 
@@ -60,9 +61,11 @@ namespace AirTicket.ViewModel
 
         public PassengerViewModel()
         {
-            AddPassengerCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            AddPassengerCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
                 NumberOfPassenger++;
+                TextBox total = p as TextBox;
+                total.Text = (int.Parse(total.Text) + 1).ToString();
             });
 
             ReducePassengerCommand = new RelayCommand<object>((p) => { return true; }, (p) =>

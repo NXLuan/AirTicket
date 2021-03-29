@@ -13,6 +13,8 @@ namespace AirTicket.ViewModel
     class TicketSalesViewModel : BaseViewModel
     {
         public DateTime? _validatingDate;
+        private int _totalPassenger;
+
         public ObservableCollection<PassengerViewModel> listPassengerVM { get; }
         public ObservableCollection<FlightViewModel> listFlightVM { get; }
         public ICommand ReturnCommand { get; set; }
@@ -22,7 +24,7 @@ namespace AirTicket.ViewModel
             listPassengerVM = new ObservableCollection<PassengerViewModel>()
             {
                 new PassengerViewModel() { typePassenger = "Người lớn", regulationAge = "12 tuổi trở lên", NumberOfPassenger = 1 },
-                new PassengerViewModel() { typePassenger = "Trẻ em", regulationAge = "Từ 12 tuổi đến dưới 12 tuổi", NumberOfPassenger = 0 },
+                new PassengerViewModel() { typePassenger = "Trẻ em", regulationAge = "Từ 2 đến dưới 12 tuổi", NumberOfPassenger = 0 },
                 new PassengerViewModel() { typePassenger = "Em bé", regulationAge = "Nhỏ hơn 2 tuổi", NumberOfPassenger = 0 }
             };
 
@@ -45,6 +47,12 @@ namespace AirTicket.ViewModel
         {
             get => _validatingDate;
             set => SetProperty(ref _validatingDate, value);
+        }
+
+        public int TotalPassenger
+        {
+            get => _totalPassenger;
+            set => SetProperty(ref _totalPassenger, value);
         }
     }
 }

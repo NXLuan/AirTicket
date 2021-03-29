@@ -75,6 +75,9 @@
     <Compile Include="ValidRule\PassengerValidationRule.cs" />
     <Compile Include="ViewModel\FlightViewModel.cs" />
     <Compile Include="ViewModel\PassengerViewModel.cs" />
+    <Compile Include="View\InforPassenger.xaml.cs">
+      <DependentUpon>InforPassenger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TicketSales.xaml.cs">
       <DependentUpon>TicketSales.xaml</DependentUpon>
     </Compile>
@@ -82,6 +85,10 @@
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TicketSalesViewModel.cs" />
+    <Page Include="View\InforPassenger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
