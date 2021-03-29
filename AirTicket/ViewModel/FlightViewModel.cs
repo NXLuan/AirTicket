@@ -12,8 +12,8 @@ namespace AirTicket.ViewModel
     {
         public string airline { get; set; }
         public string flight { get; set; }
-        public DateTime departureTime { get; set; }
-        public DateTime landingTime { get; set; }
+        public string departureTime { get; set; }
+        public string landingTime { get; set; }
 
         public decimal priceFlight { get; set; }
 
