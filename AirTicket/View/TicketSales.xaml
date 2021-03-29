@@ -70,16 +70,13 @@
                                             <TextBlock Margin="10,5,0,5"
                                                        Text="Điểm đi"
                                                        Foreground="{DynamicResource TextNormalColor}" />
-                                            <ComboBox materialDesign:HintAssist.Hint="Nhập thành phố / mã sân bay"
+                                            <ComboBox ItemsSource="{Binding AirportList}"
+                                                      materialDesign:HintAssist.Hint="Nhập thành phố / mã sân bay"
                                                       materialDesign:HintAssist.HintOpacity=".26"
                                                       IsEditable="True"
                                                       Margin="10,0,0,0"
                                                       HorizontalAlignment="Left"
                                                       Width="193">
-                                                <ComboBoxItem Content="Apple" />
-                                                <ComboBoxItem Content="Banana" />
-                                                <ComboBoxItem Content="Pear" />
-                                                <ComboBoxItem Content="Orange" />
                                             </ComboBox>
                                             <!--ItemsSource="{Binding ShortStringList}"-->
                                         </StackPanel>
@@ -87,7 +84,8 @@
                                             <TextBlock Margin="10,5,0,5"
                                                        Text="Điểm đến"
                                                        Foreground="{DynamicResource TextNormalColor}" />
-                                            <ComboBox materialDesign:HintAssist.Hint="Nhập thành phố / mã sân bay"
+                                            <ComboBox ItemsSource="{Binding AirportList}"
+                                                      materialDesign:HintAssist.Hint="Nhập thành phố / mã sân bay"
                                                       materialDesign:HintAssist.HintOpacity=".26"
                                                       IsEditable="True"
                                                       Margin="10,0,0,0"
@@ -108,7 +106,7 @@
                                                        Text="Ngày đi"
                                                        Foreground="{DynamicResource TextNormalColor}" />
                                             <DatePicker x:Name="DatePicker"
-                                                        materialDesign:HintAssist.Hint="{Binding ValidatingDate}"
+                                                        materialDesign:HintAssist.Hint="{Binding ValidatingDate, StringFormat='dd/MM/yyyy'}"
                                                         materialDesign:CalendarAssist.IsHeaderVisible="False"
                                                         Margin="10,0,0,0"
                                                         HorizontalAlignment="Left"

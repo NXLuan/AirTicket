@@ -19,6 +19,8 @@ namespace AirTicket.ViewModel
         public ObservableCollection<FlightViewModel> listFlightVM { get => _listFlightVM; set { _listFlightVM = value; OnPropertyChanged(); } }
         public ICommand ReturnCommand { get; set; }
         public ICommand SearchTicketCommand { get; set; }
+
+       // public IList
         public TicketSalesViewModel()
         {
             ValidatingDate = DateTime.Now.Date;
