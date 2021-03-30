@@ -42,7 +42,7 @@ namespace AirTicket.ViewModel
                 }
 
                 // enable button add passenger
-                if (_numberOfPassenger == 9) IsEnableAdd = false;
+                if (_numberOfPassenger == 9 || (_numberOfPassenger == 2 && typePassenger.Equals("Em bé"))) IsEnableAdd = false;
                 else IsEnableAdd = true;
             }
         }
@@ -64,13 +64,13 @@ namespace AirTicket.ViewModel
             AddPassengerCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
                 NumberOfPassenger++;
-                TextBox total = p as TextBox;
-                total.Text = (int.Parse(total.Text) + 1).ToString();
+                p.Text = (int.Parse(p.Text) + 1).ToString();
             });
 
-            ReducePassengerCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            ReducePassengerCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
                 NumberOfPassenger--;
+                p.Text = (int.Parse(p.Text) - 1).ToString();
             });
         }
     }
