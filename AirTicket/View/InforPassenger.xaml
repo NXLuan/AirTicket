@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:AirTicket.View"
+             xmlns:valid="clr-namespace:AirTicket.ValidRule"
              mc:Ignorable="d"
              d:DesignHeight="1000"
              d:DesignWidth="800"
@@ -14,21 +16,23 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="{DynamicResource MaterialDesignFont}">
+             FontFamily="{DynamicResource MaterialDesignFont}"
+             DataContext="{StaticResource InfoPaVM}">
     <Grid Background="{DynamicResource BackgroundColor}">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
         <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                             materialDesign:ShadowAssist.ShadowEdges="None">
+                             materialDesign:ShadowAssist.ShadowEdges="None"
+                             Margin="0,0,0,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition Width="400" />
+                    <ColumnDefinition Width="350" />
                 </Grid.ColumnDefinitions>
-                <StackPanel>
-                    <DockPanel Background="{DynamicResource TitleLightBrush}">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Background="{DynamicResource TitleLightBrush}">
                         <materialDesign:PackIcon Kind="AccountMultiple"
                                                  VerticalAlignment="Center"
                                                  Margin="10"
@@ -40,27 +44,69 @@
                                    FontSize="15"
                                    Padding="0,10,0,10" />
                     </DockPanel>
-                    <ListView>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Code}"
-                                                Header="STT" />
-                                <GridViewColumn DisplayMemberBinding="{Binding Name}"
-                                                Header="Độ tuổi" />
-                                <GridViewColumn DisplayMemberBinding="{Binding Description}"
-                                                Header="Họ tên" />
-                                <GridViewColumn DisplayMemberBinding="{Binding Description}"
-                                                Header="Giới tính" />
-                                <GridViewColumn Header="Ngày sinh">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </StackPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <ListView ItemsSource="{Binding ListDetailInfoVM}" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding num}"
+                                                    Header="STT" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding typePassenger}"
+                                                    Header="Độ tuổi"/>
+                                    <GridViewColumn Header="Họ tên">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Width="100">
+                                                    <TextBox.Text>
+                                                        <Binding Path="Name"
+                                                                 UpdateSourceTrigger="PropertyChanged">
+                                                            <Binding.ValidationRules>
+                                                                <valid:NotEmptyValidationRule ValidatesOnTargetUpdated="False" />
+                                                            </Binding.ValidationRules>
+                                                        </Binding>
+                                                    </TextBox.Text>
+                                                </TextBox>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Giới tính">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox Margin="20,0,0,10">
+                                                    <ComboBoxItem Content="Nam"
+                                                                  IsSelected="True" />
+                                                    <ComboBoxItem Content="Nữ" />
+                                                </ComboBox>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Ngày sinh">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <DatePicker x:Name="FutureDatePicker"
+                                                            Width="100">
+                                                    <DatePicker.Resources>
+                                                        <valid:BindingProxy x:Key="TargetProxy"
+                                                                            Data="{Binding typePassenger}" />
+                                                    </DatePicker.Resources>
+                                                    <DatePicker.SelectedDate>
+                                                        <Binding Path="DateOfBirth"
+                                                                 UpdateSourceTrigger="PropertyChanged">
+                                                            <Binding.ValidationRules>
+                                                                <valid:DateOfBirthValidationRule ValidatesOnTargetUpdated="False">
+                                                                    <valid:TypePassenger Value="{Binding Data, Source={StaticResource TargetProxy}}" />
+                                                                </valid:DateOfBirthValidationRule>
+                                                            </Binding.ValidationRules>
+                                                        </Binding>
+                                                    </DatePicker.SelectedDate>
+                                                </DatePicker>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </DockPanel>
 
                 <StackPanel Grid.Column="1">
                     <DockPanel Background="{DynamicResource TitleDarkBrush}">
@@ -95,7 +141,7 @@
         <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
                              materialDesign:ShadowAssist.ShadowEdges="None"
                              Grid.Row="1"
-                             Margin="50,10,50,10">
+                             Margin="50,10,50,20">
             <StackPanel>
                 <DockPanel Background="{DynamicResource TitleDarkBrush}">
                     <materialDesign:PackIcon Kind="Phone"

@@ -20,9 +20,19 @@ namespace AirTicket.View
     /// </summary>
     public partial class TicketSales : UserControl
     {
+        private static TicketSales instance;
+        public static TicketSales getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new TicketSales();
+            }
+            return instance;
+        }
         public TicketSales()
         {
             InitializeComponent();
+            FutureDatePicker.BlackoutDates.AddDatesInPast();
         }
     }
 }

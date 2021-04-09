@@ -1,5 +1,4 @@
-﻿using AirTicket.Model;
-using AirTicket.View;
+﻿using AirTicket.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,23 +6,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AirTicket.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public UserControl currentScreen { get; set; }
-        public ObservableCollection<ItemMenuModel> menuItems { get; set; }
+        private UserControl _currentScreen;
+        public UserControl CurrentScreen
+        {
+            get => _currentScreen;
+            set => SetProperty(ref _currentScreen, value);
+        }
+        public ObservableCollection<MenuViewModel> Menu { get; set; }
+        public ICommand SelectedItemCommand { get; set; }
         public MainViewModel()
         {
-            menuItems = new ObservableCollection<ItemMenuModel>()
+            Menu = new ObservableCollection<MenuViewModel>()
             {
-                new ItemMenuModel(){ Icon="TicketConfirmation", Name="BÁN VÉ" },
-                 new ItemMenuModel(){ Icon="ViewListOutline", Name="DANH SÁCH VÉ" },
-                  new ItemMenuModel(){ Icon="ChartDonutVariant", Name="THỐNG KÊ" },
-                   new ItemMenuModel(){ Icon="ShieldEdit", Name="QUY ĐỊNH" },
+                new MenuViewModel(){ TypeItem = MenuViewModel.TypeControl.TICKETSALES, Icon="TicketConfirmation", Name="BÁN VÉ" },
+                 new MenuViewModel(){  TypeItem = MenuViewModel.TypeControl.TICKETSALES, Icon="ViewListOutline", Name="DANH SÁCH VÉ" },
+                  new MenuViewModel(){  TypeItem = MenuViewModel.TypeControl.TICKETSALES, Icon="ChartDonutVariant", Name="THỐNG KÊ" },
+                   new MenuViewModel(){  TypeItem = MenuViewModel.TypeControl.TICKETSALES, Icon="ShieldEdit", Name="QUY ĐỊNH" },
             };
-            currentScreen = new TicketSales();
+
+            SelectedItemCommand = new RelayCommand<int>((p) => { return true; }, (p) =>
+            {
+                switch (Menu[p].TypeItem)
+                {
+                    case MenuViewModel.TypeControl.TICKETSALES:
+                        CurrentScreen = TicketSales.getInstance();
+                        break;
+                }
+            });
         }
     }
 }
