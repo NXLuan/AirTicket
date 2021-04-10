@@ -37,8 +37,8 @@ namespace AirTicket.ViewModel
 
         public ObservableCollection<PassengerViewModel> listPassengerVM { get; set; }
         public ObservableCollection<FlightViewModel> listFlightVM { get; set; }
-        private ObservableCollection<HANGHANGKHONG> _listAirline;
-        public ObservableCollection<HANGHANGKHONG> ListAirline
+        private ObservableCollection<AirlineSelected> _listAirline;
+        public ObservableCollection<AirlineSelected> ListAirline
         {
             get => _listAirline;
             set => SetProperty(ref _listAirline, value);
@@ -101,7 +101,7 @@ namespace AirTicket.ViewModel
             Done();
 
             listFlightVM = new ObservableCollection<FlightViewModel>();
-            listFlightVM.Add(new FlightViewModel());
+            listFlightVM.Add(new FlightViewModel() { airline ="https://plugin.datacom.vn/Resources/Images/Airline/VJ.gif"});
 
             ReturnCommand = new RelayCommand<TabControl>((p) => { return p == null ? false : true; }, (p) =>
             {
@@ -119,7 +119,16 @@ namespace AirTicket.ViewModel
                 threadSearch.Start();
             });
 
-            ListAirline = new ObservableCollection<HANGHANGKHONG>(DataProvider.Instance.DB.HANGHANGKHONGs);
+            ListAirline = new ObservableCollection<AirlineSelected>();
+            var airlineList = DataProvider.Instance.DB.HANGHANGKHONGs;
+            foreach (var airline in airlineList)
+            {
+                AirlineSelected airlineSelected = new AirlineSelected();
+                airlineSelected.HHKModel = airline;
+                airlineSelected.isSelected = true;
+                ListAirline.Add(airlineSelected);
+            }
+
             ListAirport = new ObservableCollection<SANBAY>(DataProvider.Instance.DB.SANBAYs);
 
             TotalPassenger = 0;
@@ -157,10 +166,10 @@ namespace AirTicket.ViewModel
             }
             url += "&Airline=";
             //add airline you want search in url
-            foreach (HANGHANGKHONG airline in ListAirline)
+            foreach (AirlineSelected airline in ListAirline)
             {
                 if (airline.isSelected)
-                    url += airline.MaHang + ",";
+                    url += airline.HHKModel.MaHang + ",";
             }
             url = url.TrimEnd(',');
 

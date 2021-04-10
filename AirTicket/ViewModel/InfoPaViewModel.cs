@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirTicket.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,10 +15,10 @@ namespace AirTicket.ViewModel
         public ICommand InfoPaLoadCommand { get; set; }
 
         public ObservableCollection<DetailInfoViewModel> ListDetailInfoVM { get; set; }
-
-
+        public HOADON HDModel { get; set; }
         public InfoPaViewModel()
         {
+            HDModel = new HOADON();
             ListDetailInfoVM = new ObservableCollection<DetailInfoViewModel>();
 
             InfoPaLoadCommand = new RelayCommand<TabItem>((p) => { return p == null ? false : true; }, (p) =>

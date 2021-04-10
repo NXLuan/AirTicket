@@ -40,7 +40,6 @@
                     <DockPanel>
                         <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                              materialDesign:ShadowAssist.ShadowEdges="None"
-                                             Padding="10,10,10,20"
                                              HorizontalAlignment="Stretch"
                                              VerticalAlignment="Top"
                                              DockPanel.Dock="Top">
@@ -49,12 +48,12 @@
                                            Foreground="{DynamicResource TextNormalColor}"
                                            FontWeight="SemiBold"
                                            FontSize="15"
-                                           Padding="10,5,0,5" />
-                                <Separator Background="Silver" />
+                                           Padding="20,10,0,5" />
+                                <Separator Background="{DynamicResource BackgroundColor}" />
                                 <ListBox Style="{StaticResource MaterialDesignFilterChipAccentOutlineListBox}"
-                                         Padding="10"
+                                         Padding="15,10,10,10"
                                          ItemsSource="{Binding ListAirline}"
-                                         DisplayMemberPath="TenHang"
+                                         DisplayMemberPath="HHKModel.TenHang"
                                          Name="lbAirline">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem"
@@ -64,7 +63,7 @@
                                         </Style>
                                     </ListBox.ItemContainerStyle>
                                 </ListBox>
-                                <Grid>
+                                <Grid Margin="10,5,0,25">
                                     <StackPanel Width="auto">
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel>
@@ -80,6 +79,7 @@
                                                           Margin="10,0,0,0"
                                                           HorizontalAlignment="Left"
                                                           Width="150"
+                                                          Cursor="IBeam"
                                                           Name="cbDeparture">
                                                     <ComboBox.SelectedValue>
                                                         <Binding Path="SelectedDeparture"
@@ -105,6 +105,7 @@
                                                           IsEditable="True"
                                                           Margin="10,0,0,0"
                                                           HorizontalAlignment="Left"
+                                                          Cursor="IBeam"
                                                           Width="150"
                                                           Name="cbDestination">
                                                     <ComboBox.SelectedValue>
@@ -143,19 +144,13 @@
                                                 <TextBlock Margin="10,5,0,5"
                                                            Text="Hành khách"
                                                            Foreground="{DynamicResource TextNormalColor}" />
-                                                <Grid>
+                                                <Grid Cursor="Hand"
+                                                      Name="pnPassenger"
+                                                      Margin="10,0,0,0">
                                                     <TextBox Width="150"
-                                                             Margin="10,0,0,0"
                                                              Name="totalPassenger"
                                                              IsEnabled="False"
-                                                             Text="{Binding TotalPassenger}">
-                                                        <TextBox.Style>
-                                                            <Style TargetType="TextBox">
-                                                                <Style.Triggers>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBox.Style>
-                                                    </TextBox>
+                                                             Text="{Binding TotalPassenger, UpdateSourceTrigger=PropertyChanged}" />
                                                     <materialDesign:PackIcon HorizontalAlignment="Right"
                                                                              Kind="AccountGroup"
                                                                              VerticalAlignment="Center"
@@ -272,8 +267,7 @@
                                          MaxWidth="360"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         MaxHeight="174"
-                                         Visibility="Visible">
+                                         MaxHeight="174">
                         <ScrollViewer>
                             <ItemsControl ItemsSource="{Binding listPassengerVM}"
                                           Margin="10">
@@ -324,6 +318,25 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
+
+                        <materialDesign:Card.Style>
+                            <Style TargetType="materialDesign:Card">
+                                <Setter Property="Visibility"
+                                        Value="Hidden" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=pnPassenger, Path=IsMouseOver}"
+                                                 Value="true">
+                                        <Setter Property="Visibility"
+                                                Value="Visible" />
+                                    </DataTrigger>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="true">
+                                        <Setter Property="Visibility"
+                                                Value="Visible" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:Card.Style>
                     </materialDesign:Card>
                 </Grid>
             </TabItem>

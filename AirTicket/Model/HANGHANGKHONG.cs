@@ -22,7 +22,6 @@ namespace AirTicket.Model
     
         public string MaHang { get; set; }
         public string TenHang { get; set; }
-        public bool isSelected { get; set; } = true;
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QUYDINHGIAVE> QUYDINHGIAVEs { get; set; }

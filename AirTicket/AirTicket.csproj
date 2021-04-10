@@ -89,6 +89,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\AirlineSelected.cs" />
     <Compile Include="Model\DataProvider.cs" />
     <Compile Include="Model\HANGHANGKHONG.cs">
       <DependentUpon>Model1.tt</DependentUpon>

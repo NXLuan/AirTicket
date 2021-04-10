@@ -27,6 +27,7 @@ namespace AirTicket.Model
         public string GioiTinh { get; set; }
         public string SDT { get; set; }
         public string Email { get; set; }
+        public string GhiChu { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VECHUYENBAY> VECHUYENBAYs { get; set; }

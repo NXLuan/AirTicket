@@ -9,7 +9,8 @@ CREATE TABLE [HOADON] (
   [HoTen] nvarchar(50),
   [GioiTinh] nvarchar(10),
   [SDT] varchar(20),
-  [Email] varchar(200)
+  [Email] varchar(200),
+  [GhiChu] nvarchar(max)
 );
 
 CREATE TABLE [VECHUYENBAY] (
