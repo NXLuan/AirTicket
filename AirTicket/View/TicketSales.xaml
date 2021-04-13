@@ -51,7 +51,8 @@
                                        Padding="10,5,0,5" />
                             <Separator Background="Silver" />
                             <ListBox Style="{StaticResource MaterialDesignFilterChipAccentOutlineListBox}"
-                                     Padding="5">
+                                     Padding="5"
+                                     x:Name="listFlightName">
                                 <ListBoxItem Content="Vietnam Airlines" />
                                 <ListBoxItem IsSelected="True"
                                              Content="Vietjet Air" />
@@ -70,10 +71,10 @@
                                             <TextBlock Margin="10,5,0,5"
                                                        Text="Điểm đi"
                                                        Foreground="{DynamicResource TextNormalColor}" />
-                                            <ComboBox ItemsSource="{Binding AirportList}"
+                                            <ComboBox ItemsSource="{Binding AirportList}" SelectedValuePath="Value" DisplayMemberPath="Key"
                                                       materialDesign:HintAssist.Hint="Nhập thành phố / mã sân bay"
                                                       materialDesign:HintAssist.HintOpacity=".26"
-                                                      IsEditable="True"
+                                                      IsEditable="False"
                                                       Margin="10,0,0,0"
                                                       HorizontalAlignment="Left"
                                                       Width="193">
@@ -84,17 +85,14 @@
                                             <TextBlock Margin="10,5,0,5"
                                                        Text="Điểm đến"
                                                        Foreground="{DynamicResource TextNormalColor}" />
-                                            <ComboBox ItemsSource="{Binding AirportList}"
+                                            <ComboBox ItemsSource="{Binding AirportList}" SelectedValuePath="Value" DisplayMemberPath="Key"
                                                       materialDesign:HintAssist.Hint="Nhập thành phố / mã sân bay"
                                                       materialDesign:HintAssist.HintOpacity=".26"
-                                                      IsEditable="True"
+                                                      IsEditable="False"
                                                       Margin="10,0,0,0"
                                                       HorizontalAlignment="Left"
                                                       Width="193">
-                                                <ComboBoxItem Content="Apple" />
-                                                <ComboBoxItem Content="Banana" />
-                                                <ComboBoxItem Content="Pear" />
-                                                <ComboBoxItem Content="Orange" />
+ 
                                             </ComboBox>
                                             <!--ItemsSource="{Binding ShortStringList}"-->
                                         </StackPanel>

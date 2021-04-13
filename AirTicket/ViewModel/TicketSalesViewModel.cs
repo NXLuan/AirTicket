@@ -4,11 +4,11 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
-
 namespace AirTicket.ViewModel
 {
     class TicketSalesViewModel : BaseViewModel
@@ -20,7 +20,7 @@ namespace AirTicket.ViewModel
         public ICommand ReturnCommand { get; set; }
         public ICommand SearchTicketCommand { get; set; }
 
-       // public IList
+        public Dictionary<string, string> AirportList { get; set; }
         public TicketSalesViewModel()
         {
             ValidatingDate = DateTime.Now.Date;
@@ -32,18 +32,43 @@ namespace AirTicket.ViewModel
             };
 
             listFlightVM = new ObservableCollection<FlightViewModel>();
+            CreateAirportList();
 
             ReturnCommand = new RelayCommand<TabControl>((p) => { return p == null ? false : true; }, (p) =>
             {
                 TabControl tab = p as TabControl;
                 TabItem tabItem = tab.Items[1] as TabItem;
-
                 tabItem.IsEnabled = false;
             });
             SearchTicketCommand = new RelayCommand<object>((p) => true, (p) => {
                 SearchTicket();
             });
-
+        }
+        public void CreateAirportList()
+        {
+            AirportList = new Dictionary<string, string>();
+            AirportList.Add("Ban Mê Thuột (BMV)", "BMV");
+            AirportList.Add("Cà Mau (CAH)", "CAH");
+            AirportList.Add("Nha Trang (CXR)", "CXR");
+            AirportList.Add("Đà Nẵng (DAD)", "DAD");
+            AirportList.Add("Điện Biên Phủ (DIN)", "DIN");
+            AirportList.Add("Đà Lạt (DLI)", "DLI");
+            AirportList.Add("Hà Nội (HAN)", "HAN");
+            AirportList.Add("Hải Phòng (HPH)", "HPH");
+            AirportList.Add("Huế (HUI)", "HUI");
+            AirportList.Add("Phú Quốc (PQC)", "PQC");
+            AirportList.Add("Pleiku (PXU)", "PXU");
+            AirportList.Add("Tp. Hồ Chí Minh (SGN)", "SGN");
+            AirportList.Add("Phú Yên (TBB)", "TBB");
+            AirportList.Add("Thanh Hóa (THD)", "THD");
+            AirportList.Add("Quy Nhơn (UIH)", "UIH");
+            AirportList.Add("Cần Thơ (VCA)", "VCA");
+            AirportList.Add("Quảng Nam (VCL)", "VCL");
+            AirportList.Add("Côn Đảo (VCS)", "VCS");
+            AirportList.Add("Quảng Bình (VDH)", "VDH");
+            AirportList.Add("Vân Đồn (VDO)", "VDO");
+            AirportList.Add("Vinh (VII)", "VII");
+            AirportList.Add("Kiên Giang (VKG)", "VKG");
         }
 
         public DateTime? ValidatingDate
@@ -67,7 +92,7 @@ namespace AirTicket.ViewModel
         }
         public void SearchTicket()
         {
-            string url = "https://demo.datacom.vn/flight?Request=HANSGN30032021-1-0-0&Airline=VN,VJ,QH,VU";
+            string url = "https://demo.datacom.vn/flight?Request=HANSGN04042021-1-0-0&Airline=VN,VJ,QH,VU";
             var chromeOption = new ChromeOptions();
             chromeOption.AddArguments("headless");
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
