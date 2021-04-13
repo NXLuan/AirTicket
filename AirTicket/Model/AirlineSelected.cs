@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AirTicket.Model
 {
-    public class ItemMenuModel
+    class AirlineSelected
     {
-        public string Name { get; set; }
-        public string Icon { get; set; }
+        public HANGHANGKHONG HHKModel { get; set; }
+        public bool isSelected { get; set; }
     }
 }

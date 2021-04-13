@@ -3,4 +3,5 @@
                     xmlns:viewmodel="clr-namespace:AirTicket.ViewModel">
     <viewmodel:MainViewModel x:Key="MainVM"></viewmodel:MainViewModel>
     <viewmodel:TicketSalesViewModel x:Key="TicketSalesVM"></viewmodel:TicketSalesViewModel>
+    <viewmodel:InfoPaViewModel x:Key="InfoPaVM"></viewmodel:InfoPaViewModel>
 </ResourceDictionary>

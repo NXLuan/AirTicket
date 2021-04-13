@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:AirTicket"
         mc:Ignorable="d"
         Title="Đại lý bán vé"
-        MinWidth="1000"
+        MinWidth="1200"
         MinHeight="800"
         DataContext="{StaticResource MainVM}"
         WindowStartupLocation="CenterScreen"
@@ -28,14 +29,21 @@
             <TextBlock Text="QUYỀN THAO TÁC"
                        Foreground="{DynamicResource SecondaryHueMidForegroundBrush}"
                        Padding="18"
-                       FontWeight="SemiBold"/>
+                       FontWeight="SemiBold" />
             <Rectangle Height="2"
                        Fill="#2B323B"></Rectangle>
             <!--Menu Buttons-->
-            <ListBox SelectedIndex="0"
-                     ItemsSource="{Binding menuItems}"
+            <ListBox 
+                     ItemsSource="{Binding Menu}"
                      Foreground="Silver"
-                     Cursor="Hand">
+                     Cursor="Hand"
+                     Name="ListMenu">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectedItemCommand}"
+                                               CommandParameter="{Binding ElementName=ListMenu, Path=SelectedIndex}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <Setter Property="Template">
@@ -72,7 +80,7 @@
                                                         <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
                                                                      Value="True">
                                                             <Setter Property="Foreground"
-                                                                    Value="{DynamicResource PrimaryHueMidBrush}" />
+                                                                    Value="{StaticResource PrimaryHueMidBrush}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -115,12 +123,12 @@
                 </ListBox.ItemContainerStyle>
             </ListBox>
         </StackPanel>
-            
+
 
         <!--function control-->
         <Grid Grid.Column="1"
               Background="{DynamicResource BackgroundColor}">
-            <UserControl Content="{Binding currentScreen}" />
+            <UserControl Content="{Binding CurrentScreen}" />
         </Grid>
     </Grid>
 </Window>

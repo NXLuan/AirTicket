@@ -16,23 +16,13 @@ using System.Windows.Shapes;
 namespace AirTicket.View
 {
     /// <summary>
-    /// Interaction logic for TicketSales.xaml
+    /// Interaction logic for InforPassenger.xaml
     /// </summary>
-    public partial class TicketSales : UserControl
+    public partial class InforPassenger : UserControl
     {
-        private static TicketSales instance;
-        public static TicketSales getInstance()
-        {
-            if (instance == null)
-            {
-                instance = new TicketSales();
-            }
-            return instance;
-        }
-        public TicketSales()
+        public InforPassenger()
         {
             InitializeComponent();
-            FutureDatePicker.BlackoutDates.AddDatesInPast();
         }
     }
 }

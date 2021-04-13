@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using AirTicket.Model;
+using HtmlAgilityPack;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -6,33 +7,99 @@ using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 namespace AirTicket.ViewModel
 {
     class TicketSalesViewModel : BaseViewModel
     {
-        public DateTime? _validatingDate;
-        public ObservableCollection<PassengerViewModel> listPassengerVM { get; }
-        private ObservableCollection<FlightViewModel> _listFlightVM;
-        public ObservableCollection<FlightViewModel> listFlightVM { get => _listFlightVM; set { _listFlightVM = value; OnPropertyChanged(); } }
+        private int _totalPassenger;
+        private string _isLoading;
+
+        public int TotalPassenger
+        {
+            get => _totalPassenger;
+            set => SetProperty(ref _totalPassenger, value);
+        }
+
+        public string IsLoading
+        {
+            get => _isLoading;
+            set => SetProperty(ref _isLoading, value);
+        }
+
+        public DateTime? DateDeparture { get; set; }
+
+        public ObservableCollection<PassengerViewModel> listPassengerVM { get; set; }
+        public ObservableCollection<FlightViewModel> listFlightVM { get; set; }
+        private ObservableCollection<AirlineSelected> _listAirline;
+        public ObservableCollection<AirlineSelected> ListAirline
+        {
+            get => _listAirline;
+            set => SetProperty(ref _listAirline, value);
+        }
+        private ObservableCollection<SANBAY> _listAirport;
+        public ObservableCollection<SANBAY> ListAirport
+        {
+            get => _listAirport;
+            set => SetProperty(ref _listAirport, value);
+        }
+
+        public IEnumerable<SANBAY> ListDeparture
+        {
+            get
+            {
+                return ListAirport.Where(x => x.MaSanBay != SelectedDestination);
+            }
+        }
+        private string _selectedDeparture;
+        public string SelectedDeparture
+        {
+            get { return _selectedDeparture; }
+            set
+            {
+                if (_selectedDeparture != value)
+                {
+                    _selectedDeparture = value;
+                    OnPropertyChanged("SelectedDeparture");
+                    OnPropertyChanged("ListDestination");
+                }
+            }
+        }
+        public IEnumerable<SANBAY> ListDestination
+        {
+            get
+            {
+                return ListAirport.Where(x => x.MaSanBay != SelectedDeparture);
+            }
+        }
+        private string _selectedDestination;
+        public string SelectedDestination
+        {
+            get { return _selectedDestination; }
+            set
+            {
+                if (_selectedDestination != value)
+                {
+                    _selectedDestination = value;
+                    OnPropertyChanged("SelectedDestination");
+                    OnPropertyChanged("ListDeparture");
+                }
+            }
+        }
         public ICommand ReturnCommand { get; set; }
         public ICommand SearchTicketCommand { get; set; }
 
-        public Dictionary<string, string> AirportList { get; set; }
         public TicketSalesViewModel()
         {
-            ValidatingDate = DateTime.Now.Date;
-            listPassengerVM = new ObservableCollection<PassengerViewModel>()
-            {
-                new PassengerViewModel() { typePassenger = "Người lớn", regulationAge = "12 tuổi trở lên", NumberOfPassenger = 1 },
-                new PassengerViewModel() { typePassenger = "Trẻ em", regulationAge = "Từ 12 tuổi đến dưới 12 tuổi", NumberOfPassenger = 0 },
-                new PassengerViewModel() { typePassenger = "Em bé", regulationAge = "Nhỏ hơn 2 tuổi", NumberOfPassenger = 0 }
-            };
+            Done();
 
             listFlightVM = new ObservableCollection<FlightViewModel>();
-            CreateAirportList();
+            listFlightVM.Add(new FlightViewModel() { airline ="https://plugin.datacom.vn/Resources/Images/Airline/VJ.gif"});
 
             ReturnCommand = new RelayCommand<TabControl>((p) => { return p == null ? false : true; }, (p) =>
             {
@@ -40,42 +107,38 @@ namespace AirTicket.ViewModel
                 TabItem tabItem = tab.Items[1] as TabItem;
                 tabItem.IsEnabled = false;
             });
-            SearchTicketCommand = new RelayCommand<object>((p) => true, (p) => {
-                SearchTicket();
+
+            SearchTicketCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                Load();
+                Thread threadSearch = new Thread(new ThreadStart(this.SearchTicket));
+                threadSearch.IsBackground = true;
+                threadSearch.Start();
             });
-        }
-        public void CreateAirportList()
-        {
-            AirportList = new Dictionary<string, string>();
-            AirportList.Add("Ban Mê Thuột (BMV)", "BMV");
-            AirportList.Add("Cà Mau (CAH)", "CAH");
-            AirportList.Add("Nha Trang (CXR)", "CXR");
-            AirportList.Add("Đà Nẵng (DAD)", "DAD");
-            AirportList.Add("Điện Biên Phủ (DIN)", "DIN");
-            AirportList.Add("Đà Lạt (DLI)", "DLI");
-            AirportList.Add("Hà Nội (HAN)", "HAN");
-            AirportList.Add("Hải Phòng (HPH)", "HPH");
-            AirportList.Add("Huế (HUI)", "HUI");
-            AirportList.Add("Phú Quốc (PQC)", "PQC");
-            AirportList.Add("Pleiku (PXU)", "PXU");
-            AirportList.Add("Tp. Hồ Chí Minh (SGN)", "SGN");
-            AirportList.Add("Phú Yên (TBB)", "TBB");
-            AirportList.Add("Thanh Hóa (THD)", "THD");
-            AirportList.Add("Quy Nhơn (UIH)", "UIH");
-            AirportList.Add("Cần Thơ (VCA)", "VCA");
-            AirportList.Add("Quảng Nam (VCL)", "VCL");
-            AirportList.Add("Côn Đảo (VCS)", "VCS");
-            AirportList.Add("Quảng Bình (VDH)", "VDH");
-            AirportList.Add("Vân Đồn (VDO)", "VDO");
-            AirportList.Add("Vinh (VII)", "VII");
-            AirportList.Add("Kiên Giang (VKG)", "VKG");
+
+
+            ListAirline = new ObservableCollection<AirlineSelected>();
+            var airlineList = DataProvider.Instance.DB.HANGHANGKHONGs;
+            foreach (var airline in airlineList)
+            {
+                AirlineSelected airlineSelected = new AirlineSelected();
+                airlineSelected.HHKModel = airline;
+                airlineSelected.isSelected = true;
+                ListAirline.Add(airlineSelected);
+            }
+
+            ListAirport = new ObservableCollection<SANBAY>(DataProvider.Instance.DB.SANBAYs);
+
+            TotalPassenger = 0;
+            listPassengerVM = new ObservableCollection<PassengerViewModel>();
+            foreach (var p in DataProvider.Instance.DB.LOAIHANHKHACHes)
+            {
+                listPassengerVM.Add(new PassengerViewModel() { LHKModel = p });
+                TotalPassenger += (int)p.SoLuongMin;
+            }
+            DateDeparture = DateTime.Today;
         }
 
-        public DateTime? ValidatingDate
-        {
-            get => _validatingDate;
-            set => SetProperty(ref _validatingDate, value);
-        }
         public decimal ParseStringToDecimal(string Price)
         {
             int i = 0;
@@ -90,9 +153,24 @@ namespace AirTicket.ViewModel
             } while (i < Price.Length);
             return decimal.Parse(Price);
         }
-        public void SearchTicket()
+        private void SearchTicket()
         {
-            string url = "https://demo.datacom.vn/flight?Request=HANSGN04042021-1-0-0&Airline=VN,VJ,QH,VU";
+
+            string url = "https://demo.datacom.vn/flight?Request="
+                + SelectedDeparture + SelectedDestination + String.Format("{0:ddMMyyyy}", DateDeparture); //HANSGN14042021-1-0-0&Airline=VN,VJ,QH,VU";
+            //add num of each typ passenger in url
+            foreach (PassengerViewModel pvm in listPassengerVM)
+            {
+                url += "-" + pvm.NumberOfPassenger;
+            }
+            url += "&Airline=";
+            //add airline you want search in url
+            foreach (AirlineSelected airline in ListAirline)
+            {
+                if (airline.isSelected)
+                    url += airline.HHKModel.MaHang + ",";
+            }
+            url = url.TrimEnd(',');
             var chromeOption = new ChromeOptions();
             chromeOption.AddArguments("headless");
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
@@ -110,20 +188,37 @@ namespace AirTicket.ViewModel
                     string FlightName = nodes[i].SelectSingleNode(".//p").InnerText;
                     if (FlightName.Contains("Pacific Airline"))
                         FlightName = "Pacific Airline";
-                    string price = nodes[i].SelectSingleNode(".//div[@class='dtc-flight-price']").InnerText;
+
                     FlightViewModel flight = new FlightViewModel()
                     {
-                        airline = FlightName,
+                        airline = nodes[i].SelectSingleNode(".//img").Attributes[0].Value,
                         flight = nodes[i].SelectSingleNode(".//div[@class='dtc-flight-numb dtc-color-text']").InnerText,
                         departureTime = nodes[i].SelectNodes(".//div[@class='dtc-flight-time']")[0].InnerText,
                         landingTime = nodes[i].SelectNodes(".//div[@class='dtc-flight-time']")[1].InnerText,
-                        priceFlight = ParseStringToDecimal(nodes[i].SelectSingleNode(".//div[@class='dtc-flight-price']").InnerText)
+                        priceFlight = nodes[i].SelectSingleNode(".//div[@class='dtc-flight-price']").InnerText
                     };
-                    listFlightVM.Add(flight);
+
+                    App.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        listFlightVM.Add(flight);
+                    });
                 }
+                Done();
                 browser.Close();
                 browser.Quit();
             }
+        }
+
+        public void Load()
+        {
+            if (listFlightVM.Count != 0)
+                listFlightVM.Clear();
+            IsLoading = "Visible";
+        }
+
+        public void Done()
+        {
+            IsLoading = "Hidden";
         }
     }
 }

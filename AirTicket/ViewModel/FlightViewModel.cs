@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +16,10 @@ namespace AirTicket.ViewModel
         public string departureTime { get; set; }
         public string landingTime { get; set; }
 
-        public decimal priceFlight { get; set; }
+        public string priceFlight { get; set; }
 
         public ICommand SelectFlightCommand { get; set; }
+        
         public FlightViewModel()
         {
             SelectFlightCommand = new RelayCommand<TabControl>((p) => { return p == null ? false : true; }, (p) =>

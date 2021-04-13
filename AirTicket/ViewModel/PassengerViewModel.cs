@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AirTicket.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
-using AirTicket.Model;
 
 namespace AirTicket.ViewModel
 {
@@ -15,7 +16,25 @@ namespace AirTicket.ViewModel
         public ICommand ReducePassengerCommand { get; set; }
         #endregion
 
-        public string typePassenger { get; set; }
+        private LOAIHANHKHACH _lhkModel;
+
+        public LOAIHANHKHACH LHKModel {
+            get
+            {
+                return _lhkModel;
+            } 
+            set
+            {
+                _lhkModel = value;
+
+                if (_lhkModel.TuoiMax == null) regulationAge = _lhkModel.TuoiMin + " tuổi trở lên";
+                else if (_lhkModel.TuoiMin == null) regulationAge = "Nhỏ hơn " + (++_lhkModel.TuoiMax) + " tuổi";
+                else regulationAge = "Từ " + _lhkModel.TuoiMin + " đến dưới " + (++_lhkModel.TuoiMax) + " tuổi";
+
+                NumberOfPassenger = (int)_lhkModel.SoLuongMin;
+            }
+        }
+
         public string regulationAge { get; set; }
 
         private int _numberOfPassenger;
@@ -28,21 +47,22 @@ namespace AirTicket.ViewModel
             set
             {
                 SetProperty(ref _numberOfPassenger, value);
-                // enable button reduce passenger
-                if (!IsEnableReduce)
+
+                if (_numberOfPassenger == _lhkModel.SoLuongMin)
                 {
-                    if (_numberOfPassenger > 1) IsEnableReduce = true;
-                    else if (NumberOfPassenger > 0 && !typePassenger.Equals("Người lớn")) IsEnableReduce = true;
+                    IsEnableReduce = false;
+                    IsEnableAdd = true;
+                }
+                else if (_numberOfPassenger == _lhkModel.SoLuongMax)
+                {
+                    IsEnableReduce = true;
+                    IsEnableAdd = false;
                 }
                 else
                 {
-                    if (_numberOfPassenger == 1 && typePassenger.Equals("Người lớn")) IsEnableReduce = false;
-                    else if (_numberOfPassenger == 0) IsEnableReduce = false;
+                    IsEnableReduce = true;
+                    IsEnableAdd = true;
                 }
-
-                // enable button add passenger
-                if (_numberOfPassenger == 9) IsEnableAdd = false;
-                else IsEnableAdd = true;
             }
         }
 
@@ -60,14 +80,16 @@ namespace AirTicket.ViewModel
 
         public PassengerViewModel()
         {
-            AddPassengerCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            AddPassengerCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
                 NumberOfPassenger++;
+                p.Text = (int.Parse(p.Text) + 1).ToString();
             });
 
-            ReducePassengerCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            ReducePassengerCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
                 NumberOfPassenger--;
+                p.Text = (int.Parse(p.Text) - 1).ToString();
             });
         }
     }

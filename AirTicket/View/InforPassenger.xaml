@@ -1,0 +1,272 @@
+﻿<UserControl x:Class="AirTicket.View.InforPassenger"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:AirTicket.View"
+             xmlns:rule="clr-namespace:AirTicket.ValidRule"
+             mc:Ignorable="d"
+             d:DesignHeight="1000"
+             d:DesignWidth="800"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="{DynamicResource MaterialDesignFont}"
+             DataContext="{StaticResource InfoPaVM}">
+    <Grid Background="{DynamicResource BackgroundColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <DockPanel Margin="10,0,10,20">
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                 materialDesign:ShadowAssist.ShadowEdges="None"
+                                 DockPanel.Dock="Top">
+                <!--Danh sach hanh khach-->
+                <StackPanel>
+                    <DockPanel>
+                        <materialDesign:PackIcon Kind="AccountMultiple"
+                                                 VerticalAlignment="Center"
+                                                 Margin="10"
+                                                 Width="20"
+                                                 Height="20"
+                                                 Foreground="{DynamicResource TextNormalColor}" />
+                        <TextBlock Text="Danh sách hành khách"
+                                   Foreground="{DynamicResource TextNormalColor}"
+                                   FontSize="15"
+                                   Padding="0,10,0,10" />
+                    </DockPanel>
+                    <Separator Background="{DynamicResource BackgroundColor}" />
+                    <ListView ItemsSource="{Binding ListDetailInfoVM}"
+                              Height="300"
+                              Name="ListPassenger"
+                              Validation.ErrorTemplate="{x:Null}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding num}"
+                                                Header="STT" />
+                                <GridViewColumn DisplayMemberBinding="{Binding typePassenger}"
+                                                Header="Độ tuổi" />
+                                <GridViewColumn Header="Họ tên"
+                                                x:Name="columnName">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Width="100"
+                                                     Validation.ValidationAdornerSite="{Binding RelativeSource={RelativeSource AncestorType=ListView}}">
+                                                <TextBox.Text>
+                                                    <Binding Path="Name"
+                                                             UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <rule:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Giới tính">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox Margin="20,0,0,10">
+                                                <ComboBoxItem Content="Nam"
+                                                              IsSelected="True" />
+                                                <ComboBoxItem Content="Nữ" />
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Ngày sinh">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DatePicker Width="100"
+                                                        Validation.ValidationAdornerSite="{Binding RelativeSource={RelativeSource AncestorType=ListView}}">
+                                                <DatePicker.Resources>
+                                                    <rule:BindingProxy x:Key="TargetProxy"
+                                                                       Data="{Binding typePassenger}" />
+                                                </DatePicker.Resources>
+                                                <DatePicker.SelectedDate>
+                                                    <Binding Path="DateOfBirth"
+                                                             UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <rule:DateOfBirthValidationRule ValidatesOnTargetUpdated="True">
+                                                                <rule:TypePassenger Value="{Binding Data, Source={StaticResource TargetProxy}}" />
+                                                            </rule:DateOfBirthValidationRule>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </DatePicker.SelectedDate>
+                                            </DatePicker>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                 materialDesign:ShadowAssist.ShadowEdges="None"
+                                 Margin="0,10,0,0">
+
+                <!--Thong tin lien he-->
+                <StackPanel>
+                    <DockPanel>
+                        <materialDesign:PackIcon Kind="Phone"
+                                                 VerticalAlignment="Center"
+                                                 Margin="10"
+                                                 Width="20"
+                                                 Height="20"
+                                                 Foreground="{DynamicResource TextNormalColor}" />
+                        <TextBlock Text="Thông tin liên hệ"
+                                   Foreground="{DynamicResource TextNormalColor}"
+                                   FontSize="15"
+                                   Padding="0,10,0,10" />
+                    </DockPanel>
+                    <Separator Background="{DynamicResource BackgroundColor}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Margin="50,5,50,5">
+                            <TextBox materialDesign:HintAssist.Hint="Họ tên"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,0,10"
+                                     Name="txtName">
+                                <TextBox.Text>
+                                    <Binding Path="HDModel.HoTen"
+                                             UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <rule:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Số điện thoại"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     VerticalAlignment="Center"
+                                     Margin="0,5,0,10"
+                                     Name="txtSDT">
+                                <TextBox.Text>
+                                    <Binding Path="HDModel.SDT"
+                                             UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <rule:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    Margin="50,5,50,5">
+                            <ComboBox materialDesign:HintAssist.Hint="Giới tính"
+                                      Margin="0,11,0,10">
+                                <ComboBoxItem Content="Nam"
+                                              IsSelected="True" />
+                                <ComboBoxItem Content="Nữ" />
+                            </ComboBox>
+                            <TextBox materialDesign:HintAssist.Hint="Email"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     VerticalAlignment="Center"
+                                     Margin="0,5,0,10"
+                                     Name="txtEmail">
+                                <TextBox.Text>
+                                    <Binding Path="HDModel.Email"
+                                             UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <rule:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                    </Grid>
+                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             VerticalAlignment="Top"
+                             Height="100"
+                             Margin="50,15,50,15"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             materialDesign:HintAssist.Hint="Yêu cầu đặc biệt" />
+
+                    <Button ToolTip="MaterialDesignFlatLightButton"
+                            Content="Đặt chỗ"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,50,0"
+                            Width="180">
+                        <Button.Style>
+                            <Style TargetType="Button"
+                                   BasedOn="{StaticResource MaterialDesignFlatLightBgButton}">
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=(Validation.ValidationAdornerSiteFor).(Validation.HasError), ElementName=ListPassenger}"
+                                                       Value="False" />
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtName}"
+                                                       Value="False" />
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtSDT}"
+                                                       Value="False" />
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtEmail}"
+                                                       Value="False" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="IsEnabled"
+                                                Value="True" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </materialDesign:Card>
+        </DockPanel>
+
+        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                             materialDesign:ShadowAssist.ShadowEdges="None"
+                             Grid.Column="1"
+                             Margin="0,0,10,20">
+            <!--Chuyen bay da chon-->
+            <StackPanel>
+                <DockPanel>
+                    <materialDesign:PackIcon Kind="Cart"
+                                             VerticalAlignment="Center"
+                                             Margin="10"
+                                             Width="20"
+                                             Height="20"
+                                             Foreground="{DynamicResource TextNormalColor}" />
+                    <TextBlock Text="Chuyến bay đã chọn"
+                               Foreground="{DynamicResource TextNormalColor}"
+                               FontSize="15"
+                               Padding="0,10,0,10" />
+                </DockPanel>
+                <Separator Background="{DynamicResource BackgroundColor}" />
+                <DockPanel>
+                    <TextBlock Text="Tổng giá"
+                               Padding="10" />
+                    <DockPanel HorizontalAlignment="Right">
+                        <TextBlock Text="0"
+                                   Padding="10"
+                                   Foreground="{DynamicResource MoneyBrush}" />
+                        <TextBlock Text="VND"
+                                   Padding="10"
+                                   Width="50"
+                                   Foreground="{DynamicResource MoneyBrush}" />
+                    </DockPanel>
+                </DockPanel>
+            </StackPanel>
+
+        </materialDesign:Card>
+
+    </Grid>
+</UserControl>
