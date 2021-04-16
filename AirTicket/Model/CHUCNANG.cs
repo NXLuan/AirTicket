@@ -12,26 +12,20 @@ namespace AirTicket.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class LOAIHANHKHACH
+    public partial class CHUCNANG
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public LOAIHANHKHACH()
+        public CHUCNANG()
         {
-            this.QUYDINHGIAVEs = new HashSet<QUYDINHGIAVE>();
-            this.VECHUYENBAYs = new HashSet<VECHUYENBAY>();
+            this.NHOMNGUOIDUNGs = new HashSet<NHOMNGUOIDUNG>();
         }
     
-        public string MaLoai { get; set; }
-        public string TenLoai { get; set; }
-        public string PhotoUrl { get; set; }
-        public Nullable<int> TuoiMin { get; set; }
-        public Nullable<int> TuoiMax { get; set; }
-        public Nullable<int> SoLuongMin { get; set; }
-        public Nullable<int> SoLuongMax { get; set; }
+        public string MaChucNang { get; set; }
+        public string TenChucNang { get; set; }
+        public string TenManHinhDuocLoad { get; set; }
+        public string Icon { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QUYDINHGIAVE> QUYDINHGIAVEs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VECHUYENBAY> VECHUYENBAYs { get; set; }
+        public virtual ICollection<NHOMNGUOIDUNG> NHOMNGUOIDUNGs { get; set; }
     }
 }

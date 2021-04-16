@@ -72,7 +72,6 @@
                                                            Foreground="{DynamicResource TextNormalColor}" />
                                                 <ComboBox ItemsSource="{Binding ListDeparture}"
                                                           DisplayMemberPath="ThanhPho"
-                                                          SelectedValuePath="MaSanBay"
                                                           materialDesign:HintAssist.Hint="Nhập thành phố"
                                                           materialDesign:HintAssist.HintOpacity=".26"
                                                           IsEditable="True"
@@ -81,15 +80,14 @@
                                                           Width="150"
                                                           Cursor="IBeam"
                                                           Name="cbDeparture">
-                                                    <ComboBox.SelectedValue>
+                                                    <ComboBox.SelectedItem>
                                                         <Binding Path="SelectedDeparture"
                                                                  UpdateSourceTrigger="PropertyChanged">
                                                             <Binding.ValidationRules>
-                                                                <rule:NotEmptyValidationRule contentError="Yêu cầu chọn điểm đi"
-                                                                                             ValidatesOnTargetUpdated="True" />
+                                                                <rule:ComboboxAirportValidationRule ValidatesOnTargetUpdated="True" />
                                                             </Binding.ValidationRules>
                                                         </Binding>
-                                                    </ComboBox.SelectedValue>
+                                                    </ComboBox.SelectedItem>
                                                 </ComboBox>
                                                 <!--ItemsSource="{Binding ShortStringList}"-->
                                             </StackPanel>
@@ -108,15 +106,14 @@
                                                           Cursor="IBeam"
                                                           Width="150"
                                                           Name="cbDestination">
-                                                    <ComboBox.SelectedValue>
+                                                    <ComboBox.SelectedItem>
                                                         <Binding Path="SelectedDestination"
                                                                  UpdateSourceTrigger="PropertyChanged">
                                                             <Binding.ValidationRules>
-                                                                <rule:NotEmptyValidationRule contentError="Yêu cầu chọn điểm dến"
-                                                                                             ValidatesOnTargetUpdated="True" />
+                                                                <rule:ComboboxAirportValidationRule ValidatesOnTargetUpdated="True" />
                                                             </Binding.ValidationRules>
                                                         </Binding>
-                                                    </ComboBox.SelectedValue>
+                                                    </ComboBox.SelectedItem>
                                                 </ComboBox>
                                                 <!--ItemsSource="{Binding ShortStringList}"-->
                                             </StackPanel>
@@ -210,7 +207,8 @@
 
 
                         <!--list flight-->
-                        <Grid DockPanel.Dock="Top" Margin="30,20,30,20">
+                        <Grid DockPanel.Dock="Top"
+                              Margin="30,20,30,20">
                             <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                                  materialDesign:ShadowAssist.ShadowEdges="None">
                                 <ListView ItemsSource="{Binding listFlightVM}">
@@ -219,7 +217,7 @@
                                             <GridViewColumn Header="Hàng không">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Image Source="{Binding airline}"
+                                                        <Image Source="{Binding ImgAirlineUrl}"
                                                                Margin="5" />
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
@@ -235,16 +233,25 @@
                                             <GridViewColumn>
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Width="80"
-                                                                Content="Chọn"
-                                                                Style="{StaticResource MaterialDesignOutlinedButton}">
-                                                            <i:Interaction.Triggers>
-                                                                <i:EventTrigger EventName="Click">
-                                                                    <i:InvokeCommandAction Command="{Binding SelectFlightCommand}"
-                                                                                           CommandParameter="{Binding ElementName=tabTicketSale}" />
-                                                                </i:EventTrigger>
-                                                            </i:Interaction.Triggers>
-                                                        </Button>
+                                                        <Grid>
+                                                            <Button Width="100"
+                                                                    Content="Chọn"
+                                                                    Style="{StaticResource MaterialDesignOutlinedButton}">
+                                                                <i:Interaction.Triggers>
+                                                                    <i:EventTrigger EventName="Click">
+                                                                        <i:InvokeCommandAction Command="{Binding SelectFlightCommand}"
+                                                                                               CommandParameter="{Binding ElementName=tabTicketSale}" />
+                                                                    </i:EventTrigger>
+                                                                </i:Interaction.Triggers>
+                                                            </Button>
+                                                            <materialDesign:PackIcon Kind="ChevronRight"
+                                                                                     VerticalAlignment="Center"
+                                                                                     HorizontalAlignment="Right"
+                                                                                     Margin="0,0,5,0"
+                                                                                     Height="20"
+                                                                                     Width="20"
+                                                                                     Foreground="{DynamicResource PrimaryHueLightBrush}" />
+                                                        </Grid>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
@@ -253,6 +260,11 @@
                                 </ListView>
                             </materialDesign:Card>
 
+                            <TextBlock Text="Không tìm thấy kết quả"
+                                       Foreground="{DynamicResource MoneyBrush}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsNoResult}" />
                             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                          Value="0"
                                          IsIndeterminate="True"
@@ -260,7 +272,7 @@
                                          Name="progressSearch" />
                         </Grid>
                     </DockPanel>
-                   
+
 
 
                     <materialDesign:Card Margin="560,155,0,0"
@@ -346,7 +358,8 @@
                      Height="50"
                      VerticalAlignment="Top"
                      Style="{StaticResource MaterialDesignNavigationRailTabItem}"
-                     IsEnabled="False">
+                     IsEnabled="False"
+                     DataContext="{StaticResource InfoPaVM}">
                 <local:InforPassenger>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Loaded">

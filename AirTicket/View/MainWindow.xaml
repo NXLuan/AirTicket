@@ -26,22 +26,66 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Background="{DynamicResource SecondaryHueMidBrush}">
+            <TextBlock Text="TÀI KHOẢN"
+                       Foreground="{DynamicResource SecondaryHueMidForegroundBrush}"
+                       Padding="18"
+                       FontWeight="SemiBold" />
+            <Rectangle Height="2"
+                       Fill="#2B323B"></Rectangle>
+            <ListBox ItemsSource="{Binding MenuAccount}"
+                     Foreground="Silver"
+                     Cursor="Hand">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <DockPanel>
+                                        <!--Menu Icon-->
+                                        <materialDesign:PackIcon Kind="{Binding Icon}"
+                                                                 Height="26"
+                                                                 Width="26"
+                                                                 Margin="30,10,10,10">
+                                        </materialDesign:PackIcon>
+
+                                        <!--Menu Text-->
+                                        <TextBlock Text="{Binding TenChucNang}"
+                                                   VerticalAlignment="Center" />
+                                        <DockPanel.Style>
+                                            <Style TargetType="{x:Type DockPanel}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                                 Value="True">
+                                                        <Setter Property="Background"
+                                                                Value="#637583" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DockPanel.Style>
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+
+
             <TextBlock Text="QUYỀN THAO TÁC"
                        Foreground="{DynamicResource SecondaryHueMidForegroundBrush}"
                        Padding="18"
                        FontWeight="SemiBold" />
             <Rectangle Height="2"
                        Fill="#2B323B"></Rectangle>
-            <!--Menu Buttons-->
-            <ListBox 
-                     ItemsSource="{Binding Menu}"
+
+            <ListBox ItemsSource="{Binding MenuFunction}"
                      Foreground="Silver"
                      Cursor="Hand"
                      Name="ListMenu">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectedItemCommand}"
-                                               CommandParameter="{Binding ElementName=ListMenu, Path=SelectedIndex}" />
+                        <i:InvokeCommandAction Command="{Binding SelectedItemFunctionCommand}"
+                                               CommandParameter="{Binding ElementName=ListMenu, Path=SelectedItem}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ListBox.ItemContainerStyle>
@@ -50,7 +94,7 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                     <DockPanel>
-                                        <!--<Rectangle Width="4"
+                                        <Rectangle Width="4"
                                                    Fill="{DynamicResource PrimaryHueMidBrush}">
                                             <Rectangle.Style>
                                                 <Style TargetType="{x:Type Rectangle}">
@@ -68,13 +112,13 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </Rectangle.Style>
-                                        </Rectangle>-->
+                                        </Rectangle>
                                         <!--Menu Icon-->
                                         <materialDesign:PackIcon Kind="{Binding Icon}"
                                                                  Height="26"
                                                                  Width="26"
                                                                  Margin="30,10,10,10">
-                                            <materialDesign:PackIcon.Style>
+                                            <!--<materialDesign:PackIcon.Style>
                                                 <Style TargetType="{x:Type materialDesign:PackIcon}">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
@@ -84,11 +128,11 @@
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
-                                            </materialDesign:PackIcon.Style>
+                                            </materialDesign:PackIcon.Style>-->
                                         </materialDesign:PackIcon>
 
                                         <!--Menu Text-->
-                                        <TextBlock Text="{Binding Name}"
+                                        <TextBlock Text="{Binding TenChucNang}"
                                                    VerticalAlignment="Center">
                                             <TextBlock.Style>
                                                 <Style TargetType="{x:Type TextBlock}">

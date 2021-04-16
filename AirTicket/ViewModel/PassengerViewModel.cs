@@ -18,18 +18,19 @@ namespace AirTicket.ViewModel
 
         private LOAIHANHKHACH _lhkModel;
 
-        public LOAIHANHKHACH LHKModel {
+        public LOAIHANHKHACH LHKModel
+        {
             get
             {
                 return _lhkModel;
-            } 
+            }
             set
             {
                 _lhkModel = value;
 
                 if (_lhkModel.TuoiMax == null) regulationAge = _lhkModel.TuoiMin + " tuổi trở lên";
-                else if (_lhkModel.TuoiMin == null) regulationAge = "Nhỏ hơn " + (++_lhkModel.TuoiMax) + " tuổi";
-                else regulationAge = "Từ " + _lhkModel.TuoiMin + " đến dưới " + (++_lhkModel.TuoiMax) + " tuổi";
+                else if (_lhkModel.TuoiMin == null) regulationAge = "Nhỏ hơn " + (_lhkModel.TuoiMax + 1) + " tuổi";
+                else regulationAge = "Từ " + _lhkModel.TuoiMin + " đến dưới " + (_lhkModel.TuoiMax + 1) + " tuổi";
 
                 NumberOfPassenger = (int)_lhkModel.SoLuongMin;
             }
@@ -64,6 +65,24 @@ namespace AirTicket.ViewModel
                     IsEnableAdd = true;
                 }
             }
+        }
+
+        private decimal _priceTicket;
+        public decimal PriceTicket
+        {
+            get => _priceTicket;
+            set
+            {
+                SetProperty(ref _priceTicket, value);
+                TotalPriceTicket = NumberOfPassenger * _priceTicket;
+            }
+        }
+
+        private decimal _totalPriceTicket;
+        public decimal TotalPriceTicket
+        {
+            get => _totalPriceTicket;
+            set => SetProperty(ref _totalPriceTicket, value);
         }
 
         public bool IsEnableAdd

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirTicket.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -32,26 +33,29 @@ namespace AirTicket.ValidRule
             int age = now.Year - birthday.Year;
             if (now < birthday.AddYears(age)) age--;
 
-            if (Type.Value == "Người lớn" && age < 12) return new ValidationResult(false, "Tuổi người lớn >= 12");
-            if (Type.Value == "Trẻ em" && (age >= 12 || age < 2)) return new ValidationResult(false, "2 <= Tuổi trẻ em < 12");
-            if (Type.Value == "Em bé" && (age >= 2)) return new ValidationResult(false, "Tuổi em bé < 2");
+            LOAIHANHKHACH lhk = Type.Value;
+
+            if ((lhk.TuoiMax == null) && (age < lhk.TuoiMin)) return new ValidationResult(false, "Tuổi " + lhk.TenLoai + " >= " + lhk.TuoiMin);
+            if ((lhk.TuoiMin == null) && (age > lhk.TuoiMax)) return new ValidationResult(false, "Tuổi " + lhk.TenLoai + " < " + (lhk.TuoiMax + 1));
+            if (age > lhk.TuoiMax || age < lhk.TuoiMin) return new ValidationResult(false, lhk.TuoiMin + " <= Tuổi " + lhk.TenLoai + " < " + (lhk.TuoiMax + 1));
+
             return ValidationResult.ValidResult;
         }
     }
 
     public class TypePassenger : DependencyObject
     {
-        public string Value
+        public LOAIHANHKHACH Value
         {
-            get { return (string)GetValue(ValueProperty); }
+            get { return (LOAIHANHKHACH)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             nameof(Value),
-            typeof(string),
+            typeof(LOAIHANHKHACH),
             typeof(TypePassenger),
-            new PropertyMetadata(default(string)));
+            new PropertyMetadata(default(LOAIHANHKHACH)));
     }
 
     public class BindingProxy : Freezable

@@ -12,18 +12,12 @@ namespace AirTicket.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class VECHUYENBAY
+    public partial class NGUOIDUNG
     {
-        public string MaVe { get; set; }
-        public Nullable<decimal> GiaVe { get; set; }
-        public string MaLoai { get; set; }
-        public string HoTen { get; set; }
-        public string GioTinh { get; set; }
-        public Nullable<System.DateTime> NgaySinh { get; set; }
-        public string TrangThai { get; set; }
-        public string MaHoaDon { get; set; }
+        public string TenDangNhap { get; set; }
+        public string MatKhau { get; set; }
+        public string MaNhom { get; set; }
     
-        public virtual HOADON HOADON { get; set; }
-        public virtual LOAIHANHKHACH LOAIHANHKHACH { get; set; }
+        public virtual NHOMNGUOIDUNG NHOMNGUOIDUNG { get; set; }
     }
 }

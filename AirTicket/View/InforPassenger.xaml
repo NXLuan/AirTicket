@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:AirTicket.View"
              xmlns:rule="clr-namespace:AirTicket.ValidRule"
+             xmlns:convert="clr-namespace:AirTicket.Converter"
              mc:Ignorable="d"
              d:DesignHeight="1000"
              d:DesignWidth="800"
@@ -23,7 +24,8 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <DockPanel Margin="10,0,10,20">
+        <DockPanel Margin="10,0,10,20"
+                   Name="pnInfo">
             <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                  materialDesign:ShadowAssist.ShadowEdges="None"
                                  DockPanel.Dock="Top">
@@ -42,24 +44,21 @@
                                    Padding="0,10,0,10" />
                     </DockPanel>
                     <Separator Background="{DynamicResource BackgroundColor}" />
-                    <ListView ItemsSource="{Binding ListDetailInfoVM}"
+                    <ListView ItemsSource="{Binding ListDetailInfo}"
                               Height="300"
-                              Name="ListPassenger"
-                              Validation.ErrorTemplate="{x:Null}">
+                              Name="ListPassenger">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn DisplayMemberBinding="{Binding num}"
                                                 Header="STT" />
-                                <GridViewColumn DisplayMemberBinding="{Binding typePassenger}"
+                                <GridViewColumn DisplayMemberBinding="{Binding VCBModel.LOAIHANHKHACH.TenLoai}"
                                                 Header="Độ tuổi" />
-                                <GridViewColumn Header="Họ tên"
-                                                x:Name="columnName">
+                                <GridViewColumn Header="Họ tên">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBox Width="100"
-                                                     Validation.ValidationAdornerSite="{Binding RelativeSource={RelativeSource AncestorType=ListView}}">
+                                            <TextBox Width="100">
                                                 <TextBox.Text>
-                                                    <Binding Path="Name"
+                                                    <Binding Path="VCBModel.HoTen"
                                                              UpdateSourceTrigger="PropertyChanged">
                                                         <Binding.ValidationRules>
                                                             <rule:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
@@ -73,7 +72,8 @@
                                 <GridViewColumn Header="Giới tính">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox Margin="20,0,0,10">
+                                            <ComboBox Margin="20,0,0,10"
+                                                      Text="{Binding VCBModel.GioTinh, UpdateSourceTrigger=PropertyChanged}">
                                                 <ComboBoxItem Content="Nam"
                                                               IsSelected="True" />
                                                 <ComboBoxItem Content="Nữ" />
@@ -85,13 +85,13 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <DatePicker Width="100"
-                                                        Validation.ValidationAdornerSite="{Binding RelativeSource={RelativeSource AncestorType=ListView}}">
+                                                        ToolTip="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)/ErrorContent}">
                                                 <DatePicker.Resources>
                                                     <rule:BindingProxy x:Key="TargetProxy"
-                                                                       Data="{Binding typePassenger}" />
+                                                                       Data="{Binding VCBModel.LOAIHANHKHACH}" />
                                                 </DatePicker.Resources>
                                                 <DatePicker.SelectedDate>
-                                                    <Binding Path="DateOfBirth"
+                                                    <Binding Path="VCBModel.NgaySinh"
                                                              UpdateSourceTrigger="PropertyChanged">
                                                         <Binding.ValidationRules>
                                                             <rule:DateOfBirthValidationRule ValidatesOnTargetUpdated="True">
@@ -154,12 +154,15 @@
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      VerticalAlignment="Center"
                                      Margin="0,5,0,10"
-                                     Name="txtSDT">
+                                     Name="txtSDT"
+                                     MaxLength="12"
+                                     ToolTip="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)/ErrorContent}">
                                 <TextBox.Text>
                                     <Binding Path="HDModel.SDT"
                                              UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <rule:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                            <rule:PhoneNumberValidationRule ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -169,7 +172,8 @@
                         <StackPanel Grid.Column="1"
                                     Margin="50,5,50,5">
                             <ComboBox materialDesign:HintAssist.Hint="Giới tính"
-                                      Margin="0,11,0,10">
+                                      Margin="0,11,0,10"
+                                      Text="{Binding HDModel.GioiTinh, UpdateSourceTrigger=PropertyChanged}">
                                 <ComboBoxItem Content="Nam"
                                               IsSelected="True" />
                                 <ComboBoxItem Content="Nữ" />
@@ -184,6 +188,7 @@
                                              UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <rule:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                            <rule:EmailValidationRule ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -197,37 +202,49 @@
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
                              VerticalScrollBarVisibility="Auto"
-                             materialDesign:HintAssist.Hint="Yêu cầu đặc biệt" />
+                             materialDesign:HintAssist.Hint="Yêu cầu đặc biệt"
+                             Text="{Binding HDModel.GhiChu, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <Button ToolTip="MaterialDesignFlatLightButton"
-                            Content="Đặt chỗ"
-                            HorizontalAlignment="Right"
-                            Margin="0,0,50,0"
-                            Width="180">
-                        <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource MaterialDesignFlatLightBgButton}">
-                                <Setter Property="IsEnabled"
-                                        Value="False" />
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Path=(Validation.ValidationAdornerSiteFor).(Validation.HasError), ElementName=ListPassenger}"
-                                                       Value="False" />
-                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtName}"
-                                                       Value="False" />
-                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtSDT}"
-                                                       Value="False" />
-                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtEmail}"
-                                                       Value="False" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled"
-                                                Value="True" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+                    <Grid Margin="50,0,50,0">
+                        <materialDesign:PackIcon Kind="ChevronLeft"
+                                                 VerticalAlignment="Center"
+                                                 Margin="10,0,0,0"
+                                                 Height="20" Width="20"
+                                                 Foreground="{DynamicResource PrimaryHueLightBrush}"/>
+                        <Button Width="180"
+                                HorizontalAlignment="Left"
+                                Content="Chọn lại"
+                                Style="{StaticResource MaterialDesignOutlinedButton}" 
+                                Command="{Binding btnSelectAgainCommand}"/>
+                        <Button Content="Đặt chỗ"
+                                HorizontalAlignment="Right"
+                                Width="180"
+                                Command="{Binding btnBookClickCommand}"
+                                CommandParameter="{Binding ElementName=ListPassenger}">
+                            <Button.Style>
+                                <Style TargetType="Button"
+                                       BasedOn="{StaticResource MaterialDesignFlatLightBgButton}">
+
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtName}"
+                                                           Value="False" />
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtSDT}"
+                                                           Value="False" />
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtEmail}"
+                                                           Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled"
+                                                    Value="True" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
                 </StackPanel>
             </materialDesign:Card>
         </DockPanel>
@@ -236,6 +253,9 @@
                              materialDesign:ShadowAssist.ShadowEdges="None"
                              Grid.Column="1"
                              Margin="0,0,10,20">
+            <materialDesign:Card.Resources>
+                <convert:MoneyVNConvert x:Key="moneyVNConvert" />
+            </materialDesign:Card.Resources>
             <!--Chuyen bay da chon-->
             <StackPanel>
                 <DockPanel>
@@ -251,16 +271,83 @@
                                Padding="0,10,0,10" />
                 </DockPanel>
                 <Separator Background="{DynamicResource BackgroundColor}" />
-                <DockPanel>
+                <Grid>
+                    <DockPanel DataContext="{StaticResource TicketSalesVM}">
+                        <TextBlock Text="{Binding InfoDeparture}"
+                                   Padding="10" />
+                        <materialDesign:PackIcon Kind="ArrowRightBold"
+                                                 VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding InfoDestination}"
+                                   Padding="10" />
+                    </DockPanel>
+
+                    <DockPanel HorizontalAlignment="Right">
+                        <materialDesign:PackIcon Kind="ClockTimeNineOutline"
+                                                 VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding InfoDateTimeDeparture}"
+                                   Padding="5,10,10,10" />
+                    </DockPanel>
+                </Grid>
+
+                <Grid>
+                    <TextBlock Text="Tóm tắt giá vé"
+                               FontWeight="Bold"
+                               Padding="10" />
+
+                    <Image Source="{Binding FlightSelected.ImgAirlineUrl}"
+                           Width="100"
+                           Height="20"
+                           Margin="0,0,10,0"
+                           HorizontalAlignment="Right" />
+                </Grid>
+                <Separator Background="{DynamicResource BackgroundColor}" />
+
+                <ItemsControl ItemsSource="{Binding ListPriceTicket}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding LHKModel.TenLoai}"
+                                           Padding="20,10,10,10" />
+
+                                <DockPanel  Grid.Column="1"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding NumberOfPassenger}"
+                                               Padding="0,10,5,10" />
+                                    <materialDesign:PackIcon Kind="Close"
+                                                             VerticalAlignment="Center"
+                                                             Width="10" />
+                                    <TextBlock Text="{Binding PriceTicket, Converter={StaticResource moneyVNConvert}}"
+                                               Padding="5,10,0,10"
+                                               HorizontalAlignment="Center" />
+                                </DockPanel>
+
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding TotalPriceTicket, Converter={StaticResource moneyVNConvert}}"
+                                           Padding="10"
+                                           HorizontalAlignment="Right"
+                                           Foreground="{DynamicResource MoneyBrush}" />
+
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <DockPanel Background="#F6F6F6"
+                           Margin="0,0,1,0">
                     <TextBlock Text="Tổng giá"
                                Padding="10" />
                     <DockPanel HorizontalAlignment="Right">
-                        <TextBlock Text="0"
-                                   Padding="10"
+                        <TextBlock Text="{Binding TotalPriceTicket, Converter={StaticResource moneyVNConvert}}"
+                                   Padding="10,10,0,10"
                                    Foreground="{DynamicResource MoneyBrush}" />
                         <TextBlock Text="VND"
                                    Padding="10"
-                                   Width="50"
                                    Foreground="{DynamicResource MoneyBrush}" />
                     </DockPanel>
                 </DockPanel>

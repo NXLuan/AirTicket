@@ -61,6 +61,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -89,8 +90,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\MoneyVNConvert.cs" />
     <Compile Include="Model\AirlineSelected.cs" />
+    <Compile Include="Model\CHUCNANG.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\DataProvider.cs" />
+    <Compile Include="Model\DetailInfoPassenger.cs" />
     <Compile Include="Model\HANGHANGKHONG.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -115,6 +121,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\NGUOIDUNG.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\NHOMNGUOIDUNG.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\QUYDINHGIAVE.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -127,14 +139,14 @@
     <Compile Include="Model\VECHUYENBAY.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ValidRule\ComboboxAirportValidationRule.cs" />
     <Compile Include="ValidRule\DateOfBirthValidationRule.cs" />
+    <Compile Include="ValidRule\EmailValidationRule.cs" />
     <Compile Include="ValidRule\FutureDateValidationRule.cs" />
     <Compile Include="ValidRule\NotEmptyValidationRule.cs" />
-    <Compile Include="ValidRule\PassengerValidationRule.cs" />
-    <Compile Include="ViewModel\DetailInfoViewModel.cs" />
+    <Compile Include="ValidRule\PhoneNumberValidationRule.cs" />
     <Compile Include="ViewModel\FlightViewModel.cs" />
     <Compile Include="ViewModel\InfoPaViewModel.cs" />
-    <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\PassengerViewModel.cs" />
     <Compile Include="View\InforPassenger.xaml.cs">
       <DependentUpon>InforPassenger.xaml</DependentUpon>
@@ -212,19 +224,19 @@
     <Folder Include="Utility\" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Model\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
       <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Model\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />
