@@ -11,7 +11,17 @@ namespace AirTicket.ViewModel
 {
     class FlightViewModel : BaseViewModel
     {
-        public string airline { get; set; }
+        public string AirlineID { get; set; }
+        private string _imgAirlineUrl;
+        public string ImgAirlineUrl
+        {
+            get => _imgAirlineUrl;
+            set
+            {
+                if (_imgAirlineUrl != value) AirlineID = value.Substring(value.Length - 6, 2);
+                SetProperty(ref _imgAirlineUrl, value);
+            }
+        }
         public string flight { get; set; }
         public string departureTime { get; set; }
         public string landingTime { get; set; }
@@ -19,16 +29,22 @@ namespace AirTicket.ViewModel
         public string priceFlight { get; set; }
 
         public ICommand SelectFlightCommand { get; set; }
-        
+
         public FlightViewModel()
         {
             SelectFlightCommand = new RelayCommand<TabControl>((p) => { return p == null ? false : true; }, (p) =>
             {
                 TabControl tab = p as TabControl;
-                TabItem tabItem = tab.Items[1] as TabItem;
+                TabItem tabItem1 = tab.Items[1] as TabItem;
+                TabItem tabItem0 = tab.Items[0] as TabItem;
 
                 tab.SelectedIndex = 1;
-                tabItem.IsEnabled = true;
+                tabItem1.IsEnabled = true;
+                tabItem0.IsEnabled = false;
+
+                InfoPaViewModel infoPaVM = tabItem1.DataContext as InfoPaViewModel;
+                infoPaVM.FlightSelected = this;
+                infoPaVM.tabControl = tab;
             });
         }
     }

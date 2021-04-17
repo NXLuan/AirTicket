@@ -1,4 +1,5 @@
-﻿using AirTicket.View;
+﻿using AirTicket.Model;
+using AirTicket.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,27 +19,33 @@ namespace AirTicket.ViewModel
             get => _currentScreen;
             set => SetProperty(ref _currentScreen, value);
         }
-        public ObservableCollection<MenuViewModel> Menu { get; set; }
-        public ICommand SelectedItemCommand { get; set; }
+        public ObservableCollection<CHUCNANG> MenuFunction { get; set; }
+        public ObservableCollection<CHUCNANG> MenuAccount { get; set; }
+        public ICommand SelectedItemFunctionCommand { get; set; }
         public MainViewModel()
         {
-            Menu = new ObservableCollection<MenuViewModel>()
+            MenuFunction = new ObservableCollection<CHUCNANG>();
+            var NhomNguoiDung = DataProvider.Instance.DB.NHOMNGUOIDUNGs.Where(x => x.MaNhom == "NV").First();
+
+            foreach (CHUCNANG CN in NhomNguoiDung.CHUCNANGs)
             {
-                new MenuViewModel(){ TypeItem = MenuViewModel.TypeControl.TICKETSALES, Icon="TicketConfirmation", Name="BÁN VÉ" },
-                 new MenuViewModel(){  TypeItem = MenuViewModel.TypeControl.TICKETSALES, Icon="ViewListOutline", Name="DANH SÁCH VÉ" },
-                  new MenuViewModel(){  TypeItem = MenuViewModel.TypeControl.TICKETSALES, Icon="ChartDonutVariant", Name="THỐNG KÊ" },
-                   new MenuViewModel(){  TypeItem = MenuViewModel.TypeControl.TICKETSALES, Icon="ShieldEdit", Name="QUY ĐỊNH" },
+                MenuFunction.Add(CN);
+            }
+
+            MenuAccount = new ObservableCollection<CHUCNANG>()
+            {
+                new CHUCNANG(){ Icon="AccountCog", TenChucNang="THÔNG TIN TÀI KHOẢN" },
+                 new CHUCNANG(){  Icon="Logout", TenChucNang="ĐĂNG XUẤT" },
             };
 
-            SelectedItemCommand = new RelayCommand<int>((p) => { return true; }, (p) =>
-            {
-                switch (Menu[p].TypeItem)
-                {
-                    case MenuViewModel.TypeControl.TICKETSALES:
-                        CurrentScreen = TicketSales.getInstance();
-                        break;
-                }
-            });
+            SelectedItemFunctionCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+              {
+                  CHUCNANG ChucNang = p as CHUCNANG;
+
+                  if (ChucNang.TenManHinhDuocLoad == "TicketSales")
+                      CurrentScreen = new TicketSales();
+                  else CurrentScreen = null;
+              });
         }
     }
 }

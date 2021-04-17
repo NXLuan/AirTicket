@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,8 +12,6 @@ namespace AirTicket.ViewModel
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -38,6 +37,8 @@ namespace AirTicket.ViewModel
             OnPropertyChanged(propertyName);
             return true;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
     class RelayCommand<T> : ICommand
     {

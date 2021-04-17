@@ -17,6 +17,8 @@ namespace AirTicket.Model
         public string MaHang { get; set; }
         public string MaLoai { get; set; }
         public Nullable<double> TiLe { get; set; }
+        public Nullable<decimal> TienGiam { get; set; }
+        public Nullable<decimal> TienPhi { get; set; }
     
         public virtual HANGHANGKHONG HANGHANGKHONG { get; set; }
         public virtual LOAIHANHKHACH LOAIHANHKHACH { get; set; }
