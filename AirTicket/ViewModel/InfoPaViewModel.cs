@@ -139,10 +139,10 @@ namespace AirTicket.ViewModel
             {
                 HDModel.TongTien = TotalPriceTicket;
                 HDModel.ThoiGianTao = DateTime.Now;
-                HDModel.MaHoaDon = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDHD()").Single();
-                DataProvider.Instance.DB.HOADONs.Add(HDModel);
-
+                HDModel.MaHoaDon = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDHD()").Single();        
                 var VeChuyenBay = DataProvider.Instance.DB.VECHUYENBAYs;
+                HDModel.SoVe = ListDetailInfo.Count;
+                DataProvider.Instance.DB.HOADONs.Add(HDModel);
                 foreach (DetailInfoPassenger detailInfo in ListDetailInfo)
                 {
                     VECHUYENBAY VCBModel = detailInfo.VCBModel;

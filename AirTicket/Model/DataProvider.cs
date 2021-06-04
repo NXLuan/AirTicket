@@ -23,6 +23,7 @@ namespace AirTicket.Model
         }
 
         public AIRTICKETEntities DB { get; set; }
+
         public DataProvider()
         {
             DB = new AIRTICKETEntities();

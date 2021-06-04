@@ -44,6 +44,10 @@ namespace AirTicket.ViewModel
 
                   if (ChucNang.TenManHinhDuocLoad == "TicketSales")
                       CurrentScreen = new TicketSales();
+                  else if (ChucNang.TenManHinhDuocLoad == "InforTicket")
+                  {
+                      CurrentScreen = new InforTicket();
+                  }
                   else CurrentScreen = null;
               });
         }

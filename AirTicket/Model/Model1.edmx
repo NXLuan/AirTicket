@@ -11,8 +11,16 @@
           </Key>
           <Property Name="MaChucNang" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="TenChucNang" Type="nvarchar" MaxLength="100" />
-          <Property Name="TenManHinhDuocLoad" Type="nvarchar" MaxLength="100" />
           <Property Name="Icon" Type="varchar" MaxLength="50" />
+          <Property Name="TenManHinhDuocLoad" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="DAILY">
+          <Key>
+            <PropertyRef Name="MaDaiLy" />
+          </Key>
+          <Property Name="MaDaiLy" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenDaiLy" Type="varchar" MaxLength="50" />
+          <Property Name="DiaChi" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="HANGHANGKHONG">
           <Key>
@@ -33,6 +41,8 @@
           <Property Name="SDT" Type="varchar" MaxLength="20" />
           <Property Name="Email" Type="varchar" MaxLength="200" />
           <Property Name="GhiChu" Type="nvarchar(max)" />
+          <Property Name="MaDaiLy" Type="varchar" MaxLength="10" />
+          <Property Name="SoVe" Type="int" />
         </EntityType>
         <EntityType Name="LOAIHANHKHACH">
           <Key>
@@ -53,6 +63,7 @@
           <Property Name="TenDangNhap" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="MatKhau" Type="varchar" MaxLength="50" />
           <Property Name="MaNhom" Type="varchar" MaxLength="10" />
+          <Property Name="MaDaiLy" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="NHOMNGUOIDUNG">
           <Key>
@@ -107,7 +118,7 @@
           <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
           <Property Name="MaHoaDon" Type="varchar" MaxLength="16" />
         </EntityType>
-        <Association Name="FK__NGUOIDUNG__MaNho__08B54D69">
+        <Association Name="FK__NGUOIDUNG__MaNho__3E52440B">
           <End Role="NHOMNGUOIDUNG" Type="Self.NHOMNGUOIDUNG" Multiplicity="0..1" />
           <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -119,7 +130,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHANQUYEN__MaChu__0E6E26BF">
+        <Association Name="FK__PHANQUYEN__MaChu__440B1D61">
           <End Role="CHUCNANG" Type="Self.CHUCNANG" Multiplicity="1" />
           <End Role="PHANQUYEN" Type="Self.PHANQUYEN" Multiplicity="*" />
           <ReferentialConstraint>
@@ -131,7 +142,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHANQUYEN__MaNho__0D7A0286">
+        <Association Name="FK__PHANQUYEN__MaNho__4316F928">
           <End Role="NHOMNGUOIDUNG" Type="Self.NHOMNGUOIDUNG" Multiplicity="1" />
           <End Role="PHANQUYEN" Type="Self.PHANQUYEN" Multiplicity="*" />
           <ReferentialConstraint>
@@ -143,7 +154,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QUYDINHGI__MaHan__4316F928">
+        <Association Name="FK__QUYDINHGI__MaHan__38996AB5">
           <End Role="HANGHANGKHONG" Type="Self.HANGHANGKHONG" Multiplicity="1" />
           <End Role="QUYDINHGIAVE" Type="Self.QUYDINHGIAVE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -155,7 +166,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QUYDINHGI__MaLoa__440B1D61">
+        <Association Name="FK__QUYDINHGI__MaLoa__398D8EEE">
           <End Role="LOAIHANHKHACH" Type="Self.LOAIHANHKHACH" Multiplicity="1" />
           <End Role="QUYDINHGIAVE" Type="Self.QUYDINHGIAVE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -167,7 +178,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VECHUYENB__MaHoa__70DDC3D8">
+        <Association Name="FK__VECHUYENB__MaHoa__300424B4">
           <End Role="HOADON" Type="Self.HOADON" Multiplicity="0..1" />
           <End Role="VECHUYENBAY" Type="Self.VECHUYENBAY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -179,7 +190,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VECHUYENB__MaLoa__6FE99F9F">
+        <Association Name="FK__VECHUYENB__MaLoa__2F10007B">
           <End Role="LOAIHANHKHACH" Type="Self.LOAIHANHKHACH" Multiplicity="0..1" />
           <End Role="VECHUYENBAY" Type="Self.VECHUYENBAY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -191,10 +202,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_daily_hoadon">
+          <End Role="DAILY" Type="Self.DAILY" Multiplicity="0..1" />
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY">
+              <PropertyRef Name="MaDaiLy" />
+            </Principal>
+            <Dependent Role="HOADON">
+              <PropertyRef Name="MaDaiLy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_daily_nguoidung">
+          <End Role="DAILY" Type="Self.DAILY" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY">
+              <PropertyRef Name="MaDaiLy" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="MaDaiLy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="AUTO_IDHD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar" />
         <Function Name="AUTO_IDVCB" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar" />
         <EntityContainer Name="AIRTICKETModelStoreContainer">
           <EntitySet Name="CHUCNANG" EntityType="Self.CHUCNANG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DAILY" EntityType="Self.DAILY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HANGHANGKHONG" EntityType="Self.HANGHANGKHONG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOAIHANHKHACH" EntityType="Self.LOAIHANHKHACH" Schema="dbo" store:Type="Tables" />
@@ -205,33 +241,41 @@
           <EntitySet Name="SANBAY" EntityType="Self.SANBAY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="THAMSO" EntityType="Self.THAMSO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VECHUYENBAY" EntityType="Self.VECHUYENBAY" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__NGUOIDUNG__MaNho__08B54D69" Association="Self.FK__NGUOIDUNG__MaNho__08B54D69">
+          <AssociationSet Name="FK__NGUOIDUNG__MaNho__3E52440B" Association="Self.FK__NGUOIDUNG__MaNho__3E52440B">
             <End Role="NHOMNGUOIDUNG" EntitySet="NHOMNGUOIDUNG" />
             <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHANQUYEN__MaChu__0E6E26BF" Association="Self.FK__PHANQUYEN__MaChu__0E6E26BF">
+          <AssociationSet Name="FK__PHANQUYEN__MaChu__440B1D61" Association="Self.FK__PHANQUYEN__MaChu__440B1D61">
             <End Role="CHUCNANG" EntitySet="CHUCNANG" />
             <End Role="PHANQUYEN" EntitySet="PHANQUYEN" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHANQUYEN__MaNho__0D7A0286" Association="Self.FK__PHANQUYEN__MaNho__0D7A0286">
+          <AssociationSet Name="FK__PHANQUYEN__MaNho__4316F928" Association="Self.FK__PHANQUYEN__MaNho__4316F928">
             <End Role="NHOMNGUOIDUNG" EntitySet="NHOMNGUOIDUNG" />
             <End Role="PHANQUYEN" EntitySet="PHANQUYEN" />
           </AssociationSet>
-          <AssociationSet Name="FK__QUYDINHGI__MaHan__4316F928" Association="Self.FK__QUYDINHGI__MaHan__4316F928">
+          <AssociationSet Name="FK__QUYDINHGI__MaHan__38996AB5" Association="Self.FK__QUYDINHGI__MaHan__38996AB5">
             <End Role="HANGHANGKHONG" EntitySet="HANGHANGKHONG" />
             <End Role="QUYDINHGIAVE" EntitySet="QUYDINHGIAVE" />
           </AssociationSet>
-          <AssociationSet Name="FK__QUYDINHGI__MaLoa__440B1D61" Association="Self.FK__QUYDINHGI__MaLoa__440B1D61">
+          <AssociationSet Name="FK__QUYDINHGI__MaLoa__398D8EEE" Association="Self.FK__QUYDINHGI__MaLoa__398D8EEE">
             <End Role="LOAIHANHKHACH" EntitySet="LOAIHANHKHACH" />
             <End Role="QUYDINHGIAVE" EntitySet="QUYDINHGIAVE" />
           </AssociationSet>
-          <AssociationSet Name="FK__VECHUYENB__MaHoa__70DDC3D8" Association="Self.FK__VECHUYENB__MaHoa__70DDC3D8">
+          <AssociationSet Name="FK__VECHUYENB__MaHoa__300424B4" Association="Self.FK__VECHUYENB__MaHoa__300424B4">
             <End Role="HOADON" EntitySet="HOADON" />
             <End Role="VECHUYENBAY" EntitySet="VECHUYENBAY" />
           </AssociationSet>
-          <AssociationSet Name="FK__VECHUYENB__MaLoa__6FE99F9F" Association="Self.FK__VECHUYENB__MaLoa__6FE99F9F">
+          <AssociationSet Name="FK__VECHUYENB__MaLoa__2F10007B" Association="Self.FK__VECHUYENB__MaLoa__2F10007B">
             <End Role="LOAIHANHKHACH" EntitySet="LOAIHANHKHACH" />
             <End Role="VECHUYENBAY" EntitySet="VECHUYENBAY" />
+          </AssociationSet>
+          <AssociationSet Name="fk_daily_hoadon" Association="Self.fk_daily_hoadon">
+            <End Role="DAILY" EntitySet="DAILY" />
+            <End Role="HOADON" EntitySet="HOADON" />
+          </AssociationSet>
+          <AssociationSet Name="fk_daily_nguoidung" Association="Self.fk_daily_nguoidung">
+            <End Role="DAILY" EntitySet="DAILY" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -259,6 +303,9 @@
           <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="VECHUYENBAYs" Relationship="Self.FK__VECHUYENB__MaHoa__70DDC3D8" FromRole="HOADON" ToRole="VECHUYENBAY" />
+          <Property Name="MaDaiLy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SoVe" Type="Int32" />
+          <NavigationProperty Name="DAILY" Relationship="AIRTICKETModel.fk_daily_hoadon" FromRole="HOADON" ToRole="DAILY" />
         </EntityType>
         <EntityType Name="LOAIHANHKHACH">
           <Key>
@@ -399,6 +446,15 @@
             <End Role="CHUCNANG" EntitySet="CHUCNANGs" />
             <End Role="NHOMNGUOIDUNG" EntitySet="NHOMNGUOIDUNGs" />
           </AssociationSet>
+          <EntitySet Name="DAILies" EntityType="AIRTICKETModel.DAILY" />
+          <AssociationSet Name="fk_daily_hoadon" Association="AIRTICKETModel.fk_daily_hoadon">
+            <End Role="DAILY" EntitySet="DAILies" />
+            <End Role="HOADON" EntitySet="HOADONs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_daily_nguoidung" Association="AIRTICKETModel.fk_daily_nguoidung">
+            <End Role="DAILY" EntitySet="DAILies" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="CHUCNANG">
           <Key>
@@ -418,6 +474,8 @@
           <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MaNhom" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="NHOMNGUOIDUNG" Relationship="AIRTICKETModel.FK__NGUOIDUNG__MaNho__08B54D69" FromRole="NGUOIDUNG" ToRole="NHOMNGUOIDUNG" />
+          <Property Name="MaDaiLy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DAILY" Relationship="AIRTICKETModel.fk_daily_nguoidung" FromRole="NGUOIDUNG" ToRole="DAILY" />
         </EntityType>
         <EntityType Name="NHOMNGUOIDUNG">
           <Key>
@@ -444,6 +502,40 @@
           <End Type="AIRTICKETModel.CHUCNANG" Role="CHUCNANG" Multiplicity="*" />
           <End Type="AIRTICKETModel.NHOMNGUOIDUNG" Role="NHOMNGUOIDUNG" Multiplicity="*" />
         </Association>
+        <EntityType Name="DAILY">
+          <Key>
+            <PropertyRef Name="MaDaiLy" />
+          </Key>
+          <Property Name="MaDaiLy" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TenDaiLy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DiaChi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="HOADONs" Relationship="AIRTICKETModel.fk_daily_hoadon" FromRole="DAILY" ToRole="HOADON" />
+          <NavigationProperty Name="NGUOIDUNGs" Relationship="AIRTICKETModel.fk_daily_nguoidung" FromRole="DAILY" ToRole="NGUOIDUNG" />
+        </EntityType>
+        <Association Name="fk_daily_hoadon">
+          <End Type="AIRTICKETModel.DAILY" Role="DAILY" Multiplicity="0..1" />
+          <End Type="AIRTICKETModel.HOADON" Role="HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY">
+              <PropertyRef Name="MaDaiLy" />
+            </Principal>
+            <Dependent Role="HOADON">
+              <PropertyRef Name="MaDaiLy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_daily_nguoidung">
+          <End Type="AIRTICKETModel.DAILY" Role="DAILY" Multiplicity="0..1" />
+          <End Type="AIRTICKETModel.NGUOIDUNG" Role="NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY">
+              <PropertyRef Name="MaDaiLy" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="MaDaiLy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -461,6 +553,8 @@
           <EntitySetMapping Name="HOADONs">
             <EntityTypeMapping TypeName="AIRTICKETModel.HOADON">
               <MappingFragment StoreEntitySet="HOADON">
+                <ScalarProperty Name="SoVe" ColumnName="SoVe" />
+                <ScalarProperty Name="MaDaiLy" ColumnName="MaDaiLy" />
                 <ScalarProperty Name="MaHoaDon" ColumnName="MaHoaDon" />
                 <ScalarProperty Name="ThoiGianTao" ColumnName="ThoiGianTao" />
                 <ScalarProperty Name="TongTien" ColumnName="TongTien" />
@@ -539,6 +633,7 @@
           <EntitySetMapping Name="NGUOIDUNGs">
             <EntityTypeMapping TypeName="AIRTICKETModel.NGUOIDUNG">
               <MappingFragment StoreEntitySet="NGUOIDUNG">
+                <ScalarProperty Name="MaDaiLy" ColumnName="MaDaiLy" />
                 <ScalarProperty Name="MaNhom" ColumnName="MaNhom" />
                 <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
                 <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
@@ -561,6 +656,15 @@
               <ScalarProperty Name="MaChucNang" ColumnName="MaChucNang" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="DAILies">
+            <EntityTypeMapping TypeName="AIRTICKETModel.DAILY">
+              <MappingFragment StoreEntitySet="DAILY">
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="TenDaiLy" ColumnName="TenDaiLy" />
+                <ScalarProperty Name="MaDaiLy" ColumnName="MaDaiLy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

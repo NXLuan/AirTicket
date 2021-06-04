@@ -35,5 +35,6 @@ namespace AirTicket.Model
         public virtual DbSet<CHUCNANG> CHUCNANGs { get; set; }
         public virtual DbSet<NGUOIDUNG> NGUOIDUNGs { get; set; }
         public virtual DbSet<NHOMNGUOIDUNG> NHOMNGUOIDUNGs { get; set; }
+        public virtual DbSet<DAILY> DAILies { get; set; }
     }
 }
