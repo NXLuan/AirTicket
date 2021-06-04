@@ -12,27 +12,22 @@ namespace AirTicket.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class HOADON
+    public partial class DAILY
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public HOADON()
+        public DAILY()
         {
-            this.VECHUYENBAYs = new HashSet<VECHUYENBAY>();
+            this.HOADONs = new HashSet<HOADON>();
+            this.NGUOIDUNGs = new HashSet<NGUOIDUNG>();
         }
     
-        public string MaHoaDon { get; set; }
-        public Nullable<System.DateTime> ThoiGianTao { get; set; }
-        public Nullable<decimal> TongTien { get; set; }
-        public string HoTen { get; set; }
-        public string GioiTinh { get; set; }
-        public string SDT { get; set; }
-        public string Email { get; set; }
-        public string GhiChu { get; set; }
         public string MaDaiLy { get; set; }
-        public Nullable<int> SoVe { get; set; }
+        public string TenDaiLy { get; set; }
+        public string DiaChi { get; set; }
     
-        public virtual DAILY DAILY { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VECHUYENBAY> VECHUYENBAYs { get; set; }
+        public virtual ICollection<HOADON> HOADONs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NGUOIDUNG> NGUOIDUNGs { get; set; }
     }
 }

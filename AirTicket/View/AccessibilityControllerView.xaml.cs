@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,19 +16,13 @@ using System.Windows.Shapes;
 namespace AirTicket.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AccessibilityControllerView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AccessibilityControllerView : UserControl
     {
-        public MainWindow()
+        public AccessibilityControllerView()
         {
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.ShowDialog();
         }
     }
 }
