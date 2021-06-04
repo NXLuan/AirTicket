@@ -21,5 +21,6 @@ namespace AirTicket.Model
     
         public virtual DAILY DAILY { get; set; }
         public virtual NHOMNGUOIDUNG NHOMNGUOIDUNG { get; set; }
+        
     }
 }

@@ -66,6 +66,11 @@ namespace AirTicket.ViewModel
                               CurrentScreen = new TicketSales();
                               break;
                           }
+                      case "InforTicket":
+                          {
+                              CurrentScreen = new InforTicket();
+                              break;
+                          }
                       case "AccessibilityManagement":
                           {
                               CurrentScreen = new AccessibilityControllerView();

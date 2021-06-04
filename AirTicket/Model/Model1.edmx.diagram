@@ -25,6 +25,7 @@
         <AssociationConnector Association="AIRTICKETModel.FK__VECHUYENB__MaLoa__2C3393D0" />
         <AssociationConnector Association="AIRTICKETModel.FK__NGUOIDUNG__MaNho__22AA2996" />
         <AssociationConnector Association="AIRTICKETModel.PHANQUYEN" />
+        
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
