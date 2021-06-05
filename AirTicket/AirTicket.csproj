@@ -93,6 +93,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AIRTICKETDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIRTICKETDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Converter\MoneyVNConvert.cs" />
     <Compile Include="Model\AirlineSelected.cs" />
     <Compile Include="Model\CHUCNANG.cs">
@@ -139,6 +144,15 @@
     <Compile Include="Model\SANBAY.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_helpdiagrams_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sysdiagram.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\VECHUYENBAY.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -149,13 +163,18 @@
     <Compile Include="ValidRule\FutureDateValidationRule.cs" />
     <Compile Include="ValidRule\NotEmptyValidationRule.cs" />
     <Compile Include="ValidRule\PhoneNumberValidationRule.cs" />
+    <Compile Include="ViewModel\ACViewModel.cs" />
     <Compile Include="ViewModel\FlightViewModel.cs" />
     <Compile Include="ViewModel\InfoRegulation.cs" />
     <Compile Include="ViewModel\InfoTicket.cs" />
     <Compile Include="ViewModel\InfoPaViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\PassengerViewModel.cs" />
     <Compile Include="ViewModel\Regulation.cs" />
     <Compile Include="ViewModel\VeChuyenBay.cs" />
+    <Compile Include="View\AccessibilityControllerView.xaml.cs">
+      <DependentUpon>AccessibilityControllerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\InforPassenger.xaml.cs">
       <DependentUpon>InforPassenger.xaml</DependentUpon>
     </Compile>
@@ -165,21 +184,32 @@
     <Compile Include="View\InforTicket.xaml.cs">
       <DependentUpon>InforTicket.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TicketSales.xaml.cs">
       <DependentUpon>TicketSales.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TicketSalesViewModel.cs" />
+    <Page Include="View\AccessibilityControllerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\InforPassenger.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\InforRegulation.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="View\LoginWindow.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\InforTicket.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+	<Page Include="View\InforRegulation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -230,6 +260,17 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="AIRTICKETDataSet.xsc">
+      <DependentUpon>AIRTICKETDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="AIRTICKETDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>AIRTICKETDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="AIRTICKETDataSet.xss">
+      <DependentUpon>AIRTICKETDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Model\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </None>
@@ -257,6 +298,9 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\home.png" />
+    <Resource Include="Resources\login.ico" />
+    <Resource Include="Resources\logo2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />

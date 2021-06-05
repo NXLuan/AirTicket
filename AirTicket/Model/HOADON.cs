@@ -31,8 +31,8 @@ namespace AirTicket.Model
         public string MaDaiLy { get; set; }
         public Nullable<int> SoVe { get; set; }
     
+        public virtual DAILY DAILY { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VECHUYENBAY> VECHUYENBAYs { get; set; }
-        public virtual DAILY DAILY { get; set; }
     }
 }

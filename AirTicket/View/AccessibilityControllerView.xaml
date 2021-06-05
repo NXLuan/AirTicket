@@ -1,0 +1,246 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:rule="clr-namespace:AirTicket.ValidRule"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:AirTicket.View"
+             xmlns:ViewModel="clr-namespace:AirTicket.ViewModel"
+             x:Class="AirTicket.View.AccessibilityControllerView"
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="1000"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="{DynamicResource MaterialDesignFont}"
+             DataContext="{StaticResource ACVM}"
+             x:Name="PhanQuyen">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedWinDowCommand}"
+                                   CommandParameter="{Binding ElementName=PhanQuyen}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Background="{DynamicResource BackgroundColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Text="BẢNG PHÂN QUYỀN"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontSize="50"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource TitleDarkBrush}" />
+
+       
+        <Grid Grid.Row="1"
+              Margin="10">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+
+
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       x:Name="Admin"
+                       Text="ADMIN"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="32"
+                       FontWeight="Bold" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="2"
+                       x:Name="QL"
+                       Text="Quản lý"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="32"
+                       FontWeight="Bold" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="3"
+                       x:Name="NV"
+                       Text="Nhân viên"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="32"
+                       FontWeight="Bold" />
+            
+            <TextBlock Grid.Column="0"
+                       Grid.Row="1"
+                       x:Name="BV"
+                       Text="Bán vé"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="32"
+                       FontWeight="Bold" />
+
+            <TextBlock Grid.Column="0"
+                       Grid.Row="2"
+                       x:Name="QLV"
+                       Text="Quản lý vé"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="32"
+                       FontWeight="Bold" />
+
+            <TextBlock Grid.Column="0"
+                       Grid.Row="3"
+                       Text="Thống kê"
+                       x:Name="TK"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="32"
+                       FontWeight="Bold" />
+
+            <TextBlock Grid.Column="0"
+                       Grid.Row="4"
+                       Text="Quy định"
+                       x:Name="QD"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="32"
+                       FontWeight="Bold" />
+
+
+            <!--#region CheckBoxes -->
+            <CheckBox Grid.Row="1"
+                      Grid.Column="1"
+                      x:Name="AD_BV"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[AD_BV]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=AD_BV}" />
+
+            <CheckBox Grid.Row="1"
+                      Grid.Column="2"
+                      x:Name="QL_BV"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[QL_BV]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=QL_BV}" />
+
+            <CheckBox Grid.Row="1"
+                      Grid.Column="3"
+                      x:Name="NV_BV"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[NV_BV]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=NV_BV}" />
+
+            <CheckBox Grid.Row="2"
+                      Grid.Column="1"
+                      x:Name="AD_QLV"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[AD_QLV]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=AD_QLV}" />
+
+            <CheckBox Grid.Row="2"
+                      Grid.Column="2"
+                      x:Name="QL_QLV"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[QL_QLV]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=QL_QLV}" />
+
+            <CheckBox Grid.Row="2"
+                      Grid.Column="3"
+                      x:Name="NV_QLV"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[NV_QLV]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=NV_QLV}" />
+
+            <CheckBox Grid.Row="3"
+                      Grid.Column="1"
+                      x:Name="AD_TK"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[AD_TK]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=AD_TK}" />
+            
+            <CheckBox Grid.Row="3"
+                      Grid.Column="2"
+                      x:Name="QL_TK"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[QL_TK]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=QL_TK}" />
+
+            <CheckBox Grid.Row="3"
+                      Grid.Column="3"
+                      x:Name="NV_TK"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[NV_TK]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=NV_TK}" />
+
+            <CheckBox Grid.Row="4"
+                      Grid.Column="1"
+                      x:Name="AD_QD"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[AD_QD]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=AD_QD}" />
+
+            <CheckBox Grid.Row="4"
+                      Grid.Column="2"
+                      x:Name="QL_QD"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[QL_QD]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=QL_QD}" />
+
+            <CheckBox Grid.Row="4"
+                      Grid.Column="3"
+                      x:Name="NV_QD"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[NV_QD]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=NV_QD}" />
+
+
+        </Grid>
+        <TextBlock Grid.Row="2" 
+                   Text="Lưu ý: Người dùng cần phải khởi động lại ứng dụng để cập nhật quyền!!"
+                   FontSize="26"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontWeight="Bold"
+                   Foreground="Red"/>
+    </Grid>
+</UserControl>

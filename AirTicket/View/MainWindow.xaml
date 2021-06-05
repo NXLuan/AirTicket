@@ -18,7 +18,14 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Name="mainWindow">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedWinDowCommand}"
+                                   CommandParameter="{Binding ElementName=mainWindow}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="228"></ColumnDefinition>
@@ -32,15 +39,23 @@
                        FontWeight="SemiBold" />
             <Rectangle Height="2"
                        Fill="#2B323B"></Rectangle>
-            <ListBox ItemsSource="{Binding MenuAccount}"
+            <ListBox Name="AccountMenu"
+                     ItemsSource="{Binding MenuAccount}"
                      Foreground="Silver"
-                     Cursor="Hand">
+                     Cursor="Hand"
+                     SelectedIndex="{Binding SelectedIndexMenuAccount, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectedAccountCommand}"
+                                               CommandParameter="{Binding ElementName=mainWindow}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <DockPanel>
+                                    <DockPanel> 
                                         <!--Menu Icon-->
                                         <materialDesign:PackIcon Kind="{Binding Icon}"
                                                                  Height="26"

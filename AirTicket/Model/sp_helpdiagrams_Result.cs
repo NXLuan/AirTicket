@@ -10,16 +10,13 @@
 namespace AirTicket.Model
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class NGUOIDUNG
+    public partial class sp_helpdiagrams_Result
     {
-        public string TenDangNhap { get; set; }
-        public string MatKhau { get; set; }
-        public string MaNhom { get; set; }
-        public string MaDaiLy { get; set; }
-    
-        public virtual DAILY DAILY { get; set; }
-        public virtual NHOMNGUOIDUNG NHOMNGUOIDUNG { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

@@ -17,8 +17,8 @@ namespace AirTicket.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LOAIHANHKHACH()
         {
-            this.QUYDINHGIAVEs = new HashSet<QUYDINHGIAVE>();
             this.VECHUYENBAYs = new HashSet<VECHUYENBAY>();
+            this.QUYDINHGIAVEs = new HashSet<QUYDINHGIAVE>();
         }
     
         public string MaLoai { get; set; }
@@ -30,8 +30,8 @@ namespace AirTicket.Model
         public Nullable<int> SoLuongMax { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QUYDINHGIAVE> QUYDINHGIAVEs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VECHUYENBAY> VECHUYENBAYs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QUYDINHGIAVE> QUYDINHGIAVEs { get; set; }
     }
 }

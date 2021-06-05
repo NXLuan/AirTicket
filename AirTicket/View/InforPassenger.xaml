@@ -46,7 +46,7 @@
                     <Separator Background="{DynamicResource BackgroundColor}" />
                     <ListView ItemsSource="{Binding ListDetailInfo}"
                               Height="300"
-                              Name="ListPassenger">
+                              Name="ListPassenger">   
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn DisplayMemberBinding="{Binding num}"
