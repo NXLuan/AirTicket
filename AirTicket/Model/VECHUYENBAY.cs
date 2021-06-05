@@ -20,7 +20,6 @@ namespace AirTicket.Model
         public string HoTen { get; set; }
         public string GioTinh { get; set; }
         public Nullable<System.DateTime> NgaySinh { get; set; }
-        public string TrangThai { get; set; }
         public string MaHoaDon { get; set; }
     
         public virtual HOADON HOADON { get; set; }

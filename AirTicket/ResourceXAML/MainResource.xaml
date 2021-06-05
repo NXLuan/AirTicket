@@ -4,5 +4,10 @@
     <viewmodel:MainViewModel x:Key="MainVM"></viewmodel:MainViewModel>
     <viewmodel:TicketSalesViewModel x:Key="TicketSalesVM"></viewmodel:TicketSalesViewModel>
     <viewmodel:InfoPaViewModel x:Key="InfoPaVM"></viewmodel:InfoPaViewModel>
-    <viewmodel:StatisticsViewModel x:Key="StatisticsVM"></viewmodel:StatisticsViewModel>
+    <viewmodel:StatisticsViewModel x:Key="StatisticsVM">
+        </viewmodel:StatisticsViewModel>
+        <viewmodel:LoginViewModel x:Key="LoginVM"></viewmodel:LoginViewModel>
+    <viewmodel:ACViewModel x:Key="ACVM"></viewmodel:ACViewModel>
+    <viewmodel:InfoTicket x:Key="GridVM"></viewmodel:InfoTicket>
+        <viewmodel:InfoRegulation x:Key="GridRG"></viewmodel:InfoRegulation>
 </ResourceDictionary>

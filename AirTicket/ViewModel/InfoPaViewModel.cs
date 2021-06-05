@@ -46,6 +46,18 @@ namespace AirTicket.ViewModel
             get => _totalPriceTicket;
             set => SetProperty(ref _totalPriceTicket, value);
         }
+        private decimal _totalNetprofitTicket;
+        public decimal TotalNetprofitTicket
+        {
+            get => _totalNetprofitTicket;
+            set => SetProperty(ref _totalNetprofitTicket, value);
+        }
+        private decimal _totalcancellationcostTicket;
+        public decimal TotalCancellationCostTicket
+        {
+            get => _totalcancellationcostTicket;
+            set => SetProperty(ref _totalcancellationcostTicket, value);
+        }
 
         public InfoPaViewModel()
         {
@@ -61,6 +73,8 @@ namespace AirTicket.ViewModel
                 ListDetailInfo.Clear();
                 ListPriceTicket.Clear();
                 TotalPriceTicket = 0;
+                TotalNetprofitTicket = 0;
+                TotalCancellationCostTicket = 0;
 
                 foreach (PassengerViewModel pvm in ticketSaleVM.ListInfoPassengerVM)
                 {
@@ -70,7 +84,12 @@ namespace AirTicket.ViewModel
                         QUYDINHGIAVE QuyDinhGiaVe = pvm.LHKModel.QUYDINHGIAVEs.Where(x => x.MaHang == FlightSelected.AirlineID).First();
 
                         pvm.PriceTicket = (decimal)(price * (decimal)QuyDinhGiaVe.TiLe - QuyDinhGiaVe.TienGiam + QuyDinhGiaVe.TienPhi);
+                        pvm.NetProfitTicket = (decimal)QuyDinhGiaVe.TienLaiVe;
+                        pvm.CancellationCostTicket = (decimal)QuyDinhGiaVe.TienHuyVe;
+                        
                         TotalPriceTicket += pvm.TotalPriceTicket;
+                        
+                        
                         ListPriceTicket.Add(pvm);
                     }
 
@@ -138,16 +157,18 @@ namespace AirTicket.ViewModel
             try
             {
                 HDModel.TongTien = TotalPriceTicket;
+                HDModel.LoiNhuan = TotalNetprofitTicket;
+                HDModel.ChiPhiHuy = TotalCancellationCostTicket;
+                HDModel.TrangThai = "Thành công";
                 HDModel.ThoiGianTao = DateTime.Now;
-                HDModel.MaHoaDon = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDHD()").Single();
-                DataProvider.Instance.DB.HOADONs.Add(HDModel);
-
+                HDModel.MaHoaDon = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDHD()").Single();        
                 var VeChuyenBay = DataProvider.Instance.DB.VECHUYENBAYs;
+                HDModel.SoVe = ListDetailInfo.Count;
+                DataProvider.Instance.DB.HOADONs.Add(HDModel);
                 foreach (DetailInfoPassenger detailInfo in ListDetailInfo)
                 {
                     VECHUYENBAY VCBModel = detailInfo.VCBModel;
                     VCBModel.HOADON = HDModel;
-                    VCBModel.TrangThai = "Thành công";
                     VCBModel.MaVe = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDVCB()").Single();
                     VeChuyenBay.Add(VCBModel);
                     DataProvider.Instance.DB.SaveChanges();

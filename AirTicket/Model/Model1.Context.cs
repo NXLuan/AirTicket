@@ -25,16 +25,15 @@ namespace AirTicket.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<CHUCNANG> CHUCNANGs { get; set; }
+        public virtual DbSet<DAILY> DAILies { get; set; }
         public virtual DbSet<HANGHANGKHONG> HANGHANGKHONGs { get; set; }
         public virtual DbSet<HOADON> HOADONs { get; set; }
         public virtual DbSet<LOAIHANHKHACH> LOAIHANHKHACHes { get; set; }
-        public virtual DbSet<QUYDINHGIAVE> QUYDINHGIAVEs { get; set; }
-        public virtual DbSet<SANBAY> SANBAYs { get; set; }
-        public virtual DbSet<THAMSO> THAMSOes { get; set; }
-        public virtual DbSet<VECHUYENBAY> VECHUYENBAYs { get; set; }
-        public virtual DbSet<CHUCNANG> CHUCNANGs { get; set; }
         public virtual DbSet<NGUOIDUNG> NGUOIDUNGs { get; set; }
         public virtual DbSet<NHOMNGUOIDUNG> NHOMNGUOIDUNGs { get; set; }
-        public virtual DbSet<DAILY> DAILies { get; set; }
+        public virtual DbSet<QUYDINHGIAVE> QUYDINHGIAVEs { get; set; }
+        public virtual DbSet<SANBAY> SANBAYs { get; set; }
+        public virtual DbSet<VECHUYENBAY> VECHUYENBAYs { get; set; }
     }
 }

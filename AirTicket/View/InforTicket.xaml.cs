@@ -1,8 +1,7 @@
-﻿using System;
+﻿using AirTicket.ViewModel;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,19 +17,13 @@ using System.Windows.Shapes;
 namespace AirTicket.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for InforTicket.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class InforTicket : UserControl
     {
-        public MainWindow()
+        public InforTicket()
         {
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.ShowDialog();
         }
     }
 }

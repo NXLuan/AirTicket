@@ -35,4 +35,6 @@
                      Color="#6F8294" />
     <SolidColorBrush x:Key="MoneyBrush"
                      Color="#FB7604" />
+    <SolidColorBrush x:Key="Error"
+                     Color="red" />
 </ResourceDictionary>
