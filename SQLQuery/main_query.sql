@@ -81,3 +81,14 @@ CREATE TABLE [PHANQUYEN] (
   [MaChucNang] varchar(10) foreign key references [CHUCNANG]([MaChucNang])
   constraint PK_NCN primary key ([MaNhom],[MaChucNang])
 );
+
+CREATE TABLE [DAILY] (
+  [MaDaiLy] varchar(10) primary key,
+  [TenDaiLy] varchar(50),
+  [DiaChi] varchar(50),
+);
+alter table NGUOIDUNG add MaDaiLy varchar(10)
+alter table NGUOIDUNG add constraint fk_daily_nguoidung foreign key (MaDaiLy) references DAILY(MaDaiLy)
+alter table HOADON add MaDaiLy varchar(10)
+alter table HOADON add constraint fk_daily_hoadon foreign key (MaDaiLy) references DAILY(MaDaiLy)
+alter table HOADON add SoVe int 

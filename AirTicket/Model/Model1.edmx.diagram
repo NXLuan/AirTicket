@@ -21,6 +21,9 @@
         <EntityTypeShape EntityType="AIRTICKETModel.NHOMNGUOIDUNG" Width="1.5" PointX="8.625" PointY="0.875" />
         <AssociationConnector Association="AIRTICKETModel.FK__NGUOIDUNG__MaNho__08B54D69" />
         <AssociationConnector Association="AIRTICKETModel.PHANQUYEN" />
+        <EntityTypeShape EntityType="AIRTICKETModel.DAILY" Width="1.5" PointX="1.5" PointY="0.5" />
+        <AssociationConnector Association="AIRTICKETModel.fk_daily_hoadon" />
+        <AssociationConnector Association="AIRTICKETModel.fk_daily_nguoidung" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

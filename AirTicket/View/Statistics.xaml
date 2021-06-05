@@ -1,0 +1,264 @@
+﻿<UserControl x:Class="AirTicket.View.Statistics"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AirTicket.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converter="clr-namespace:AirTicket.Converter"
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="1000"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="{DynamicResource MaterialDesignFont}"
+             DataContext="{StaticResource StatisticsVM}">
+    <UserControl.Resources>
+        <converter:MoneyVNConvert x:Key="moneyConverter" />
+    </UserControl.Resources>
+    <StackPanel>
+        <TextBlock Text="BÁO CÁO DOANH THU"
+                   Foreground="{DynamicResource TextNormalColor}"
+                   FontWeight="SemiBold"
+                   FontSize="15"
+                   Padding="20,15,0,15" />
+        <Separator Background="{DynamicResource BackgroundColor}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <DockPanel>
+                    <TextBlock Text="Loại báo cáo"
+                               FontWeight="Bold"
+                               Margin="15" />
+                    <ComboBox HorizontalAlignment="Right"
+                              Width="180"
+                              Margin="0 0 15 0"
+                              IsEditable="False"
+                              SelectedValuePath="Content"
+                              SelectedValue="{Binding StatisticsType}">
+                        <ComboBoxItem IsSelected="True">Ngày</ComboBoxItem>
+                        <ComboBoxItem>Tháng</ComboBoxItem>
+                        <ComboBoxItem>Năm</ComboBoxItem>
+
+                    </ComboBox>
+                </DockPanel>
+
+                <DockPanel Visibility="{Binding DateVisibility}">
+                    <TextBlock Text="Ngày bắt đầu"
+                               FontWeight="Bold"
+                               Margin="15" />
+                    <DatePicker HorizontalAlignment="Right"
+                                Width="180"
+                                Margin="0 0 15 0"
+                                Foreground="{Binding StartColor}"
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}">
+                    </DatePicker>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Left"
+                           Visibility="{Binding MonthAndYearVisibility}">
+                    <DockPanel Visibility="{Binding MonthVisibility}">
+                        <TextBlock Text="Tháng"
+                                   FontWeight="Bold"
+                                   Margin="15" />
+                        <ComboBox HorizontalContentAlignment="Center"
+                                  Width="60"
+                                  Margin="0 0 15 0"
+                                  ItemsSource="{Binding ListMonth}"
+                                  SelectedValue="{Binding SelectedMonth}" />
+                    </DockPanel>
+                    <TextBlock Text="Năm"
+                               FontWeight="Bold"
+                               Margin="15" />
+                    <ComboBox HorizontalContentAlignment="Center"
+                              Width="100"
+                              Margin="0 0 15 0"
+                              ItemsSource="{Binding ListYear}"
+                              SelectedValue="{Binding SelectedYear}" />
+                </DockPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <DockPanel>
+                    <TextBlock Text="Đại lý"
+                               FontWeight="Bold"
+                               Margin="15" />
+                    <ComboBox ItemsSource="{Binding ListDaiLy}"
+                              DisplayMemberPath="TenDaiLy"
+                              SelectedValuePath="MaDaiLy"
+                              SelectedValue="{Binding SelectedDaiLy}"
+                              HorizontalAlignment="Right"
+                              Width="180"
+                              Margin="0 0 15 0" />
+                </DockPanel>
+
+                <DockPanel Visibility="{Binding DateVisibility}">
+                    <TextBlock Text="Ngày kết thúc"
+                               FontWeight="Bold"
+                               Margin="15" />
+                    <DatePicker HorizontalAlignment="Right"
+                                Width="180"
+                                Margin="0 0 15 0"
+                                Foreground="{Binding EndColor}"
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+        <Separator Background="{DynamicResource BackgroundColor}" />
+        <DockPanel>
+            <Grid HorizontalAlignment="Left"
+                  Width="130"
+                  Margin="15,10,0,10">
+                <Button Command="{Binding SearchStatisticsCommand}"
+                        Content="Tìm kiếm"
+                        Padding="10 0 0 0"
+                        Background="#FF019CE1"></Button>
+                <materialDesign:PackIcon Kind="Magnify"
+                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                         VerticalAlignment="Center"
+                                         Width="30"
+                                         Height="20" />
+            </Grid>
+            <Grid HorizontalAlignment="Left"
+                  Width="130"
+                  Margin="15,10,0,10">
+                <Button Command="{Binding ExportExcelCommand}"
+                        Content="Xuất excel"
+                        Padding="20 0 0 0"
+                        Background="#26c249"></Button>
+                <materialDesign:PackIcon Kind="MicrosoftExcel"
+                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                         VerticalAlignment="Center"
+                                         Width="30"
+                                         Height="20" />
+            </Grid>
+            <Grid HorizontalAlignment="Left"
+                  Width="130"
+                  Margin="15,10,0,10"
+                  Visibility="{Binding BtnChartVisibility}">
+                <Button Command="{Binding BtnBarChartCommand}"
+                        Content="Xem biểu đồ"
+                        Padding="20 0 0 0"
+                        Background="#7565b8"></Button>
+                <materialDesign:PackIcon Kind="Poll"
+                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                         VerticalAlignment="Center"
+                                         Width="30"
+                                         Height="20" />
+            </Grid>
+        </DockPanel>
+      
+        <Separator Background="{DynamicResource BackgroundColor}" />
+        <Grid Visibility="{Binding DetailVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0">
+                <Border CornerRadius="45"
+                        Padding="10"
+                        Margin="10, 10, 0, 15"
+                        Background="#FF019CE1">
+                    <materialDesign:PackIcon Kind="CurrencyUsd"
+                                             Foreground="white"
+                                             Width="24"
+                                             Height="24" />
+                </Border>
+                <StackPanel Margin="10,10,0,10">
+                    <TextBlock Text="{Binding TongDoanhThu, Converter={StaticResource moneyConverter}}"
+                               FontSize="24"
+                               FontWeight="Bold" />
+                    <TextBlock Text="Doanh thu (VND)" />
+                </StackPanel>
+            </DockPanel>
+            <DockPanel Grid.Column="1">
+                <Border CornerRadius="45"
+                        Padding="10"
+                        Margin="10, 10, 0, 15"
+                        Background="#FF019CE1">
+                    <materialDesign:PackIcon Kind="Cash"
+                                             Foreground="white"
+                                             Width="24"
+                                             Height="24" />
+                </Border>
+                <StackPanel Margin="10,10,0,10">
+                    <TextBlock Text="{Binding TongLoiNhuan, Converter={StaticResource moneyConverter}}"
+                               FontSize="24"
+                               FontWeight="Bold" />
+                    <TextBlock Text="Lợi nhuận (VND)" />
+                </StackPanel>
+            </DockPanel>
+            <DockPanel Grid.Column="2">
+                <Border CornerRadius="45"
+                        Padding="10"
+                        Margin="10, 10, 0, 15"
+                        Background="#FF019CE1">
+                    <materialDesign:PackIcon Kind="NoteText"
+                                             Foreground="white"
+                                             Width="24"
+                                             Height="24" />
+                </Border>
+                <StackPanel Margin="10,10,0,10">
+                    <TextBlock Text="{Binding TongSoHoaDon }"
+                               FontSize="24"
+                               FontWeight="Bold" />
+                    <TextBlock Text="Số lượng hoá đơn" />
+                </StackPanel>
+            </DockPanel>
+            <DockPanel Grid.Column="3">
+                <Border CornerRadius="45"
+                        Padding="10"
+                        Margin="10, 10, 0, 15"
+                        Background="#FF019CE1">
+                    <materialDesign:PackIcon Kind="TicketConfirmationOutline"
+                                             Foreground="white"
+                                             Width="24"
+                                             Height="24" />
+                </Border>
+                <StackPanel Margin="10,10,0,10">
+                    <TextBlock Text="{Binding TongSoVe}"
+                               FontSize="24"
+                               FontWeight="Bold" />
+                    <TextBlock Text="Số lượng vé" />
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+        <Separator Background="{DynamicResource BackgroundColor}" />
+        <ListView ItemsSource="{Binding ListThongKe}"
+                      Height="450"
+                      HorizontalContentAlignment="Center">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding MaHoaDon}"
+                                        Header="Mã hoá đơn" />
+                        <GridViewColumn DisplayMemberBinding="{Binding ThoiGianTao, StringFormat={}{0:dd/MM/yyyy hh:mm:ss tt}}"
+                                        Header="Thời gian tạo" />
+                        <GridViewColumn DisplayMemberBinding="{Binding TongTien, Converter={StaticResource moneyConverter}}"
+                                        Header="Tổng tiền" />
+                        <GridViewColumn DisplayMemberBinding="{Binding SoVe}"
+                                        Header="Số vé" />
+                        <GridViewColumn DisplayMemberBinding="{Binding HoTen}"
+                                        Header="Họ tên" />
+                        <GridViewColumn DisplayMemberBinding="{Binding GioiTinh}"
+                                        Header="Giới tính" />
+                        <GridViewColumn DisplayMemberBinding="{Binding SDT}"
+                                        Header="Số điện thoại" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Email}"
+                                        Header="Email" />
+                        <GridViewColumn DisplayMemberBinding="{Binding GhiChu}"
+                                        Header="Ghi chú" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+    </StackPanel>
+</UserControl>
