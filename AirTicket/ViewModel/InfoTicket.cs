@@ -27,7 +27,7 @@ namespace AirTicket.ViewModel
                 if (p.Text != null && p.Text != "")
                 {
                     ShowTicket();
-                    var datasearch = Items1.Where(x => (x.HoVaTen.Contains(p.Text)) || (x.GiaTien.ToString().Contains(p.Text)) || (x.MaVeChuyenBay.Contains(p.Text)) || (x.MaHoaDon.Contains(p.Text)) || (x.GioiTinh.Contains(p.Text)) || (x.TinhTrang.Contains(p.Text)) || (x.NgaySinh.Contains(p.Text))).ToList();
+                    var datasearch = Items1.Where(x => (x.HoVaTen.Contains(p.Text)) || (x.GiaTien.ToString().Contains(p.Text)) || (x.MaVeChuyenBay.Contains(p.Text)) || (x.MaHoaDon.Contains(p.Text)) || (x.GioiTinh.Contains(p.Text)) || (x.NgaySinh.Contains(p.Text))).ToList();
                     Items1.Clear();
                     foreach (var data in datasearch)
                     {
@@ -38,7 +38,6 @@ namespace AirTicket.ViewModel
                             HoVaTen = data.HoVaTen,
                             GioiTinh = data.GioiTinh,
                             GiaTien = data.GiaTien,
-                            TinhTrang = data.TinhTrang,
                             NgaySinh = data.NgaySinh
                         });
                     }
@@ -54,7 +53,7 @@ namespace AirTicket.ViewModel
                 if (p.Text != null && p.Text != "")
                 {
                     ShowBill();
-                    var datasearch = Items2.Where(x => (x.HoTen.Contains(p.Text)) || (x.TongTien.ToString().Contains(p.Text)) || ((x.GhiChu != null) && (x.GhiChu.Contains(p.Text))) || (x.MaHoaDon.Contains(p.Text)) || (x.GioiTinh.Contains(p.Text)) || (x.Email.Contains(p.Text)) || ((x.ThoiGianTao.ToString()).Contains(p.Text)) || (x.SDT.Contains(p.Text))).ToList();
+                    var datasearch = Items2.Where(x => (x.HoTen.Contains(p.Text)) || (x.TongTien.ToString().Contains(p.Text)) || ((x.GhiChu != null) && (x.GhiChu.Contains(p.Text))) || (x.MaHoaDon.Contains(p.Text)) || (x.GioiTinh.Contains(p.Text)) || (x.Email.Contains(p.Text)) || ((x.ThoiGianTao.ToString()).Contains(p.Text)) || (x.SDT.Contains(p.Text)) || (x.TrangThai.Contains(p.Text))).ToList();
                     Items2.Clear();
                     foreach (var bill in datasearch)
                     {
@@ -68,6 +67,7 @@ namespace AirTicket.ViewModel
                             TongTien = bill.TongTien,
                             SDT = bill.SDT,
                             Email = bill.Email,
+                            TrangThai=bill.TrangThai,
                             GhiChu = bill.GhiChu
                         });
                     }
@@ -105,20 +105,27 @@ namespace AirTicket.ViewModel
                      SearchTicket = tmp.MaHoaDon;
                  }
              });
-            SaveTicketCommand = new RelayCommand<DataGrid>((p) => { return true; }, (p) =>
+            SaveBillCommand = new RelayCommand<DataGrid>((p) => { return true; }, (p) =>
             {
-                var ticketList = DataProvider.Instance.DB.VECHUYENBAYs.ToList();
+                var billList = DataProvider.Instance.DB.HOADONs.ToList();
                 try
                 {
-                    foreach(var i_ticket in Items1)
+                    foreach(var i_bill in Items2)
                     {
-                        foreach(var j_ticket in ticketList)
-                            if(i_ticket.MaVeChuyenBay==j_ticket.MaVe&&i_ticket.TinhTrang=="Đã hủy"&&j_ticket.TrangThai=="Thành công")
+                        foreach(var j_bill in billList)
+                            if(i_bill.MaHoaDon==j_bill.MaHoaDon&&i_bill.TrangThai=="Đã hủy"&&j_bill.TrangThai=="Thành công")
                             {
-                                j_ticket.TrangThai = i_ticket.TinhTrang;
+                                j_bill.TrangThai = i_bill.TrangThai;
+                                j_bill.TongTien -= j_bill.ChiPhiHuy;
+                            }
+                            else if(i_bill.MaHoaDon == j_bill.MaHoaDon && j_bill.TrangThai == "Đã hủy" && i_bill.TrangThai == "Thành công")
+                            {
+                                MessageBox.Show("Không thể thay đổi trạng thái hóa đơn từ Đã hủy sang Thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
                             }
                     }
                     DataProvider.Instance.DB.SaveChanges();
+                    ShowBill();
                     MessageBox.Show("thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch
@@ -140,7 +147,6 @@ namespace AirTicket.ViewModel
                     HoVaTen = ticket.HoTen,
                     GioiTinh = ticket.GioTinh,
                     GiaTien = Convert.ToInt32(ticket.GiaVe),
-                    TinhTrang = ticket.TrangThai,
                     NgaySinh = ticket.NgaySinh.Value.ToString("dd/MM/yyyy")
                 }) ;
             }
@@ -161,11 +167,12 @@ namespace AirTicket.ViewModel
                     TongTien= Convert.ToInt32(bill.TongTien),
                     SDT=bill.SDT,
                     Email=bill.Email,
-                    GhiChu=bill.GhiChu
+                    GhiChu=bill.GhiChu,
+                    TrangThai=bill.TrangThai
                 });
             }
         }
-        public ICommand SaveTicketCommand { get; set; }
+        public ICommand SaveBillCommand { get; set; }
         public ICommand LoadInfoTicketCommand { get; set; }
         public ICommand SearchInfoTicketCommand { get; set; }
         public ICommand SearchInfoBillsCommand { get; set; }

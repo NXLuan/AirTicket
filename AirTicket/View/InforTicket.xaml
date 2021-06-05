@@ -52,36 +52,6 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Grid 
-                        HorizontalAlignment="Right"
-                        Width="200"
-                        Margin="20,10,0,0">
-                        <Button 
-                                ToolTip="Lưu thay đổi"
-                                Content="Lưu thay đổi">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding SaveTicketCommand}"
-                                                       CommandParameter="{Binding ElementName=DGInfoTicket}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <Button.Style>
-                                <Style 
-                                        TargetType="Button"
-                                        BasedOn="{StaticResource MaterialDesignFlatLightBgButton}">
-                                    <Setter 
-                                        Property="IsDefault"
-                                        Value="False" />
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <materialDesign:PackIcon 
-                                Kind="ContentSaveEdit"
-                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                VerticalAlignment="Center"
-                                Width="50"
-                                Height="20" />
-                    </Grid>
                 </DockPanel>
                 <Grid>
                     <DataGrid
@@ -178,20 +148,7 @@
                                 </DataGridTextColumn.ElementStyle>
                             </materialDesign:DataGridTextColumn>
                             <!-- use custom combo box column to get better combos. Use ItemsSourceBinding as your binding template to be applied to each combo -->
-                            <materialDesign:DataGridComboBoxColumn
-                        Header="Tình Trạng" 
-                        IsEditable="True"
-                        Width="auto" 
-                        SelectedValueBinding="{Binding TinhTrang}"
-                        ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.TinhTrang}">
-                                <!--Setting the editing element style allows access to all of the combo box's properties
-                        <materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
-                            <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnEditingStyle}}" >
-                                <Setter Property="IsEditable" Value="True" />
-                            </Style>
-                        </materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
-                        -->
-                            </materialDesign:DataGridComboBoxColumn>
+                           
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -225,6 +182,36 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
+                    <Grid 
+                        HorizontalAlignment="Right"
+                        Width="200"
+                        Margin="20,10,0,0">
+                        <Button 
+                                ToolTip="Lưu thay đổi"
+                                Content="Lưu thay đổi">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding SaveBillCommand}"
+                                                       CommandParameter="{Binding ElementName=DGInfoBill}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Button.Style>
+                                <Style 
+                                        TargetType="Button"
+                                        BasedOn="{StaticResource MaterialDesignFlatLightBgButton}">
+                                    <Setter 
+                                        Property="IsDefault"
+                                        Value="False" />
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <materialDesign:PackIcon 
+                                Kind="ContentSaveEdit"
+                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                VerticalAlignment="Center"
+                                Width="50"
+                                Height="20" />
+                    </Grid>
                 </DockPanel>
                 <Grid>
                     <DataGrid
@@ -300,6 +287,20 @@
                                 Width="auto"
                                 ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
                                 EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
+                            <materialDesign:DataGridComboBoxColumn
+                        Header="Tình Trạng" 
+                        IsEditable="True"
+                        Width="auto" 
+                        SelectedValueBinding="{Binding TrangThai}"
+                        ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.TinhTrang}">
+                                <!--Setting the editing element style allows access to all of the combo box's properties
+                        <materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnEditingStyle}}" >
+                                <Setter Property="IsEditable" Value="True" />
+                            </Style>
+                        </materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
+                        -->
+                            </materialDesign:DataGridComboBoxColumn>
                             <DataGridTextColumn
                                 Binding="{Binding GhiChu}"
                                 IsReadOnly="True"

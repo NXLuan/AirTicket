@@ -84,6 +84,43 @@ namespace AirTicket.ViewModel
             get => _totalPriceTicket;
             set => SetProperty(ref _totalPriceTicket, value);
         }
+        private decimal _netProfitTicket;
+        public decimal NetProfitTicket
+        {
+            get => _netProfitTicket;
+            set
+            {
+                SetProperty(ref _netProfitTicket, value);
+                NetProfitTicket = NumberOfPassenger * _netProfitTicket;
+            }
+        }
+
+        private decimal _totalnetProfitTicket;
+        public decimal TotalNetProfitTicket
+        {
+            get => _totalnetProfitTicket;
+            set => SetProperty(ref _totalnetProfitTicket, value);
+        }
+
+
+        private decimal _cancellationcostTicket;
+        public decimal CancellationCostTicket
+        {
+            get => _cancellationcostTicket;
+            set
+            {
+                SetProperty(ref _cancellationcostTicket, value);
+                CancellationCostTicket = NumberOfPassenger * _cancellationcostTicket;
+            }
+        }
+
+        private decimal _totalcancellationcostTicket;
+        public decimal TotalCancellationCostTicket
+        {
+            get => _totalcancellationcostTicket;
+            set => SetProperty(ref _totalcancellationcostTicket, value);
+        }
+
 
         public bool IsEnableAdd
         {

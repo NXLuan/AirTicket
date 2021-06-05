@@ -43,6 +43,9 @@
           <Property Name="GhiChu" Type="nvarchar(max)" />
           <Property Name="MaDaiLy" Type="varchar" MaxLength="10" />
           <Property Name="SoVe" Type="int" />
+          <Property Name="LoiNhuan" Type="money" />
+          <Property Name="ChiPhiHuy" Type="money" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="LOAIHANHKHACH">
           <Key>
@@ -110,7 +113,6 @@
           <Property Name="HoTen" Type="nvarchar" MaxLength="50" />
           <Property Name="GioTinh" Type="nvarchar" MaxLength="10" />
           <Property Name="NgaySinh" Type="date" />
-          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
           <Property Name="MaHoaDon" Type="varchar" MaxLength="16" />
         </EntityType>
         <Association Name="FK__NGUOIDUNG__MaNho__3E52440B">
@@ -405,6 +407,9 @@
           <Property Name="SoVe" Type="Int32" />
           <NavigationProperty Name="DAILY" Relationship="AIRTICKETModel.fk_daily_hoadon" FromRole="HOADON" ToRole="DAILY" />
           <NavigationProperty Name="VECHUYENBAYs" Relationship="AIRTICKETModel.FK__VECHUYENB__MaHoa__2D27B809" FromRole="HOADON" ToRole="VECHUYENBAY" />
+          <Property Name="LoiNhuan" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ChiPhiHuy" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LOAIHANHKHACH">
           <Key>
@@ -457,7 +462,6 @@
           <Property Name="HoTen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="GioTinh" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="NgaySinh" Type="DateTime" Precision="0" />
-          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MaHoaDon" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="HOADON" Relationship="AIRTICKETModel.FK__VECHUYENB__MaHoa__2D27B809" FromRole="VECHUYENBAY" ToRole="HOADON" />
           <NavigationProperty Name="LOAIHANHKHACH" Relationship="AIRTICKETModel.FK__VECHUYENB__MaLoa__2C3393D0" FromRole="VECHUYENBAY" ToRole="LOAIHANHKHACH" />
@@ -601,6 +605,9 @@
           <EntitySetMapping Name="HOADONs">
             <EntityTypeMapping TypeName="AIRTICKETModel.HOADON">
               <MappingFragment StoreEntitySet="HOADON">
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="ChiPhiHuy" ColumnName="ChiPhiHuy" />
+                <ScalarProperty Name="LoiNhuan" ColumnName="LoiNhuan" />
                 <ScalarProperty Name="SoVe" ColumnName="SoVe" />
                 <ScalarProperty Name="MaDaiLy" ColumnName="MaDaiLy" />
                 <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
@@ -657,7 +664,6 @@
             <EntityTypeMapping TypeName="AIRTICKETModel.VECHUYENBAY">
               <MappingFragment StoreEntitySet="VECHUYENBAY">
                 <ScalarProperty Name="MaHoaDon" ColumnName="MaHoaDon" />
-                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
                 <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
                 <ScalarProperty Name="GioTinh" ColumnName="GioTinh" />
                 <ScalarProperty Name="HoTen" ColumnName="HoTen" />

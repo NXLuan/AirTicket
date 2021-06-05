@@ -30,6 +30,9 @@ namespace AirTicket.Model
         public string GhiChu { get; set; }
         public string MaDaiLy { get; set; }
         public Nullable<int> SoVe { get; set; }
+        public Nullable<decimal> LoiNhuan { get; set; }
+        public Nullable<decimal> ChiPhiHuy { get; set; }
+        public string TrangThai { get; set; }
     
         public virtual DAILY DAILY { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

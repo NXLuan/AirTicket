@@ -8,7 +8,6 @@
         private string _MaVeChuyenBay;
         private string _MaHoaDon;
         private int _GiaTien;
-        private string _TinhTrang;
         private string _NgaySinh;
 
         public bool IsSelected
@@ -42,12 +41,6 @@
         {
             get => _GiaTien;
             set => SetProperty(ref _GiaTien, value);
-        }
-
-        public string TinhTrang
-        {
-            get => _TinhTrang;
-            set => SetProperty(ref _TinhTrang, value);
         }
         public string NgaySinh
         {
