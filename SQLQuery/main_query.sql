@@ -25,8 +25,8 @@ CREATE TABLE [VECHUYENBAY] (
 );
 
 CREATE TABLE [THAMSO] (
-  [TenThamSo] nvarchar(200) primary key,
-  [GiaTri] float
+  [MaThamSo] varchar(10) primary key,
+  [TenThamSo] nvarchar(200),
 );
 
 CREATE TABLE [HANGHANGKHONG] (

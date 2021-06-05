@@ -139,7 +139,7 @@ namespace AirTicket.ViewModel
                     MaHoaDon = ticket.MaHoaDon,
                     HoVaTen = ticket.HoTen,
                     GioiTinh = ticket.GioTinh,
-                    GiaTien = decimal.Parse(ticket.GiaVe.ToString()),
+                    GiaTien = Convert.ToInt32(ticket.GiaVe),
                     TinhTrang = ticket.TrangThai,
                     NgaySinh = ticket.NgaySinh.Value.ToString("dd/MM/yyyy")
                 }) ;
@@ -158,49 +158,13 @@ namespace AirTicket.ViewModel
                     HoTen=bill.HoTen,
                     GioiTinh=bill.GioiTinh,
                     ThoiGianTao=bill.ThoiGianTao,
-                    TongTien=bill.TongTien,
+                    TongTien= Convert.ToInt32(bill.TongTien),
                     SDT=bill.SDT,
                     Email=bill.Email,
                     GhiChu=bill.GhiChu
                 });
             }
         }
-        /*
-        private static ObservableCollection<VeChuyenBay> CreateData()
-        {
-            var ticketList = DataProvider.Instance.DB.VECHUYENBAYs;
-            return new ObservableCollection<VeChuyenBay>
-            { 
-                new VeChuyenBay
-                {
-                    MaVeChuyenBay = "MVCB0524202101",
-                    GioiTinh = "Nam",
-                    HoVaTen = "Nguyễn Hữu Hiếu",
-                    GiaTien= 470000,
-                    MaHoaDon="HD0524202101"
-                },
-                new VeChuyenBay
-                {
-                    MaVeChuyenBay = "MVCB0524202102",
-                    GioiTinh = "Nữ",
-                    HoVaTen = "Nguyễn Xuân Luân",
-                    TinhTrang = "Đã hủy",
-                    GiaTien= 480000,
-                    MaHoaDon="HD0524202102"
-                },
-                new VeChuyenBay
-                {
-                    MaVeChuyenBay = "MVCB0524202103",
-                    GioiTinh = "Nam",
-                    HoVaTen = "Nguyễn Phúc Dương Long",
-                    GiaTien= 490000,
-                    MaHoaDon="HD0524202103"
-                }
-            };
-        }
-        
-        */
-
         public ICommand SaveTicketCommand { get; set; }
         public ICommand LoadInfoTicketCommand { get; set; }
         public ICommand SearchInfoTicketCommand { get; set; }

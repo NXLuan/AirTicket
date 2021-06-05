@@ -5,4 +5,5 @@
     <viewmodel:TicketSalesViewModel x:Key="TicketSalesVM"></viewmodel:TicketSalesViewModel>
     <viewmodel:InfoPaViewModel x:Key="InfoPaVM"></viewmodel:InfoPaViewModel>
     <viewmodel:InfoTicket x:Key="GridVM"></viewmodel:InfoTicket>
+    <viewmodel:InfoRegulation x:Key="GridRG"></viewmodel:InfoRegulation>
 </ResourceDictionary>

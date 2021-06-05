@@ -7,7 +7,7 @@
         private string _HoVaTen;
         private string _MaVeChuyenBay;
         private string _MaHoaDon;
-        private decimal _GiaTien;
+        private int _GiaTien;
         private string _TinhTrang;
         private string _NgaySinh;
 
@@ -38,7 +38,7 @@
             set => SetProperty(ref _HoVaTen, value);
         }
 
-        public decimal GiaTien
+        public int GiaTien
         {
             get => _GiaTien;
             set => SetProperty(ref _GiaTien, value);

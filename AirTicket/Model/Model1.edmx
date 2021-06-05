@@ -90,6 +90,8 @@
           <Property Name="TiLe" Type="float" />
           <Property Name="TienGiam" Type="money" />
           <Property Name="TienPhi" Type="money" />
+          <Property Name="TienLaiVe" Type="money" />
+          <Property Name="TienHuyVe" Type="money" />
         </EntityType>
         <EntityType Name="SANBAY">
           <Key>
@@ -97,13 +99,6 @@
           </Key>
           <Property Name="MaSanBay" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="ThanhPho" Type="nvarchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="THAMSO">
-          <Key>
-            <PropertyRef Name="TenThamSo" />
-          </Key>
-          <Property Name="TenThamSo" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="GiaTri" Type="float" />
         </EntityType>
         <EntityType Name="VECHUYENBAY">
           <Key>
@@ -239,7 +234,6 @@
           <EntitySet Name="PHANQUYEN" EntityType="Self.PHANQUYEN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QUYDINHGIAVE" EntityType="Self.QUYDINHGIAVE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SANBAY" EntityType="Self.SANBAY" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="THAMSO" EntityType="Self.THAMSO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VECHUYENBAY" EntityType="Self.VECHUYENBAY" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__NGUOIDUNG__MaNho__3E52440B" Association="Self.FK__NGUOIDUNG__MaNho__3E52440B">
             <End Role="NHOMNGUOIDUNG" EntitySet="NHOMNGUOIDUNG" />
@@ -333,6 +327,8 @@
           <Property Name="TienPhi" Type="Decimal" Precision="19" Scale="4" />
           <NavigationProperty Name="HANGHANGKHONG" Relationship="Self.FK__QUYDINHGI__MaHan__4316F928" FromRole="QUYDINHGIAVE" ToRole="HANGHANGKHONG" />
           <NavigationProperty Name="LOAIHANHKHACH" Relationship="Self.FK__QUYDINHGI__MaLoa__440B1D61" FromRole="QUYDINHGIAVE" ToRole="LOAIHANHKHACH" />
+          <Property Name="TienLaiVe" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TienHuyVe" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="SANBAY">
           <Key>
@@ -340,13 +336,6 @@
           </Key>
           <Property Name="MaSanBay" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ThanhPho" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="THAMSO">
-          <Key>
-            <PropertyRef Name="TenThamSo" />
-          </Key>
-          <Property Name="TenThamSo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="GiaTri" Type="Double" />
         </EntityType>
         <EntityType Name="VECHUYENBAY">
           <Key>
@@ -417,7 +406,6 @@
           <EntitySet Name="LOAIHANHKHACHes" EntityType="Self.LOAIHANHKHACH" />
           <EntitySet Name="QUYDINHGIAVEs" EntityType="Self.QUYDINHGIAVE" />
           <EntitySet Name="SANBAYs" EntityType="Self.SANBAY" />
-          <EntitySet Name="THAMSOes" EntityType="Self.THAMSO" />
           <EntitySet Name="VECHUYENBAYs" EntityType="Self.VECHUYENBAY" />
           <AssociationSet Name="FK__QUYDINHGI__MaHan__4316F928" Association="Self.FK__QUYDINHGI__MaHan__4316F928">
             <End Role="HANGHANGKHONG" EntitySet="HANGHANGKHONGs" />
@@ -582,6 +570,8 @@
           <EntitySetMapping Name="QUYDINHGIAVEs">
             <EntityTypeMapping TypeName="AIRTICKETModel.QUYDINHGIAVE">
               <MappingFragment StoreEntitySet="QUYDINHGIAVE">
+                <ScalarProperty Name="TienHuyVe" ColumnName="TienHuyVe" />
+                <ScalarProperty Name="TienLaiVe" ColumnName="TienLaiVe" />
                 <ScalarProperty Name="MaHang" ColumnName="MaHang" />
                 <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
                 <ScalarProperty Name="TiLe" ColumnName="TiLe" />
@@ -595,14 +585,6 @@
               <MappingFragment StoreEntitySet="SANBAY">
                 <ScalarProperty Name="MaSanBay" ColumnName="MaSanBay" />
                 <ScalarProperty Name="ThanhPho" ColumnName="ThanhPho" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="THAMSOes">
-            <EntityTypeMapping TypeName="AIRTICKETModel.THAMSO">
-              <MappingFragment StoreEntitySet="THAMSO">
-                <ScalarProperty Name="TenThamSo" ColumnName="TenThamSo" />
-                <ScalarProperty Name="GiaTri" ColumnName="GiaTri" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

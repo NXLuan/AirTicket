@@ -48,6 +48,10 @@ namespace AirTicket.ViewModel
                   {
                       CurrentScreen = new InforTicket();
                   }
+                  else if (ChucNang.TenManHinhDuocLoad == "InfoRegulation")
+                  {
+                      CurrentScreen = new InforRegulation();
+                  }
                   else CurrentScreen = null;
               });
         }

@@ -139,9 +139,6 @@
     <Compile Include="Model\SANBAY.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\THAMSO.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\VECHUYENBAY.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -153,12 +150,17 @@
     <Compile Include="ValidRule\NotEmptyValidationRule.cs" />
     <Compile Include="ValidRule\PhoneNumberValidationRule.cs" />
     <Compile Include="ViewModel\FlightViewModel.cs" />
+    <Compile Include="ViewModel\InfoRegulation.cs" />
     <Compile Include="ViewModel\InfoTicket.cs" />
     <Compile Include="ViewModel\InfoPaViewModel.cs" />
     <Compile Include="ViewModel\PassengerViewModel.cs" />
+    <Compile Include="ViewModel\Regulation.cs" />
     <Compile Include="ViewModel\VeChuyenBay.cs" />
     <Compile Include="View\InforPassenger.xaml.cs">
       <DependentUpon>InforPassenger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InforRegulation.xaml.cs">
+      <DependentUpon>InforRegulation.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\InforTicket.xaml.cs">
       <DependentUpon>InforTicket.xaml</DependentUpon>
@@ -172,6 +174,10 @@
     <Page Include="View\InforPassenger.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InforRegulation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\InforTicket.xaml">
       <SubType>Designer</SubType>

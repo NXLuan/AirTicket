@@ -4,13 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3261dcb1d42441a2a8800a89e8f64acb" Name="Diagram1" ZoomLevel="62">
+      <Diagram DiagramId="3261dcb1d42441a2a8800a89e8f64acb" Name="Diagram1" ZoomLevel="68">
         <EntityTypeShape EntityType="AIRTICKETModel.HANGHANGKHONG" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AIRTICKETModel.HOADON" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AIRTICKETModel.LOAIHANHKHACH" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AIRTICKETModel.QUYDINHGIAVE" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="AIRTICKETModel.SANBAY" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AIRTICKETModel.THAMSO" Width="1.5" PointX="2.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AIRTICKETModel.VECHUYENBAY" Width="1.5" PointX="6" PointY="4.625" IsExpanded="true" />
         <AssociationConnector Association="AIRTICKETModel.FK__QUYDINHGI__MaHan__4316F928" ManuallyRouted="false" />
         <AssociationConnector Association="AIRTICKETModel.FK__VECHUYENB__MaHoa__70DDC3D8" ManuallyRouted="false" />
