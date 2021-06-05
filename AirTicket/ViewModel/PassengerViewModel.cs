@@ -91,7 +91,7 @@ namespace AirTicket.ViewModel
             set
             {
                 SetProperty(ref _netProfitTicket, value);
-                NetProfitTicket = NumberOfPassenger * _netProfitTicket;
+                TotalNetProfitTicket = NumberOfPassenger * _netProfitTicket;
             }
         }
 
@@ -110,7 +110,7 @@ namespace AirTicket.ViewModel
             set
             {
                 SetProperty(ref _cancellationcostTicket, value);
-                CancellationCostTicket = NumberOfPassenger * _cancellationcostTicket;
+                TotalCancellationCostTicket = NumberOfPassenger * _cancellationcostTicket;
             }
         }
 
