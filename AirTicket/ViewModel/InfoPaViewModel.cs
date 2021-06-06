@@ -82,7 +82,6 @@ namespace AirTicket.ViewModel
                     {
                         decimal price = ParseStringToDecimal(FlightSelected.priceFlight);
                         QUYDINHGIAVE QuyDinhGiaVe = pvm.LHKModel.QUYDINHGIAVEs.Where(x => x.MaHang == FlightSelected.AirlineID).First();
-
                         pvm.PriceTicket = (decimal)(price * (decimal)QuyDinhGiaVe.TiLe - QuyDinhGiaVe.TienGiam + QuyDinhGiaVe.TienPhi);
                         pvm.NetProfitTicket = (decimal)QuyDinhGiaVe.TienLaiVe;
                         pvm.CancellationCostTicket = (decimal)QuyDinhGiaVe.TienHuyVe;
