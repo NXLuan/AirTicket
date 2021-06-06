@@ -196,6 +196,7 @@ namespace AirTicket.ViewModel
             SelectedYear = DateTime.Now.Year;
 
             ListDaiLy = new ObservableCollection<DAILY>(DataProvider.Instance.DB.DAILies);
+            ListDaiLy.Insert(0, new DAILY { MaDaiLy = "TatCa", TenDaiLy = "Tất cả" });
             SelectedDaiLy = ListDaiLy[0].MaDaiLy;
 
             DetailVisibility = "Collapsed";
@@ -250,24 +251,26 @@ namespace AirTicket.ViewModel
                         ws.Cells[1, 1] = "Mã hoá đơn";
                         ws.Cells[1, 2] = "Thời gian tạo";
                         ws.Cells[1, 3] = "Tổng tiền";
-                        ws.Cells[1, 4] = "Số vé";
-                        ws.Cells[1, 5] = "Họ tên";
-                        ws.Cells[1, 6] = "Giới tính";
-                        ws.Cells[1, 7] = "SĐT";
-                        ws.Cells[1, 8] = "Email";
-                        ws.Cells[1, 9] = "Ghi chú";
+                        ws.Cells[1, 4] = "Lợi nhuận";
+                        ws.Cells[1, 5] = "Số vé";
+                        ws.Cells[1, 6] = "Họ tên";
+                        ws.Cells[1, 7] = "Giới tính";
+                        ws.Cells[1, 8] = "SĐT";
+                        ws.Cells[1, 9] = "Email";
+                        ws.Cells[1, 10] = "Ghi chú";
                         int i = 2;
                         foreach(var item in ListThongKe)
                         {
                             ws.Cells[i, 1] = item.MaHoaDon;
                             ws.Cells[i, 2] = item.ThoiGianTao;
                             ws.Cells[i, 3] = item.TongTien;
-                            ws.Cells[i, 4] = item.SoVe;
-                            ws.Cells[i, 5] = item.HoTen;
-                            ws.Cells[i, 6] = item.GioiTinh;
-                            ws.Cells[i, 7] = "\t" + item.SDT;
-                            ws.Cells[i, 8] = item.Email;
-                            ws.Cells[i, 9] = item.GhiChu;
+                            ws.Cells[i, 4] = item.LoiNhuan;
+                            ws.Cells[i, 5] = item.SoVe;
+                            ws.Cells[i, 6] = item.HoTen;
+                            ws.Cells[i, 7] = item.GioiTinh;
+                            ws.Cells[i, 8] = "\t" + item.SDT;
+                            ws.Cells[i, 9] = item.Email;
+                            ws.Cells[i, 10] = item.GhiChu;
                             i++;
                         }
                         ws.Columns.AutoFit();
@@ -287,7 +290,7 @@ namespace AirTicket.ViewModel
                 ListBarChart = new ObservableCollection<DataChart>();
                 for (int i = 1; i <= 12; i++)
                 {
-                    ListBarChart.Add(new DataChart { Month = i, DoanhThu = GetDoanhThuThang(i), LoiNhuan = GetDoanhThuThang(i) / 3});
+                    ListBarChart.Add(new DataChart { Month = i, DoanhThu = GetDoanhThuThang(i), LoiNhuan = GetLoiNhuanThang(i)});
                 }
                 TitleChart = "Biểu đồ doanh thu năm " + SelectedYear;
                 barChart.ShowDialog();
@@ -304,22 +307,33 @@ namespace AirTicket.ViewModel
             }
             return result / 1000000;
         }
+        public decimal GetLoiNhuanThang(int month)
+        {
+            decimal result = 0;
+            foreach (var hoadon in ListThongKe)
+            {
+                if (hoadon.ThoiGianTao.Value.Month == month)
+                    if (hoadon.LoiNhuan.HasValue)
+                        result += hoadon.LoiNhuan.Value;
+            }
+            return result / 1000000;
+        }
         public void LoadDateTable()
         {
             ListThongKe = new ObservableCollection<HOADON>(DataProvider.Instance.DB.HOADONs
-                .Where(item => item.MaDaiLy.Equals(SelectedDaiLy) && item.ThoiGianTao >= StartDate && item.ThoiGianTao <= EndDate)
+                .Where(item => SelectedDaiLy != "TatCa" ? item.MaDaiLy.Equals(SelectedDaiLy) : true  && item.ThoiGianTao >= StartDate && item.ThoiGianTao <= EndDate)
                 .OrderBy(item => item.ThoiGianTao));
         }
         public void LoadMonthTable()
         {
             ListThongKe = new ObservableCollection<HOADON>(DataProvider.Instance.DB.HOADONs
-                .Where(item => item.MaDaiLy.Equals(SelectedDaiLy) && item.ThoiGianTao.Value.Month == SelectedMonth && item.ThoiGianTao.Value.Year == SelectedYear)
+                .Where(item => SelectedDaiLy != "TatCa" ? item.MaDaiLy.Equals(SelectedDaiLy) : true && item.ThoiGianTao.Value.Month == SelectedMonth && item.ThoiGianTao.Value.Year == SelectedYear)
                 .OrderBy(item => item.ThoiGianTao));
         }
         public void LoadYearTable()
         {
             ListThongKe = new ObservableCollection<HOADON>(DataProvider.Instance.DB.HOADONs
-                .Where(item => item.MaDaiLy.Equals(SelectedDaiLy) && item.ThoiGianTao.Value.Year == SelectedYear)
+                .Where(item => SelectedDaiLy != "TatCa" ? item.MaDaiLy.Equals(SelectedDaiLy) : true && item.ThoiGianTao.Value.Year == SelectedYear)
                 .OrderBy(item => item.ThoiGianTao));
         }
         public void LoadDetailStatistics()
@@ -328,10 +342,9 @@ namespace AirTicket.ViewModel
             foreach (var item in ListThongKe)
             {
                 if (item.TongTien.HasValue)
-                {
                     TongDoanhThu += item.TongTien.Value;
-                    TongLoiNhuan += item.TongTien.Value;
-                }
+                if (item.LoiNhuan.HasValue)
+                    TongLoiNhuan += item.LoiNhuan.Value;
                 if (item.SoVe.HasValue)
                     TongSoVe += item.SoVe.Value;
             }

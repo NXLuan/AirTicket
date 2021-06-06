@@ -155,7 +155,7 @@
                                          Height="20" />
             </Grid>
         </DockPanel>
-      
+
         <Separator Background="{DynamicResource BackgroundColor}" />
         <Grid Visibility="{Binding DetailVisibility}">
             <Grid.ColumnDefinitions>
@@ -235,30 +235,32 @@
         </Grid>
         <Separator Background="{DynamicResource BackgroundColor}" />
         <ListView ItemsSource="{Binding ListThongKe}"
-                      Height="450"
-                      HorizontalContentAlignment="Center">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding MaHoaDon}"
-                                        Header="Mã hoá đơn" />
-                        <GridViewColumn DisplayMemberBinding="{Binding ThoiGianTao, StringFormat={}{0:dd/MM/yyyy hh:mm:ss tt}}"
-                                        Header="Thời gian tạo" />
-                        <GridViewColumn DisplayMemberBinding="{Binding TongTien, Converter={StaticResource moneyConverter}}"
-                                        Header="Tổng tiền" />
-                        <GridViewColumn DisplayMemberBinding="{Binding SoVe}"
-                                        Header="Số vé" />
-                        <GridViewColumn DisplayMemberBinding="{Binding HoTen}"
-                                        Header="Họ tên" />
-                        <GridViewColumn DisplayMemberBinding="{Binding GioiTinh}"
-                                        Header="Giới tính" />
-                        <GridViewColumn DisplayMemberBinding="{Binding SDT}"
-                                        Header="Số điện thoại" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Email}"
-                                        Header="Email" />
-                        <GridViewColumn DisplayMemberBinding="{Binding GhiChu}"
-                                        Header="Ghi chú" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                  Height="450"
+                  HorizontalContentAlignment="Center">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding MaHoaDon}"
+                                    Header="Mã hoá đơn" />
+                    <GridViewColumn DisplayMemberBinding="{Binding ThoiGianTao, StringFormat={}{0:dd/MM/yyyy hh:mm:ss tt}}"
+                                    Header="Thời gian tạo" />
+                    <GridViewColumn DisplayMemberBinding="{Binding TongTien, Converter={StaticResource moneyConverter}}"
+                                    Header="Tổng tiền" />
+                    <GridViewColumn DisplayMemberBinding="{Binding LoiNhuan, Converter={StaticResource moneyConverter}}"
+                                    Header="Lợi nhuận" />
+                    <GridViewColumn DisplayMemberBinding="{Binding SoVe}"
+                                    Header="Số vé" />
+                    <GridViewColumn DisplayMemberBinding="{Binding HoTen}"
+                                    Header="Họ tên" />
+                    <GridViewColumn DisplayMemberBinding="{Binding GioiTinh}"
+                                    Header="Giới tính" />
+                    <GridViewColumn DisplayMemberBinding="{Binding SDT}"
+                                    Header="Số điện thoại" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Email}"
+                                    Header="Email" />
+                    <GridViewColumn DisplayMemberBinding="{Binding GhiChu}"
+                                    Header="Ghi chú" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </StackPanel>
 </UserControl>
