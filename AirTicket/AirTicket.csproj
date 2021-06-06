@@ -173,6 +173,7 @@
     <Compile Include="ValidRule\PhoneNumberValidationRule.cs" />
     <Compile Include="ViewModel\ACViewModel.cs" />
     <Compile Include="ViewModel\FlightViewModel.cs" />
+    <Compile Include="ViewModel\InfoAccount.cs" />
     <Compile Include="ViewModel\InfoRegulation.cs" />
     <Compile Include="ViewModel\InfoTicket.cs" />
     <Compile Include="ViewModel\InfoPaViewModel.cs" />
@@ -186,6 +187,9 @@
     <Compile Include="ViewModel\VeChuyenBay.cs" />
     <Compile Include="View\AccessibilityControllerView.xaml.cs">
       <DependentUpon>AccessibilityControllerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InforAccount.xaml.cs">
+      <DependentUpon>InforAccount.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\InforPassenger.xaml.cs">
       <DependentUpon>InforPassenger.xaml</DependentUpon>
@@ -212,6 +216,10 @@
     <Page Include="View\AccessibilityControllerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InforAccount.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\InforPassenger.xaml">
       <SubType>Designer</SubType>

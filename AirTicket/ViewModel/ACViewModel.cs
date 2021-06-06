@@ -109,8 +109,8 @@ namespace AirTicket.ViewModel
                         Console.WriteLine(e.ToString());
                     }
                 }
-
                 int tmp = db.SaveChanges();
+                MainViewModel.update(db);
             });
         }
     }

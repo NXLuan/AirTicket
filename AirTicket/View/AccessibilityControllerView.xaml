@@ -274,15 +274,8 @@
 
 
         </Grid>
-        
+
         <Grid Grid.Row="2">
-            <TextBlock 
-                       Text="Lưu ý: Người dùng cần phải khởi động lại ứng dụng để cập nhật quyền!!"
-                       FontSize="26"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontWeight="Bold"
-                       Foreground="Red" />
         </Grid>
     </Grid>
 </UserControl>

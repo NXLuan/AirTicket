@@ -56,9 +56,6 @@ namespace AirTicket.ViewModel
                   }
 
               });
-            SaveInfoRegulationCommand = new RelayCommand<DataGrid>((p) => { return true; }, (p) =>
-             {
-             });
             AddInfoRegulationCommand = new RelayCommand<DataGrid>((p) => { return true; }, (p) =>
              {
                  if (dMaHang == null)
@@ -419,6 +416,6 @@ namespace AirTicket.ViewModel
         public ICommand LoadInfoRegulationCommand { get; set; }
         public ICommand SearchInfoRegulationCommand { get; set; }
         public ObservableCollection<Regulation> Items1 { get; set; }
-       
+
     }
 }
