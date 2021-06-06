@@ -41,16 +41,19 @@ namespace AirTicket.ViewModel
             checkBoxMap.Add("AD_QLV", false);
             checkBoxMap.Add("AD_TK", false);
             checkBoxMap.Add("AD_QD", false);
+            checkBoxMap.Add("AD_QLTK", false);
 
             checkBoxMap.Add("QL_BV", false); // Quản lý
             checkBoxMap.Add("QL_QLV", false);
             checkBoxMap.Add("QL_TK", false);
             checkBoxMap.Add("QL_QD", false);
+            checkBoxMap.Add("QL_QLTK", false);
 
             checkBoxMap.Add("NV_BV", false); // Nhân viên
             checkBoxMap.Add("NV_QLV", false);
             checkBoxMap.Add("NV_TK", false);
             checkBoxMap.Add("NV_QD", false);
+            checkBoxMap.Add("NV_QLTK", false);
 
             foreach (NHOMNGUOIDUNG NND in NhomNguoiDung)
             {
@@ -79,16 +82,6 @@ namespace AirTicket.ViewModel
             CheckBoxCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
                 CheckBox checkBox = p as CheckBox;
-                var yad = checkBox.Parent as Grid;
-                var yad2 = yad.Parent as Grid;
-                var yad3 = yad2.Parent as AccessibilityControllerView;
-                var yad4 = yad3.Parent as UserControl;
-                var yad5 = yad4.Parent as Grid;
-                var yad6 = yad5.Parent as Grid;
-                var yad7 = yad6.Parent as MainWindow;
-
-
-
                 string[] splited_info = checkBox.Name.ToString().Split('_');
 
                 string temp_MaNhom = splited_info[0];
@@ -106,27 +99,18 @@ namespace AirTicket.ViewModel
                 }
                 else
                 {
-                    try // remove the CN only not all the NND obj
+                    try 
                     {
                         CHUCNANG CN = NND.CHUCNANGs.Where(x => x.MaChucNang == temp_MaChucNang).SingleOrDefault();
                         NND.CHUCNANGs.Remove(CN);
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("This need fix smile :D ");
+                        Console.WriteLine(e.ToString());
                     }
                 }
 
                 int tmp = db.SaveChanges();
-
-
-                //var mainViewModel = yad7.DataContext as MainViewModel;
-                //mainViewModel.MenuFunction.Clear();
-                //var NhomNguoiDung2 = DataProvider.Instance.DB.NHOMNGUOIDUNGs.Where(x => x.MaNhom == temp_MaNhom).First();
-                //foreach (CHUCNANG CN in NhomNguoiDung2.CHUCNANGs)
-                //{
-                //    mainViewModel.MenuFunction.Add(CN);
-                //}
             });
         }
     }
