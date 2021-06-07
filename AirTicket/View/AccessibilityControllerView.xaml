@@ -10,14 +10,14 @@
              xmlns:ViewModel="clr-namespace:AirTicket.ViewModel"
              x:Class="AirTicket.View.AccessibilityControllerView"
              mc:Ignorable="d"
-             d:DesignHeight="800"
+             d:DesignHeight="730"
              d:DesignWidth="1000"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Regular"
              TextElement.FontSize="13"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
-             Background="{DynamicResource MaterialDesignPaper}"
+             Background="{DynamicResource BackgroundColor}"
              FontFamily="{DynamicResource MaterialDesignFont}"
              DataContext="{StaticResource ACVM}"
              x:Name="PhanQuyen">
@@ -27,17 +27,17 @@
                                    CommandParameter="{Binding ElementName=PhanQuyen}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid Background="{DynamicResource BackgroundColor}">
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
-            <RowDefinition />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="550"/>
+            <RowDefinition Height="100" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
                    Text="BẢNG PHÂN QUYỀN"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
-                   FontSize="50"
+                   FontSize="40"
                    FontWeight="Bold"
                    Foreground="{DynamicResource TitleDarkBrush}" />
 
@@ -52,7 +52,8 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="50" />
+                <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
@@ -68,7 +69,7 @@
                        Text="ADMIN"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       FontSize="32"
+                       FontSize="24"
                        FontWeight="Bold" />
             <TextBlock Grid.Row="0"
                        Grid.Column="2"
@@ -76,7 +77,7 @@
                        Text="Quản lý"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       FontSize="32"
+                       FontSize="24"
                        FontWeight="Bold" />
             <TextBlock Grid.Row="0"
                        Grid.Column="3"
@@ -84,7 +85,7 @@
                        Text="Nhân viên"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       FontSize="32"
+                       FontSize="24"
                        FontWeight="Bold" />
             
             <TextBlock Grid.Column="0"
@@ -93,7 +94,7 @@
                        Text="Bán vé"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       FontSize="32"
+                       FontSize="24"
                        FontWeight="Bold" />
 
             <TextBlock Grid.Column="0"
@@ -102,7 +103,7 @@
                        Text="Quản lý vé"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       FontSize="32"
+                       FontSize="24"
                        FontWeight="Bold" />
 
             <TextBlock Grid.Column="0"
@@ -111,7 +112,7 @@
                        x:Name="TK"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       FontSize="32"
+                       FontSize="24"
                        FontWeight="Bold" />
 
             <TextBlock Grid.Column="0"
@@ -120,10 +121,21 @@
                        x:Name="QD"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       FontSize="32"
+                       FontSize="24"
                        FontWeight="Bold" />
 
-
+            <TextBlock Grid.Column="0"
+                       Grid.Row="5"
+                       Width="120"
+                       Text="Quản lý tài khoản"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       x:Name="QLTK"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="24"
+                       FontWeight="Bold" />
+            
             <!--#region CheckBoxes -->
             <CheckBox Grid.Row="1"
                       Grid.Column="1"
@@ -233,14 +245,37 @@
                       Command="{Binding CheckBoxCommand}"
                       CommandParameter="{Binding ElementName=NV_QD}" />
 
+            <CheckBox Grid.Row="5"
+                      Grid.Column="1"
+                      x:Name="AD_QLTK"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[AD_QLTK]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=AD_QLTK}" />
+
+            <CheckBox Grid.Row="5"
+                      Grid.Column="2"
+                      x:Name="QL_QLTK"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[QL_QLTK]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=QL_QLTK}" />
+
+            <CheckBox Grid.Row="5"
+                      Grid.Column="3"
+                      x:Name="NV_QLTK"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding checkBoxMap[NV_QLTK]}"
+                      Command="{Binding CheckBoxCommand}"
+                      CommandParameter="{Binding ElementName=NV_QLTK}" />
+
 
         </Grid>
-        <TextBlock Grid.Row="2" 
-                   Text="Lưu ý: Người dùng cần phải khởi động lại ứng dụng để cập nhật quyền!!"
-                   FontSize="26"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   FontWeight="Bold"
-                   Foreground="Red"/>
+
+        <Grid Grid.Row="2">
+        </Grid>
     </Grid>
 </UserControl>

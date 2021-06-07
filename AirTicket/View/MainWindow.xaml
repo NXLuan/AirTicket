@@ -55,7 +55,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <DockPanel> 
+                                    <DockPanel>
                                         <!--Menu Icon-->
                                         <materialDesign:PackIcon Kind="{Binding Icon}"
                                                                  Height="26"
@@ -183,11 +183,13 @@
             </ListBox>
         </StackPanel>
 
-
         <!--function control-->
         <Grid Grid.Column="1"
               Background="{DynamicResource BackgroundColor}">
-            <UserControl Content="{Binding CurrentScreen}" />
+            <UserControl
+                Content="{Binding CurrentScreen}"
+                Name="UControl">
+            </UserControl>
         </Grid>
     </Grid>
 </Window>

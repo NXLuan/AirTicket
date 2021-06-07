@@ -9,5 +9,6 @@
         <viewmodel:LoginViewModel x:Key="LoginVM"></viewmodel:LoginViewModel>
     <viewmodel:ACViewModel x:Key="ACVM"></viewmodel:ACViewModel>
     <viewmodel:InfoTicket x:Key="GridVM"></viewmodel:InfoTicket>
-        <viewmodel:InfoRegulation x:Key="GridRG"></viewmodel:InfoRegulation>
+    <viewmodel:InfoRegulation x:Key="GridRG"></viewmodel:InfoRegulation>
+    <viewmodel:InfoAccount x:Key="GridInfoAccVM"></viewmodel:InfoAccount>
 </ResourceDictionary>

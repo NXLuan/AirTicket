@@ -27,10 +27,11 @@ namespace AirTicket.ViewModel
             get => _currentScreen;
             set => SetProperty(ref _currentScreen, value);
         }
-        public ObservableCollection<CHUCNANG> MenuFunction { get; set; }
+        static public ObservableCollection<CHUCNANG> MenuFunction { get; set; }
         public ObservableCollection<CHUCNANG> MenuAccount { get; set; }
         public ICommand SelectedItemFunctionCommand { get; set; }
         public ICommand SelectedAccountCommand { get; set; }
+        public ICommand ChangeUserControlCommand { get; set; }
         public MainViewModel()
         {
             MenuFunction = new ObservableCollection<CHUCNANG>();
@@ -54,7 +55,6 @@ namespace AirTicket.ViewModel
                           return;
                   }
               });
-
             SelectedItemFunctionCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
               {
                   CHUCNANG ChucNang = p as CHUCNANG;
@@ -84,8 +84,12 @@ namespace AirTicket.ViewModel
                           {
                               CurrentScreen = new Statistics();
                               break;
-                          } 
-                          
+                          }
+                      case "InforAccount":
+                          {
+                              CurrentScreen = new InforAccount();
+                              break;
+                          }
                       default:
                           {
                               CurrentScreen = null;
@@ -93,6 +97,18 @@ namespace AirTicket.ViewModel
                           }
                   }
               });
+        }
+        public static void update(AIRTICKETEntities db)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            var loginVM = loginWindow.DataContext as LoginViewModel;
+            MenuFunction.Clear();
+            DataProvider.Instance.DB.SaveChanges();
+            var NhomNguoiDung = db.NHOMNGUOIDUNGs.Where(x => x.MaNhom == loginVM.AccountTypte).First();
+            foreach (CHUCNANG CN in NhomNguoiDung.CHUCNANGs)
+            {
+                MenuFunction.Add(CN);
+            }
         }
 
         public void ShowLogin(Window p)
