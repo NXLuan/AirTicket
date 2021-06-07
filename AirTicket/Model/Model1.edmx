@@ -42,7 +42,6 @@
           <Property Name="SDT" Type="varchar" MaxLength="20" />
           <Property Name="Email" Type="varchar" MaxLength="200" />
           <Property Name="GhiChu" Type="nvarchar(max)" />
-          <Property Name="MaDaiLy" Type="varchar" MaxLength="10" />
           <Property Name="LoiNhuan" Type="money" />
           <Property Name="ChiPhiHuy" Type="money" />
           <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
@@ -66,7 +65,6 @@
           <Property Name="TenDangNhap" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="MatKhau" Type="varchar" MaxLength="50" />
           <Property Name="MaNhom" Type="varchar" MaxLength="10" />
-          <Property Name="MaDaiLy" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="NHOMNGUOIDUNG">
           <Key>
@@ -199,30 +197,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_daily_hoadon">
-          <End Role="DAILY" Type="Self.DAILY" Multiplicity="0..1" />
-          <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY">
-              <PropertyRef Name="MaDaiLy" />
-            </Principal>
-            <Dependent Role="HOADON">
-              <PropertyRef Name="MaDaiLy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_daily_nguoidung">
-          <End Role="DAILY" Type="Self.DAILY" Multiplicity="0..1" />
-          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY">
-              <PropertyRef Name="MaDaiLy" />
-            </Principal>
-            <Dependent Role="NGUOIDUNG">
-              <PropertyRef Name="MaDaiLy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="AIRTICKETModelStoreContainer">
           <EntitySet Name="CHUCNANG" EntityType="Self.CHUCNANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DAILY" EntityType="Self.DAILY" Schema="dbo" store:Type="Tables" />
@@ -263,14 +237,6 @@
             <End Role="LOAIHANHKHACH" EntitySet="LOAIHANHKHACH" />
             <End Role="VECHUYENBAY" EntitySet="VECHUYENBAY" />
           </AssociationSet>
-          <AssociationSet Name="fk_daily_hoadon" Association="Self.fk_daily_hoadon">
-            <End Role="DAILY" EntitySet="DAILY" />
-            <End Role="HOADON" EntitySet="HOADON" />
-          </AssociationSet>
-          <AssociationSet Name="fk_daily_nguoidung" Association="Self.fk_daily_nguoidung">
-            <End Role="DAILY" EntitySet="DAILY" />
-            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
@@ -294,8 +260,6 @@
           <Property Name="MaDaiLy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TenDaiLy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DiaChi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="HOADONs" Relationship="Self.fk_daily_hoadon" FromRole="DAILY" ToRole="HOADON" />
-          <NavigationProperty Name="NGUOIDUNGs" Relationship="Self.fk_daily_nguoidung" FromRole="DAILY" ToRole="NGUOIDUNG" />
         </EntityType>
         <EntityType Name="HANGHANGKHONG">
           <Key>
@@ -318,11 +282,9 @@
           <Property Name="SDT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="MaDaiLy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="LoiNhuan" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="ChiPhiHuy" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="DAILY" Relationship="Self.fk_daily_hoadon" FromRole="HOADON" ToRole="DAILY" />
           <NavigationProperty Name="VECHUYENBAYs" Relationship="Self.FK__VECHUYENB__MaHoa__2D27B809" FromRole="HOADON" ToRole="VECHUYENBAY" />
         </EntityType>
         <EntityType Name="LOAIHANHKHACH">
@@ -346,8 +308,6 @@
           <Property Name="TenDangNhap" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MaNhom" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="MaDaiLy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="DAILY" Relationship="Self.fk_daily_nguoidung" FromRole="NGUOIDUNG" ToRole="DAILY" />
           <NavigationProperty Name="NHOMNGUOIDUNG" Relationship="Self.FK__NGUOIDUNG__MaNho__239E4DCF" FromRole="NGUOIDUNG" ToRole="NHOMNGUOIDUNG" />
         </EntityType>
         <EntityType Name="NHOMNGUOIDUNG">
@@ -395,30 +355,6 @@
           <NavigationProperty Name="HOADON" Relationship="Self.FK__VECHUYENB__MaHoa__2D27B809" FromRole="VECHUYENBAY" ToRole="HOADON" />
           <NavigationProperty Name="LOAIHANHKHACH" Relationship="Self.FK__VECHUYENB__MaLoa__2C3393D0" FromRole="VECHUYENBAY" ToRole="LOAIHANHKHACH" />
         </EntityType>
-        <Association Name="fk_daily_hoadon">
-          <End Role="DAILY" Type="Self.DAILY" Multiplicity="0..1" />
-          <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY">
-              <PropertyRef Name="MaDaiLy" />
-            </Principal>
-            <Dependent Role="HOADON">
-              <PropertyRef Name="MaDaiLy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_daily_nguoidung">
-          <End Role="DAILY" Type="Self.DAILY" Multiplicity="0..1" />
-          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY">
-              <PropertyRef Name="MaDaiLy" />
-            </Principal>
-            <Dependent Role="NGUOIDUNG">
-              <PropertyRef Name="MaDaiLy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__QUYDINHGI__MaHan__1DE57479">
           <End Role="HANGHANGKHONG" Type="Self.HANGHANGKHONG" Multiplicity="1" />
           <End Role="QUYDINHGIAVE" Type="Self.QUYDINHGIAVE" Multiplicity="*" />
@@ -494,14 +430,6 @@
           <EntitySet Name="QUYDINHGIAVEs" EntityType="Self.QUYDINHGIAVE" />
           <EntitySet Name="SANBAYs" EntityType="Self.SANBAY" />
           <EntitySet Name="VECHUYENBAYs" EntityType="Self.VECHUYENBAY" />
-          <AssociationSet Name="fk_daily_hoadon" Association="Self.fk_daily_hoadon">
-            <End Role="DAILY" EntitySet="DAILies" />
-            <End Role="HOADON" EntitySet="HOADONs" />
-          </AssociationSet>
-          <AssociationSet Name="fk_daily_nguoidung" Association="Self.fk_daily_nguoidung">
-            <End Role="DAILY" EntitySet="DAILies" />
-            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
-          </AssociationSet>
           <AssociationSet Name="FK__QUYDINHGI__MaHan__1DE57479" Association="Self.FK__QUYDINHGI__MaHan__1DE57479">
             <End Role="HANGHANGKHONG" EntitySet="HANGHANGKHONGs" />
             <End Role="QUYDINHGIAVE" EntitySet="QUYDINHGIAVEs" />
@@ -572,7 +500,6 @@
                 <ScalarProperty Name="SDT" ColumnName="SDT" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
-                <ScalarProperty Name="MaDaiLy" ColumnName="MaDaiLy" />
                 <ScalarProperty Name="LoiNhuan" ColumnName="LoiNhuan" />
                 <ScalarProperty Name="ChiPhiHuy" ColumnName="ChiPhiHuy" />
                 <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
@@ -598,7 +525,6 @@
                 <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
                 <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
                 <ScalarProperty Name="MaNhom" ColumnName="MaNhom" />
-                <ScalarProperty Name="MaDaiLy" ColumnName="MaDaiLy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -29,12 +29,10 @@ namespace AirTicket.Model
         public string SDT { get; set; }
         public string Email { get; set; }
         public string GhiChu { get; set; }
-        public string MaDaiLy { get; set; }
         public Nullable<decimal> LoiNhuan { get; set; }
         public Nullable<decimal> ChiPhiHuy { get; set; }
         public string TrangThai { get; set; }
     
-        public virtual DAILY DAILY { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VECHUYENBAY> VECHUYENBAYs { get; set; }
     }

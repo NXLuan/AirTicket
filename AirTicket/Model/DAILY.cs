@@ -14,20 +14,8 @@ namespace AirTicket.Model
     
     public partial class DAILY
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DAILY()
-        {
-            this.HOADONs = new HashSet<HOADON>();
-            this.NGUOIDUNGs = new HashSet<NGUOIDUNG>();
-        }
-    
         public string MaDaiLy { get; set; }
         public string TenDaiLy { get; set; }
         public string DiaChi { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HOADON> HOADONs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NGUOIDUNG> NGUOIDUNGs { get; set; }
     }
 }

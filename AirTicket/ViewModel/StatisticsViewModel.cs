@@ -148,7 +148,6 @@ namespace AirTicket.ViewModel
         public ICommand ExportExcelCommand { get; set; }
         public ICommand BtnBarChartCommand { get; set; }
 
-        public ObservableCollection<DAILY> ListDaiLy { get; set; }
 
 
         private ObservableCollection<HOADON> _listThongKe;
@@ -194,10 +193,6 @@ namespace AirTicket.ViewModel
             EndDate = DateTime.Now;
             SelectedMonth = DateTime.Now.Month;
             SelectedYear = DateTime.Now.Year;
-
-            ListDaiLy = new ObservableCollection<DAILY>(DataProvider.Instance.DB.DAILies);
-            ListDaiLy.Insert(0, new DAILY { MaDaiLy = "TatCa", TenDaiLy = "Tất cả" });
-            SelectedDaiLy = ListDaiLy[0].MaDaiLy;
 
             DetailVisibility = "Collapsed";
             BtnChartVisibility = "Collapsed";
@@ -320,20 +315,22 @@ namespace AirTicket.ViewModel
         }
         public void LoadDateTable()
         {
+            StartDate = StartDate.AddHours(0).AddMinutes(0);
+            EndDate = EndDate.AddHours(23).AddMinutes(59);
             ListThongKe = new ObservableCollection<HOADON>(DataProvider.Instance.DB.HOADONs
-                .Where(item => SelectedDaiLy != "TatCa" ? item.MaDaiLy.Equals(SelectedDaiLy) : true  && item.ThoiGianTao >= StartDate && item.ThoiGianTao <= EndDate)
+                .Where(item => item.ThoiGianTao >= StartDate && item.ThoiGianTao <= EndDate)
                 .OrderBy(item => item.ThoiGianTao));
         }
         public void LoadMonthTable()
         {
             ListThongKe = new ObservableCollection<HOADON>(DataProvider.Instance.DB.HOADONs
-                .Where(item => SelectedDaiLy != "TatCa" ? item.MaDaiLy.Equals(SelectedDaiLy) : true && item.ThoiGianTao.Value.Month == SelectedMonth && item.ThoiGianTao.Value.Year == SelectedYear)
+                .Where(item => item.ThoiGianTao.Value.Month == SelectedMonth && item.ThoiGianTao.Value.Year == SelectedYear)
                 .OrderBy(item => item.ThoiGianTao));
         }
         public void LoadYearTable()
         {
             ListThongKe = new ObservableCollection<HOADON>(DataProvider.Instance.DB.HOADONs
-                .Where(item => SelectedDaiLy != "TatCa" ? item.MaDaiLy.Equals(SelectedDaiLy) : true && item.ThoiGianTao.Value.Year == SelectedYear)
+                .Where(item => item.ThoiGianTao.Value.Year == SelectedYear)
                 .OrderBy(item => item.ThoiGianTao));
         }
         public void LoadDetailStatistics()

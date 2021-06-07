@@ -86,26 +86,15 @@
                 </DockPanel>
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <DockPanel>
-                    <TextBlock Text="Đại lý"
-                               FontWeight="Bold"
-                               Margin="15" />
-                    <ComboBox ItemsSource="{Binding ListDaiLy}"
-                              DisplayMemberPath="TenDaiLy"
-                              SelectedValuePath="MaDaiLy"
-                              SelectedValue="{Binding SelectedDaiLy}"
-                              HorizontalAlignment="Right"
-                              Width="180"
-                              Margin="0 0 15 0" />
-                </DockPanel>
-
-                <DockPanel Visibility="{Binding DateVisibility}">
+                <DockPanel Visibility="{Binding DateVisibility}"
+                           Margin="10 45">
                     <TextBlock Text="Ngày kết thúc"
                                FontWeight="Bold"
-                               Margin="15" />
+                               Margin="15 " />
                     <DatePicker HorizontalAlignment="Right"
                                 Width="180"
                                 Margin="0 0 15 0"
+                                Padding="5"
                                 Foreground="{Binding EndColor}"
                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                 SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}" />
