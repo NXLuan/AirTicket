@@ -24,7 +24,7 @@ namespace AirTicket.ViewModel
             });
             SearchInfoTicketCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
-                if (p.Text != null && p.Text != "")
+                if (string.IsNullOrWhiteSpace(p.Text))
                 {
                     ShowTicket();
                     var datasearch = Items1.Where(x => (x.HoVaTen.Contains(p.Text)) || (x.GiaTien.ToString().Contains(p.Text)) || (x.MaVeChuyenBay.Contains(p.Text)) || (x.MaHoaDon.Contains(p.Text)) || (x.GioiTinh.Contains(p.Text)) || (x.NgaySinh.Contains(p.Text))).ToList();
@@ -50,7 +50,7 @@ namespace AirTicket.ViewModel
             });
             SearchInfoBillsCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
-                if (p.Text != null && p.Text != "")
+                if (string.IsNullOrWhiteSpace(p.Text))
                 {
                     ShowBill();
                     var datasearch = Items2.Where(x => (x.HoTen.Contains(p.Text)) || (x.TongTien.ToString().Contains(p.Text)) || ((x.GhiChu != null) && (x.GhiChu.Contains(p.Text))) || (x.MaHoaDon.Contains(p.Text)) || (x.GioiTinh.Contains(p.Text)) || (x.Email.Contains(p.Text)) || ((x.ThoiGianTao.ToString()).Contains(p.Text)) || (x.SDT.Contains(p.Text)) || (x.TrangThai.Contains(p.Text))).ToList();

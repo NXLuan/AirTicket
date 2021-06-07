@@ -26,7 +26,6 @@ namespace AirTicket.Model
         }
     
         public virtual DbSet<CHUCNANG> CHUCNANGs { get; set; }
-        public virtual DbSet<DAILY> DAILies { get; set; }
         public virtual DbSet<HANGHANGKHONG> HANGHANGKHONGs { get; set; }
         public virtual DbSet<HOADON> HOADONs { get; set; }
         public virtual DbSet<LOAIHANHKHACH> LOAIHANHKHACHes { get; set; }

@@ -119,9 +119,6 @@
     <Compile Include="Model\CHUCNANG.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\DAILY.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\DataChart.cs" />
     <Compile Include="Model\DataProvider.cs" />
     <Compile Include="Model\DetailInfoPassenger.cs" />

@@ -58,12 +58,17 @@ namespace AirTicket.ViewModel
               });
             AddInfoRegulationCommand = new RelayCommand<DataGrid>((p) => { return true; }, (p) =>
              {
-                 if (dMaHang == null)
+                 if (string.IsNullOrWhiteSpace(dMaHang))
                  {
                      MessageBox.Show("Mã hãng không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                      return;
                  }
-                 if (dMaLoai == null)
+                 if (string.IsNullOrWhiteSpace(dTenHang))
+                 {
+                     MessageBox.Show("Tên hãng không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                     return;
+                 }
+                 if (string.IsNullOrWhiteSpace(dMaLoai))
                  {
                      MessageBox.Show("Mã loại không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                      return;
@@ -125,12 +130,17 @@ namespace AirTicket.ViewModel
                 {
                 foreach (var item in Items1)
                 {
-                    if (item.MaHang == null)
+                    if (string.IsNullOrWhiteSpace(item.MaHang))
                     {
                         MessageBox.Show("Mã hãng không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
-                    if (item.MaLoai == null)
+                    if (string.IsNullOrWhiteSpace(item.TenHang))
+                    {
+                        MessageBox.Show("Tên hãng không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    if (string.IsNullOrWhiteSpace(item.MaLoai))
                     {
                         MessageBox.Show("Mã loại không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
@@ -155,93 +165,10 @@ namespace AirTicket.ViewModel
                 {
                     MessageBox.Show("Thất bại", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
-
-                /*
-                var RegulationList = DataProvider.Instance.DB.QUYDINHGIAVEs.ToList();
-                foreach (var regulation in RegulationList)
-                {
-                    DataProvider.Instance.DB.QUYDINHGIAVEs.Remove(regulation);
-                }
-                var FlightList = DataProvider.Instance.DB.HANGHANGKHONGs.ToList();
-                foreach (var flight in FlightList)
-                {
-                    DataProvider.Instance.DB.HANGHANGKHONGs.Remove(flight);
-                }
-                foreach(var item in Items1)
-                {
-                    if(item.MaHang==null)
-                    {
-                        MessageBox.Show("Mã hãng không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    if (item.MaLoai == null)
-                    {
-                        MessageBox.Show("Mã loại không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    var tmpFlightList = DataProvider.Instance.DB.HANGHANGKHONGs.ToList();
-                    bool ok = false;
-                    foreach (var tmpflight in tmpFlightList)
-                        if (tmpflight.MaHang == item.MaHang)
-                            ok = true;
-                    if (ok == false)
-                    {
-                        HANGHANGKHONG hktmp = new HANGHANGKHONG();
-                        hktmp.MaHang = item.MaHang;
-                        hktmp.TenHang = item.TenHang;
-                        var HangHangKhong = DataProvider.Instance.DB.HANGHANGKHONGs;
-                        HangHangKhong.Add(hktmp);
-                    }
-                    QUYDINHGIAVE tmp = new QUYDINHGIAVE();
-                    tmp.MaHang = item.MaHang;
-                    tmp.MaLoai = item.MaLoai;
-                    tmp.TiLe = item.TiLe;
-                    tmp.TienGiam = item.TienGiam;
-                    tmp.TienPhi = item.TienPhi;
-                    tmp.TienLaiVe = item.TienLaiVe;
-                    tmp.TienHuyVe = item.TienHuyVe;
-                    var QuyDinhGiaVe = DataProvider.Instance.DB.QUYDINHGIAVEs;
-                    QuyDinhGiaVe.Add(tmp);
-                }
-                DataProvider.Instance.DB.SaveChanges();
-                MessageBox.Show("chỉnh sửa thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                ShowRegulation();
-                */
-                /*
-                var RegulationList = DataProvider.Instance.DB.QUYDINHVEs.ToList();
-                try
-                {
-                    foreach (var regulation in RegulationList)
-                    {
-                        Regulation tmp = p.SelectedItem as Regulation;
-
-                        regulation.TienLaiVe = null;
-                        regulation.TienHuyVe = null;
-                    }
-                    //}
-                    //foreach (var i_regulation in Items1)
-                    //{
-                    //    foreach (var j_regulation in RegulationList)
-                    //        if (i_regulation.MaHang == j_ticket.MaVe && i_ticket.TinhTrang == "Đã hủy" && j_ticket.TrangThai == "Thành công")
-                    //        {
-                    //            j_ticket.TrangThai = i_ticket.TinhTrang;
-                    //        }
-                    //}
-                    DataProvider.Instance.DB.SaveChanges();
-                    MessageBox.Show("thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch
-                {
-                    MessageBox.Show("Thất bại", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            });
-                */
-
             });
             SearchInfoRegulationCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
-                if (p.Text != null && p.Text != "")
+                if (!string.IsNullOrWhiteSpace(p.Text))
                 {
                     ShowRegulation();
                     var datasearch = Items1.Where(x => (x.MaHang.Contains(p.Text)) || (x.TenHang.Contains(p.Text)) || (x.MaLoai.Contains(p.Text)) || (x.TenLoai.Contains(p.Text)) || (x.TienGiam.ToString().Contains(p.Text)) || (x.TienPhi.ToString().Contains(p.Text)) || (x.TiLe.ToString().Contains(p.Text)) || (x.TienLaiVe.ToString().Contains(p.Text)) || (x.TienHuyVe.ToString().Contains(p.Text))).ToList();

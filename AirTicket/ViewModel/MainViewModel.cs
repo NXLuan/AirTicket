@@ -103,6 +103,7 @@ namespace AirTicket.ViewModel
             LoginWindow loginWindow = new LoginWindow();
             var loginVM = loginWindow.DataContext as LoginViewModel;
             MenuFunction.Clear();
+            DataProvider.Instance.DB.NHOMNGUOIDUNGs = db.NHOMNGUOIDUNGs;
             DataProvider.Instance.DB.SaveChanges();
             var NhomNguoiDung = db.NHOMNGUOIDUNGs.Where(x => x.MaNhom == loginVM.AccountTypte).First();
             foreach (CHUCNANG CN in NhomNguoiDung.CHUCNANGs)

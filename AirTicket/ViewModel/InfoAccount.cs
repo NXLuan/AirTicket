@@ -43,17 +43,17 @@ namespace AirTicket.ViewModel
               });
             AddInfoAccountCommand = new RelayCommand<DataGrid>((p) => { return true; }, (p) =>
              {
-                 if (dTenDangNhap == null)
+                 if (string.IsNullOrWhiteSpace(dTenDangNhap))
                  {
                      MessageBox.Show("Tên đăng nhập không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                      return;
                  }
-                 if (dMatKhau == null)
+                 if (string.IsNullOrWhiteSpace(dMatKhau))
                  {
                      MessageBox.Show("Mật khẩu không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                      return;
                  }
-                 if (cbbMaNhom == null)
+                 if (string.IsNullOrWhiteSpace(dMaNhom))
                  {
                      MessageBox.Show("Mã nhóm không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                      return;
@@ -83,7 +83,7 @@ namespace AirTicket.ViewModel
                 {
                     foreach (var item in Items1)
                     {
-                        if (item.MatKhau == null)
+                        if (string.IsNullOrWhiteSpace(item.MatKhau))
                         {
                             MessageBox.Show("Mã hãng không được để trống", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
@@ -112,7 +112,7 @@ namespace AirTicket.ViewModel
             });
             SearchInfoAccountCommand = new RelayCommand<TextBox>((p) => { return true; }, (p) =>
             {
-                if (p.Text != null && p.Text != "")
+                if (string.IsNullOrWhiteSpace(p.Text))
                 {
                     ShowAccount();
                     var datasearch = Items1.Where(x => (x.TenDangNhap.Contains(p.Text)) || (x.MatKhau.Contains(p.Text)) || (x.MaNhom.Contains(p.Text))).ToList();
