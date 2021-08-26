@@ -182,20 +182,23 @@
     </Compile>
     <Compile Include="ViewModel\Regulation.cs" />
     <Compile Include="ViewModel\VeChuyenBay.cs" />
-    <Compile Include="View\AccessibilityControllerView.xaml.cs">
-      <DependentUpon>AccessibilityControllerView.xaml</DependentUpon>
+    <Compile Include="View\AccessibilityManagement.xaml.cs">
+      <DependentUpon>AccessibilityManagement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FlightSearch.xaml.cs">
+      <DependentUpon>FlightSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\InforAccount.xaml.cs">
       <DependentUpon>InforAccount.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\InforPassenger.xaml.cs">
-      <DependentUpon>InforPassenger.xaml</DependentUpon>
+    <Compile Include="View\InfoPassenger.xaml.cs">
+      <DependentUpon>InfoPassenger.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Statistics.xaml.cs">
       <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\InforRegulation.xaml.cs">
-      <DependentUpon>InforRegulation.xaml</DependentUpon>
+    <Compile Include="View\InfoRegulation.xaml.cs">
+      <DependentUpon>InfoRegulation.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\InforTicket.xaml.cs">
       <DependentUpon>InforTicket.xaml</DependentUpon>
@@ -209,8 +212,16 @@
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TicketSalesViewModel.cs" />
+    <Page Include="ResourceXAML\StyleResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\BarChart.xaml" />
-    <Page Include="View\AccessibilityControllerView.xaml">
+    <Page Include="View\AccessibilityManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FlightSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,7 +229,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\InforPassenger.xaml">
+    <Page Include="View\InfoPassenger.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -230,7 +241,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\InforRegulation.xaml">
+    <Page Include="View\InfoRegulation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

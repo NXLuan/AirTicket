@@ -58,44 +58,8 @@ namespace AirTicket.ViewModel
             SelectedItemFunctionCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
               {
                   CHUCNANG ChucNang = p as CHUCNANG;
-                  switch (ChucNang.TenManHinhDuocLoad)
-                  {
-                      case "TicketSales":
-                          {
-                              CurrentScreen = new TicketSales();
-                              break;
-                          }
-                      case "InforTicket":
-                          {
-                              CurrentScreen = new InforTicket();
-                              break;
-                          }
-                      case "AccessibilityManagement":
-                          {
-                              CurrentScreen = new AccessibilityControllerView();
-                              break;
-                          }
-					  case "InfoRegulation":
-                          {
-                              CurrentScreen = new InforRegulation();
-                              break;
-                          }
-                      case "Statistics":
-                          {
-                              CurrentScreen = new Statistics();
-                              break;
-                          }
-                      case "InforAccount":
-                          {
-                              CurrentScreen = new InforAccount();
-                              break;
-                          }
-                      default:
-                          {
-                              CurrentScreen = null;
-                              break;
-                          }
-                  }
+                  Type type = Type.GetType("AirTicket.View." + ChucNang.TenManHinhDuocLoad);
+                  CurrentScreen = Activator.CreateInstance(type) as UserControl;
               });
         }
         public static void update(AIRTICKETEntities db)

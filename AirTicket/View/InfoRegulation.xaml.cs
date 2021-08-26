@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirTicket.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,11 +17,11 @@ using System.Windows.Shapes;
 namespace AirTicket.View
 {
     /// <summary>
-    /// Interaction logic for InforPassenger.xaml
+    /// Interaction logic for InfoRegulation.xaml
     /// </summary>
-    public partial class InforPassenger : UserControl
+    public partial class InfoRegulation : UserControl
     {
-        public InforPassenger()
+        public InfoRegulation()
         {
             InitializeComponent();
         }

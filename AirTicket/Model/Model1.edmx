@@ -28,12 +28,12 @@
           <Property Name="MaHoaDon" Type="varchar" MaxLength="16" Nullable="false" />
           <Property Name="ThoiGianTao" Type="datetime" />
           <Property Name="TongTien" Type="money" />
+          <Property Name="SoVe" Type="int" />
           <Property Name="HoTen" Type="nvarchar" MaxLength="50" />
           <Property Name="GioiTinh" Type="nvarchar" MaxLength="10" />
           <Property Name="SDT" Type="varchar" MaxLength="20" />
           <Property Name="Email" Type="varchar" MaxLength="200" />
           <Property Name="GhiChu" Type="nvarchar(max)" />
-          <Property Name="SoVe" Type="int" />
           <Property Name="LoiNhuan" Type="money" />
           <Property Name="ChiPhiHuy" Type="money" />
           <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
@@ -105,7 +105,7 @@
           <Property Name="NgaySinh" Type="date" />
           <Property Name="MaHoaDon" Type="varchar" MaxLength="16" />
         </EntityType>
-        <Association Name="FK__NGUOIDUNG__MaNho__3E52440B">
+        <Association Name="FK__NGUOIDUNG__MaNho__239E4DCF">
           <End Role="NHOMNGUOIDUNG" Type="Self.NHOMNGUOIDUNG" Multiplicity="0..1" />
           <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -117,7 +117,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHANQUYEN__MaChu__440B1D61">
+        <Association Name="FK__PHANQUYEN__MaChu__29572725">
           <End Role="CHUCNANG" Type="Self.CHUCNANG" Multiplicity="1" />
           <End Role="PHANQUYEN" Type="Self.PHANQUYEN" Multiplicity="*" />
           <ReferentialConstraint>
@@ -129,7 +129,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHANQUYEN__MaNho__4316F928">
+        <Association Name="FK__PHANQUYEN__MaNho__286302EC">
           <End Role="NHOMNGUOIDUNG" Type="Self.NHOMNGUOIDUNG" Multiplicity="1" />
           <End Role="PHANQUYEN" Type="Self.PHANQUYEN" Multiplicity="*" />
           <ReferentialConstraint>
@@ -141,7 +141,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QUYDINHGI__MaHan__38996AB5">
+        <Association Name="FK__QUYDINHGI__MaHan__1DE57479">
           <End Role="HANGHANGKHONG" Type="Self.HANGHANGKHONG" Multiplicity="1" />
           <End Role="QUYDINHGIAVE" Type="Self.QUYDINHGIAVE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -153,7 +153,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QUYDINHGI__MaLoa__398D8EEE">
+        <Association Name="FK__QUYDINHGI__MaLoa__1ED998B2">
           <End Role="LOAIHANHKHACH" Type="Self.LOAIHANHKHACH" Multiplicity="1" />
           <End Role="QUYDINHGIAVE" Type="Self.QUYDINHGIAVE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -165,7 +165,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VECHUYENB__MaHoa__300424B4">
+        <Association Name="FK__VECHUYENB__MaHoa__2D27B809">
           <End Role="HOADON" Type="Self.HOADON" Multiplicity="0..1" />
           <End Role="VECHUYENBAY" Type="Self.VECHUYENBAY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -177,7 +177,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VECHUYENB__MaLoa__2F10007B">
+        <Association Name="FK__VECHUYENB__MaLoa__2C3393D0">
           <End Role="LOAIHANHKHACH" Type="Self.LOAIHANHKHACH" Multiplicity="0..1" />
           <End Role="VECHUYENBAY" Type="Self.VECHUYENBAY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -200,31 +200,31 @@
           <EntitySet Name="QUYDINHGIAVE" EntityType="Self.QUYDINHGIAVE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SANBAY" EntityType="Self.SANBAY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VECHUYENBAY" EntityType="Self.VECHUYENBAY" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__NGUOIDUNG__MaNho__3E52440B" Association="Self.FK__NGUOIDUNG__MaNho__3E52440B">
+          <AssociationSet Name="FK__NGUOIDUNG__MaNho__239E4DCF" Association="Self.FK__NGUOIDUNG__MaNho__239E4DCF">
             <End Role="NHOMNGUOIDUNG" EntitySet="NHOMNGUOIDUNG" />
             <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHANQUYEN__MaChu__440B1D61" Association="Self.FK__PHANQUYEN__MaChu__440B1D61">
+          <AssociationSet Name="FK__PHANQUYEN__MaChu__29572725" Association="Self.FK__PHANQUYEN__MaChu__29572725">
             <End Role="CHUCNANG" EntitySet="CHUCNANG" />
             <End Role="PHANQUYEN" EntitySet="PHANQUYEN" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHANQUYEN__MaNho__4316F928" Association="Self.FK__PHANQUYEN__MaNho__4316F928">
+          <AssociationSet Name="FK__PHANQUYEN__MaNho__286302EC" Association="Self.FK__PHANQUYEN__MaNho__286302EC">
             <End Role="NHOMNGUOIDUNG" EntitySet="NHOMNGUOIDUNG" />
             <End Role="PHANQUYEN" EntitySet="PHANQUYEN" />
           </AssociationSet>
-          <AssociationSet Name="FK__QUYDINHGI__MaHan__38996AB5" Association="Self.FK__QUYDINHGI__MaHan__38996AB5">
+          <AssociationSet Name="FK__QUYDINHGI__MaHan__1DE57479" Association="Self.FK__QUYDINHGI__MaHan__1DE57479">
             <End Role="HANGHANGKHONG" EntitySet="HANGHANGKHONG" />
             <End Role="QUYDINHGIAVE" EntitySet="QUYDINHGIAVE" />
           </AssociationSet>
-          <AssociationSet Name="FK__QUYDINHGI__MaLoa__398D8EEE" Association="Self.FK__QUYDINHGI__MaLoa__398D8EEE">
+          <AssociationSet Name="FK__QUYDINHGI__MaLoa__1ED998B2" Association="Self.FK__QUYDINHGI__MaLoa__1ED998B2">
             <End Role="LOAIHANHKHACH" EntitySet="LOAIHANHKHACH" />
             <End Role="QUYDINHGIAVE" EntitySet="QUYDINHGIAVE" />
           </AssociationSet>
-          <AssociationSet Name="FK__VECHUYENB__MaHoa__300424B4" Association="Self.FK__VECHUYENB__MaHoa__300424B4">
+          <AssociationSet Name="FK__VECHUYENB__MaHoa__2D27B809" Association="Self.FK__VECHUYENB__MaHoa__2D27B809">
             <End Role="HOADON" EntitySet="HOADON" />
             <End Role="VECHUYENBAY" EntitySet="VECHUYENBAY" />
           </AssociationSet>
-          <AssociationSet Name="FK__VECHUYENB__MaLoa__2F10007B" Association="Self.FK__VECHUYENB__MaLoa__2F10007B">
+          <AssociationSet Name="FK__VECHUYENB__MaLoa__2C3393D0" Association="Self.FK__VECHUYENB__MaLoa__2C3393D0">
             <End Role="LOAIHANHKHACH" EntitySet="LOAIHANHKHACH" />
             <End Role="VECHUYENBAY" EntitySet="VECHUYENBAY" />
           </AssociationSet>

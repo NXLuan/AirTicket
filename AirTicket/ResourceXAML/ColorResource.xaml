@@ -37,4 +37,6 @@
                      Color="#FB7604" />
     <SolidColorBrush x:Key="Error"
                      Color="red" />
+    <SolidColorBrush x:Key="Success"
+                     Color="#01A101" />
 </ResourceDictionary>

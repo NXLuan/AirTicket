@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace AirTicket.View
 {
     /// <summary>
-    /// Interaction logic for AccessibilityControllerView.xaml
+    /// Interaction logic for FlightSearch.xaml
     /// </summary>
-    public partial class AccessibilityControllerView : UserControl
+    public partial class FlightSearch : UserControl
     {
-        public AccessibilityControllerView()
+        public FlightSearch()
         {
             InitializeComponent();
         }

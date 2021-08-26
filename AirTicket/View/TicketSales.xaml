@@ -11,17 +11,19 @@
              mc:Ignorable="d"
              d:DesignHeight="800"
              d:DesignWidth="1000"
-             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             TextElement.FontWeight="Regular"
-             TextElement.FontSize="13"
-             TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto"
-             Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="{DynamicResource MaterialDesignFont}">
+             Style="{StaticResource WindowStyle}">
     <Grid Background="{DynamicResource BackgroundColor}">
         <TabControl Background="{DynamicResource BackgroundColor}"
                     BorderThickness="0"
                     x:Name="tabTicketSale">
+
+            <TabItem  Header="Tra cứu"
+                      Width="auto"
+                      Height="50"
+                      Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+                <local:FlightSearch />
+            </TabItem>
+            
             <!--select flight-->
             <TabItem Header="Chọn chuyến bay"
                      Width="auto"
@@ -359,14 +361,14 @@
                      Style="{StaticResource MaterialDesignNavigationRailTabItem}"
                      IsEnabled="False"
                      DataContext="{StaticResource InfoPaVM}">
-                <local:InforPassenger>
+                <local:InfoPassenger>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Loaded">
                             <i:InvokeCommandAction Command="{Binding InfoPaLoadCommand}"
                                                    CommandParameter="{Binding ElementName=selectFlightTab}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                </local:InforPassenger>
+                </local:InfoPassenger>
             </TabItem>
         </TabControl>
     </Grid>
