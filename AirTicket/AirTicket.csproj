@@ -161,7 +161,8 @@
     <Compile Include="Model\VECHUYENBAY.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Ultility\BindingProxy.cs" />
+    <Compile Include="Utilities\BindingProxy.cs" />
+    <Compile Include="Utilities\DependcyCustom.cs" />
     <Compile Include="ValidRule\ComboboxAirportValidationRule.cs" />
     <Compile Include="ValidRule\DateOfBirthValidationRule.cs" />
     <Compile Include="ValidRule\EmailValidationRule.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="ViewModel\InfoRegulation.cs" />
     <Compile Include="ViewModel\InfoTicket.cs" />
     <Compile Include="ViewModel\InfoPaViewModel.cs" />
+    <Compile Include="ViewModel\ListFlightViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\PassengerViewModel.cs" />
     <Compile Include="ViewModel\StatisticsViewModel.cs" />

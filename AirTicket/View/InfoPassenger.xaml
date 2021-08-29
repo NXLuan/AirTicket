@@ -4,20 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:local="clr-namespace:AirTicket.View"
              xmlns:rule="clr-namespace:AirTicket.ValidRule"
+             xmlns:util="clr-namespace:AirTicket.Utilities"
              xmlns:convert="clr-namespace:AirTicket.Converter"
              mc:Ignorable="d"
              d:DesignHeight="1000"
              d:DesignWidth="800"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             TextElement.FontWeight="Regular"
-             TextElement.FontSize="13"
-             TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto"
-             Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="{DynamicResource MaterialDesignFont}"
+             Style="{StaticResource WindowStyle}"
              DataContext="{StaticResource InfoPaVM}">
     <Grid Background="{DynamicResource BackgroundColor}">
         <Grid.ColumnDefinitions>
@@ -46,7 +40,7 @@
                     <Separator Background="{DynamicResource BackgroundColor}" />
                     <ListView ItemsSource="{Binding ListDetailInfo}"
                               Height="300"
-                              Name="ListPassenger">   
+                              Name="ListPassenger">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn DisplayMemberBinding="{Binding num}"
@@ -87,7 +81,7 @@
                                             <DatePicker Width="100"
                                                         ToolTip="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)/ErrorContent}">
                                                 <DatePicker.Resources>
-                                                    <rule:BindingProxy x:Key="TargetProxy"
+                                                    <util:BindingProxy x:Key="TargetProxy"
                                                                        Data="{Binding VCBModel.LOAIHANHKHACH}" />
                                                 </DatePicker.Resources>
                                                 <DatePicker.SelectedDate>
@@ -209,13 +203,14 @@
                         <materialDesign:PackIcon Kind="ChevronLeft"
                                                  VerticalAlignment="Center"
                                                  Margin="10,0,0,0"
-                                                 Height="20" Width="20"
-                                                 Foreground="{DynamicResource PrimaryHueLightBrush}"/>
+                                                 Height="20"
+                                                 Width="20"
+                                                 Foreground="{DynamicResource PrimaryHueLightBrush}" />
                         <Button Width="180"
                                 HorizontalAlignment="Left"
                                 Content="Chọn lại"
-                                Style="{StaticResource MaterialDesignOutlinedButton}" 
-                                Command="{Binding btnSelectAgainCommand}"/>
+                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                Command="{Binding btnSelectAgainCommand}" />
                         <Button Content="Đặt chỗ"
                                 HorizontalAlignment="Right"
                                 Width="180"

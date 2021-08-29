@@ -11,347 +11,144 @@
              mc:Ignorable="d"
              d:DesignHeight="800"
              d:DesignWidth="1000"
-             Style="{StaticResource WindowStyle}">
+             Style="{StaticResource WindowStyle}"
+             DataContext="{StaticResource TicketSalesVM}">
     <Grid Background="{DynamicResource BackgroundColor}">
         <TabControl Background="{DynamicResource BackgroundColor}"
                     BorderThickness="0"
-                    x:Name="tabTicketSale">
+                    x:Name="tabTicketSale"
+                    SelectedIndex="{Binding SelectIndexTab}">
 
-            <TabItem  Header="Tra cứu"
+            <TabItem  Header="Tra cứu chuyến bay"
                       Width="auto"
                       Height="50"
                       Style="{StaticResource MaterialDesignNavigationRailTabItem}">
                 <local:FlightSearch />
             </TabItem>
-            
+
             <!--select flight-->
             <TabItem Header="Chọn chuyến bay"
                      Width="auto"
                      Height="50"
                      VerticalAlignment="Top"
                      Style="{StaticResource MaterialDesignNavigationRailTabItem}"
-                     DataContext="{StaticResource TicketSalesVM}"
-                     Name="selectFlightTab">
+                     Name="selectFlightTab"
+                     IsEnabled="{Binding IsEnableTabChoose}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseClick">
                         <i:InvokeCommandAction Command="{Binding ReturnCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <Grid>
-                    <!--info flight-->
-                    <DockPanel>
-                        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                             materialDesign:ShadowAssist.ShadowEdges="None"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Top"
-                                             DockPanel.Dock="Top">
-                            <StackPanel>
-                                <TextBlock Text="TÌM KIẾM CHUYẾN BAY"
-                                           Foreground="{DynamicResource TextNormalColor}"
-                                           FontWeight="SemiBold"
-                                           FontSize="15"
-                                           Padding="20,10,0,5" />
-                                <Separator Background="{DynamicResource BackgroundColor}" />
-                                <ListBox Style="{StaticResource MaterialDesignFilterChipAccentOutlineListBox}"
-                                         Padding="15,10,10,10"
-                                         ItemsSource="{Binding ListAirline}"
-                                         DisplayMemberPath="HHKModel.TenHang"
-                                         Name="lbAirline">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem"
-                                               BasedOn="{StaticResource MaterialDesignFilterChipAccentOutlineListBoxItem}">
-                                            <Setter Property="IsSelected"
-                                                    Value="{Binding isSelected, UpdateSourceTrigger=PropertyChanged}" />
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                </ListBox>
-                                <Grid Margin="10,5,0,25">
-                                    <StackPanel Width="auto">
-                                        <StackPanel Orientation="Horizontal">
-                                            <StackPanel>
-                                                <TextBlock Margin="10,5,0,5"
-                                                           Text="Điểm đi"
-                                                           Foreground="{DynamicResource TextNormalColor}" />
-                                                <ComboBox ItemsSource="{Binding ListDeparture}"
-                                                          DisplayMemberPath="ThanhPho"
-                                                          materialDesign:HintAssist.Hint="Nhập thành phố"
-                                                          materialDesign:HintAssist.HintOpacity=".26"
-                                                          IsEditable="True"
-                                                          Margin="10,0,0,0"
-                                                          HorizontalAlignment="Left"
-                                                          Width="150"
-                                                          Cursor="IBeam"
-                                                          Name="cbDeparture">
-                                                    <ComboBox.SelectedItem>
-                                                        <Binding Path="SelectedDeparture"
-                                                                 UpdateSourceTrigger="PropertyChanged">
-                                                            <Binding.ValidationRules>
-                                                                <rule:ComboboxAirportValidationRule ValidatesOnTargetUpdated="True" />
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </ComboBox.SelectedItem>
-                                                </ComboBox>
-                                                <!--ItemsSource="{Binding ShortStringList}"-->
-                                            </StackPanel>
-                                            <StackPanel Margin="20,0,0,0">
-                                                <TextBlock Margin="10,5,0,5"
-                                                           Text="Điểm đến"
-                                                           Foreground="{DynamicResource TextNormalColor}" />
-                                                <ComboBox ItemsSource="{Binding ListDestination}"
-                                                          DisplayMemberPath="ThanhPho"
-                                                          SelectedValuePath="MaSanBay"
-                                                          materialDesign:HintAssist.Hint="Nhập thành phố"
-                                                          materialDesign:HintAssist.HintOpacity=".26"
-                                                          IsEditable="True"
-                                                          Margin="10,0,0,0"
-                                                          HorizontalAlignment="Left"
-                                                          Cursor="IBeam"
-                                                          Width="150"
-                                                          Name="cbDestination">
-                                                    <ComboBox.SelectedItem>
-                                                        <Binding Path="SelectedDestination"
-                                                                 UpdateSourceTrigger="PropertyChanged">
-                                                            <Binding.ValidationRules>
-                                                                <rule:ComboboxAirportValidationRule ValidatesOnTargetUpdated="True" />
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </ComboBox.SelectedItem>
-                                                </ComboBox>
-                                                <!--ItemsSource="{Binding ShortStringList}"-->
-                                            </StackPanel>
-                                            <StackPanel Margin="20,0,0,0">
-                                                <TextBlock Margin="10,5,0,5"
-                                                           Text="Ngày đi"
-                                                           Foreground="{DynamicResource TextNormalColor}" />
-                                                <DatePicker x:Name="FutureDatePicker"
-                                                            materialDesign:CalendarAssist.IsHeaderVisible="False"
-                                                            Margin="10,0,0,0"
-                                                            HorizontalAlignment="Left"
-                                                            Width="150">
-                                                    <DatePicker.SelectedDate>
-                                                        <Binding Path="DateDeparture"
-                                                                 UpdateSourceTrigger="PropertyChanged">
-                                                            <Binding.ValidationRules>
-                                                                <rule:FutureDateValidationRule ValidatesOnTargetUpdated="True" />
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </DatePicker.SelectedDate>
-                                                </DatePicker>
-                                            </StackPanel>
-                                            <StackPanel Margin="20,0,0,0">
-                                                <TextBlock Margin="10,5,0,5"
-                                                           Text="Hành khách"
-                                                           Foreground="{DynamicResource TextNormalColor}" />
-                                                <Grid Cursor="Hand"
-                                                      Name="pnPassenger"
-                                                      Margin="10,0,0,0">
-                                                    <TextBox Width="150"
-                                                             Name="totalPassenger"
-                                                             IsEnabled="False"
-                                                             Text="{Binding TotalPassenger, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <materialDesign:PackIcon HorizontalAlignment="Right"
-                                                                             Kind="AccountGroup"
-                                                                             VerticalAlignment="Center"
-                                                                             Foreground="Gray" />
-                                                </Grid>
-                                            </StackPanel>
 
-
-                                            <Grid HorizontalAlignment="Left"
-                                                  Width="200"
-                                                  Margin="20,10,0,0">
-                                                <Button Command="{Binding SearchTicketCommand}"
-                                                        ToolTip="Tìm kiếm chuyến bay" 
-                                                        Content="Tìm kiếm">
-                                                    <Button.Style>
-                                                        <Style TargetType="Button"
-                                                               BasedOn="{StaticResource MaterialDesignFlatLightBgButton}">
-                                                            <Setter Property="IsEnabled"
-                                                                    Value="False" />
-                                                            <Style.Triggers>
-                                                                <MultiDataTrigger>
-                                                                    <MultiDataTrigger.Conditions>
-                                                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=FutureDatePicker}"
-                                                                                   Value="False" />
-                                                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=cbDeparture}"
-                                                                                   Value="False" />
-                                                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=cbDestination}"
-                                                                                   Value="False" />
-                                                                        <Condition Binding="{Binding Path=Visibility , ElementName=progressSearch}"
-                                                                                   Value="Hidden" />
-                                                                    </MultiDataTrigger.Conditions>
-                                                                    <Setter Property="IsEnabled"
-                                                                            Value="True" />
-                                                                </MultiDataTrigger>
-                                                                <DataTrigger Binding="{Binding Path=SelectedIndex, ElementName=lbAirline}"
-                                                                             Value="-1">
-                                                                    <Setter Property="IsEnabled"
-                                                                            Value="False" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Button.Style>
-                                                </Button>
-
-                                                <materialDesign:PackIcon Kind="Magnify"
-                                                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                                                         VerticalAlignment="Center"
-                                                                         Width="50"
-                                                                         Height="20" />
-                                            </Grid>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </materialDesign:Card>
-
-
-                        <!--list flight-->
-                        <Grid DockPanel.Dock="Top"
-                              Margin="30,20,30,20">
+                <ItemsControl ItemsSource="{Binding FlightListVMs}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="{Binding FlightListVMs.Count}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!--list flight-->
                             <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                                 materialDesign:ShadowAssist.ShadowEdges="None">
-                                <ListView ItemsSource="{Binding listFlightVM}">
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn Header="Hàng không">
-                                                <GridViewColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Image Source="{Binding ImgAirlineUrl}"
-                                                               Margin="5" />
-                                                    </DataTemplate>
-                                                </GridViewColumn.CellTemplate>
-                                            </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding flight}"
-                                                            Header="Chuyến bay" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding departureTime}"
-                                                            Header="Giờ khởi hành" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding landingTime}"
-                                                            Header="Giờ hạ cánh" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding priceFlight}"
-                                                            Header="Giá chuyến bay" />
-                                            <GridViewColumn>
-                                                <GridViewColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Grid>
-                                                            <Button Width="100"
-                                                                    Content="Chọn"
-                                                                    Style="{StaticResource MaterialDesignOutlinedButton}">
-                                                                <i:Interaction.Triggers>
-                                                                    <i:EventTrigger EventName="Click">
-                                                                        <i:InvokeCommandAction Command="{Binding SelectFlightCommand}"
-                                                                                               CommandParameter="{Binding ElementName=tabTicketSale}" />
-                                                                    </i:EventTrigger>
-                                                                </i:Interaction.Triggers>
-                                                            </Button>
-                                                            <materialDesign:PackIcon Kind="ChevronRight"
-                                                                                     VerticalAlignment="Center"
-                                                                                     HorizontalAlignment="Right"
-                                                                                     Margin="0,0,5,0"
-                                                                                     Height="20"
-                                                                                     Width="20"
-                                                                                     Foreground="{DynamicResource PrimaryHueLightBrush}" />
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </GridViewColumn.CellTemplate>
-                                            </GridViewColumn>
-                                        </GridView>
-                                    </ListView.View>
-                                </ListView>
+                                                 materialDesign:ShadowAssist.ShadowEdges="None"
+                                                 Margin="10,0,10,10">
+                                <DockPanel>
+                                    <DockPanel DockPanel.Dock="Top"
+                                               Background="{DynamicResource PrimaryHueLightBrush}">
+                                        <materialDesign:PackIcon Kind="Flight"
+                                                                 VerticalAlignment="Center"
+                                                                 Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                                                 Width="24"
+                                                                 Height="24"
+                                                                 Margin="10,0" />
+                                        <StackPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Đà nẵng"
+                                                           Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                                           Margin="0,10,5,0"
+                                                           FontSize="16" />
+                                                <materialDesign:PackIcon Kind="ArrowRightBold"
+                                                                         Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                                                         Margin="0,12,0,0" />
+                                                <TextBlock Text="Hà nội"
+                                                           Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                                           Margin="5,10,0,0"
+                                                           FontSize="16" />
+                                            </DockPanel>
+                                            <TextBlock Text="Thứ 7, 30-10-2021"
+                                                       Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                                       Padding="0,4,0,10"
+                                                       FontSize="12"
+                                                       FontStyle="Italic" />
+                                        </StackPanel>
+                                    </DockPanel>
+
+                                    <Grid>
+                                        <ListView ItemsSource="{Binding ListFlightVM}">
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridViewColumn Header="Hàng không">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Image Source="{Binding ImgAirlineUrl}"
+                                                                       Margin="5" />
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn DisplayMemberBinding="{Binding flight}"
+                                                                    Header="Chuyến bay" />
+                                                    <GridViewColumn DisplayMemberBinding="{Binding departureTime}"
+                                                                    Header="Giờ khởi hành" />
+                                                    <GridViewColumn DisplayMemberBinding="{Binding landingTime}"
+                                                                    Header="Giờ hạ cánh" />
+                                                    <GridViewColumn DisplayMemberBinding="{Binding priceFlight}"
+                                                                    Header="Giá chuyến bay" />
+                                                    <GridViewColumn>
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <Button Width="100"
+                                                                            Content="Chọn"
+                                                                            Style="{StaticResource MaterialDesignOutlinedButton}">
+                                                                        <i:Interaction.Triggers>
+                                                                            <i:EventTrigger EventName="Click">
+                                                                                <i:InvokeCommandAction Command="{Binding SelectFlightCommand}"
+                                                                                                       CommandParameter="{Binding ElementName=tabTicketSale}" />
+                                                                            </i:EventTrigger>
+                                                                        </i:Interaction.Triggers>
+                                                                    </Button>
+                                                                    <materialDesign:PackIcon Kind="ChevronRight"
+                                                                                             VerticalAlignment="Center"
+                                                                                             HorizontalAlignment="Right"
+                                                                                             Margin="0,0,5,0"
+                                                                                             Height="20"
+                                                                                             Width="20"
+                                                                                             Foreground="{DynamicResource PrimaryHueLightBrush}" />
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+
+
+                                        <TextBlock Text="Không tìm thấy kết quả"
+                                                   Foreground="{DynamicResource MoneyBrush}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Visibility="{Binding IsNoResult}" />
+                                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                                     Value="0"
+                                                     IsIndeterminate="True"
+                                                     Visibility="{Binding IsLoading}"
+                                                     Name="progressSearch" />
+                                    </Grid>
+                                </DockPanel>
                             </materialDesign:Card>
-
-                            <TextBlock Text="Không tìm thấy kết quả"
-                                       Foreground="{DynamicResource MoneyBrush}"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding IsNoResult}" />
-                            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                         Value="0"
-                                         IsIndeterminate="True"
-                                         Visibility="{Binding IsLoading}"
-                                         Name="progressSearch" />
-                        </Grid>
-                    </DockPanel>
-
-
-
-                    <materialDesign:Card Margin="560,155,0,0"
-                                         MaxWidth="360"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         MaxHeight="174">
-                        <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding listPassengerVM}"
-                                          Margin="10">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <DockPanel>
-                                            <Image Source="{Binding LHKModel.PhotoUrl}"
-                                                   Width="30" />
-                                            <StackPanel  Width="150"
-                                                         Margin="5,10,0,0">
-                                                <TextBlock Text="{Binding LHKModel.TenLoai}"
-                                                           x:Name="typePassenger" />
-                                                <TextBlock Text="{Binding regulationAge}"
-                                                           Margin="0,0,0,10"
-                                                           Foreground="{DynamicResource PrimaryHueLightBrush}" />
-                                            </StackPanel>
-                                            <Button   Style="{StaticResource MaterialDesignIconButton}"
-                                                      Foreground="#6F8294"
-                                                      ToolTip="Giảm hành khách"
-                                                      IsEnabled="{Binding IsEnableReduce}">
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Click">
-                                                        <i:InvokeCommandAction Command="{Binding ReducePassengerCommand}"
-                                                                               CommandParameter="{Binding ElementName=totalPassenger}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                                <materialDesign:PackIcon Kind="MinusCircle" />
-                                            </Button>
-                                            <TextBlock VerticalAlignment="Center"
-                                                       TextAlignment="Center"
-                                                       FontSize="20"
-                                                       Width="40"
-                                                       Text="{Binding NumberOfPassenger}" />
-                                            <Button Style="{StaticResource MaterialDesignIconButton}"
-                                                    ToolTip="Thêm hành khách"
-                                                    Foreground="#6F8294"
-                                                    IsEnabled="{Binding IsEnableAdd}">
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Click">
-                                                        <i:InvokeCommandAction Command="{Binding AddPassengerCommand}"
-                                                                               CommandParameter="{Binding ElementName=totalPassenger}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                                <materialDesign:PackIcon Kind="PlusCircle" />
-                                            </Button>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-
-                        <materialDesign:Card.Style>
-                            <Style TargetType="materialDesign:Card">
-                                <Setter Property="Visibility"
-                                        Value="Hidden" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=pnPassenger, Path=IsMouseOver}"
-                                                 Value="true">
-                                        <Setter Property="Visibility"
-                                                Value="Visible" />
-                                    </DataTrigger>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="true">
-                                        <Setter Property="Visibility"
-                                                Value="Visible" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </materialDesign:Card.Style>
-                    </materialDesign:Card>
-                </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </TabItem>
 
             <TabItem Header="Thông tin hành khách"

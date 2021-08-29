@@ -1,4 +1,5 @@
 ﻿using AirTicket.Model;
+using AirTicket.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,10 +14,10 @@ using System.Windows.Markup;
 
 namespace AirTicket.ValidRule
 {
-    [ContentProperty("Type")]
+    [ContentProperty("DependencyLHK")]
     public class DateOfBirthValidationRule : ValidationRule
     {
-        public TypePassenger Type { get; set; }
+        public TypePassenger DependencyLHK { get; set; }
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
@@ -33,7 +34,7 @@ namespace AirTicket.ValidRule
             int age = now.Year - birthday.Year;
             if (now < birthday.AddYears(age)) age--;
 
-            LOAIHANHKHACH lhk = Type.Value;
+            LOAIHANHKHACH lhk = DependencyLHK.Value;
 
             if ((lhk.TuoiMax == null) && (age < lhk.TuoiMin)) return new ValidationResult(false, "Tuổi " + lhk.TenLoai + " >= " + lhk.TuoiMin);
             if ((lhk.TuoiMin == null) && (age > lhk.TuoiMax)) return new ValidationResult(false, "Tuổi " + lhk.TenLoai + " < " + (lhk.TuoiMax + 1));
@@ -43,33 +44,5 @@ namespace AirTicket.ValidRule
         }
     }
 
-    public class TypePassenger : DependencyObject
-    {
-        public LOAIHANHKHACH Value
-        {
-            get { return (LOAIHANHKHACH)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
-        }
-
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            nameof(Value),
-            typeof(LOAIHANHKHACH),
-            typeof(TypePassenger),
-            new PropertyMetadata(default(LOAIHANHKHACH)));
-    }
-
-    public class BindingProxy : Freezable
-    {
-        protected override Freezable CreateInstanceCore()
-        {
-            return new BindingProxy();
-        }
-
-        public object Data
-        {
-            get { return GetValue(DataProperty); }
-            set { SetValue(DataProperty, value); }
-        }
-        public static readonly DependencyProperty DataProperty = DependencyProperty.Register(nameof(Data), typeof(object), typeof(BindingProxy), new UIPropertyMetadata(null));
-    }
+    public class TypePassenger : DependencyCustom<LOAIHANHKHACH>{}
 }

@@ -23,6 +23,8 @@ namespace AirTicket.View
         public FlightSearch()
         {
             InitializeComponent();
+            FutureDatePicker.BlackoutDates.AddDatesInPast();
+            ReturnDatePicker.BlackoutDates.AddDatesInPast();
         }
     }
 }

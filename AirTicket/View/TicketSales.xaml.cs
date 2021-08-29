@@ -23,7 +23,6 @@ namespace AirTicket.View
         public TicketSales()
         {
             InitializeComponent();
-            FutureDatePicker.BlackoutDates.AddDatesInPast();
         }
     }
 }
