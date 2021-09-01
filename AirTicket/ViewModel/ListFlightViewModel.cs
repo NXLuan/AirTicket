@@ -37,6 +37,14 @@ namespace AirTicket.ViewModel
             set => SetProperty(ref _flightDate, value);
         }
 
+        private string _depatureDate;
+
+        public string DepartureDate
+        {
+            get => _depatureDate;
+            set => SetProperty(ref _depatureDate, value);
+        }
+
         private string _isLoading;
 
         public string IsLoading
@@ -69,7 +77,10 @@ namespace AirTicket.ViewModel
                 if (ListFlightVM != null && ListFlightVM.Count != 0)
                 {
                     if (value != null)
+                    {
                         filter.AddFilter("FlightSelected", element => ((FlightModel)element).Equals(value));
+                        
+                    }
                     else filter.ClearFilters();
                 }
                 SetProperty(ref _flightSelected, value);

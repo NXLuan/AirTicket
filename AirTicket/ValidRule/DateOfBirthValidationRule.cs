@@ -45,4 +45,5 @@ namespace AirTicket.ValidRule
     }
 
     public class TypePassenger : DependencyCustom<LOAIHANHKHACH>{}
+
 }
