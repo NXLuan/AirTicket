@@ -1,4 +1,5 @@
 ﻿using AirTicket.Model;
+using AirTicket.Utilities;
 using HtmlAgilityPack;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -10,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,71 +31,29 @@ namespace AirTicket.ViewModel
 
         public TicketSalesViewModel()
         {
-            if (ListInfoPassengerVM == null) ListInfoPassengerVM = new ObservableCollection<PassengerViewModel>();
-            FlightListVMs = new ObservableCollection<ListFlightViewModel>()
-            {
-                new ListFlightViewModel()
-            };
+            HandleInit();
+            HandleEvent();
+        }
 
-            ReturnCommand = new RelayCommand<TabControl>((p) => { return p == null ? false : true; }, (p) =>
-            {
-                TabControl tab = p as TabControl;
-                TabItem tabItem = tab.Items[1] as TabItem;
-                tabItem.IsEnabled = false;
-            });
+        public void HandleInit()
+        {
+            HandleInitTabSearch();
+            HandleInitTabChoose();
+            HandleInitTabInfo();
+        }
 
-            SearchTicketCommand = new RelayCommand<object>((p) => true, (p) =>
-            {
-                //InfoDeparture = SelectedDeparture.ThanhPho;
-                //InfoDestination = SelectedDestination.ThanhPho;
-                //InfoDateDeparture = String.Format("{0:dd-MM}", DateDeparture);
-                //ListInfoPassengerVM.Clear();
-                //foreach (PassengerViewModel passengerVM in listPassengerVM)
-                //{
-                //    ListInfoPassengerVM.Add(new PassengerViewModel() { LHKModel = passengerVM.LHKModel, NumberOfPassenger = passengerVM.NumberOfPassenger });
-                //}
-                //Load();
-                //Thread threadSearch = new Thread(new ThreadStart(this.SearchTicket));
-                //threadSearch.IsBackground = true;
-                //threadSearch.Start();
-
-                if (IsKhuHoi)
-                {
-                    FlightListVMs.Add(new ListFlightViewModel());
-                }
-                else if (FlightListVMs.Count == 2) FlightListVMs.RemoveAt(1);
-                SelectTabChoose();
-            });
-
-
-            ListAirline = new ObservableCollection<AirlineSelected>();
-            var airlineList = DataProvider.Instance.DB.HANGHANGKHONGs;
-            foreach (var airline in airlineList)
-            {
-                AirlineSelected airlineSelected = new AirlineSelected();
-                airlineSelected.HHKModel = airline;
-                airlineSelected.isSelected = true;
-                ListAirline.Add(airlineSelected);
-            }
-
-            ListAirport = new ObservableCollection<SANBAY>(DataProvider.Instance.DB.SANBAYs);
-
-            TotalPassenger = 0;
-            listPassengerVM = new ObservableCollection<PassengerViewModel>();
-            foreach (var p in DataProvider.Instance.DB.LOAIHANHKHACHes)
-            {
-                listPassengerVM.Add(new PassengerViewModel() { LHKModel = p });
-                TotalPassenger += (int)p.SoLuongMin;
-            }
-            DateDeparture = DateTime.Today;
-
-            IsEnableTabChoose = false;
+        public void HandleEvent()
+        {
+            HandleEventTabSearch();
+            HandleEventTabChoose();
+            HandleEventTabInfo();
         }
         #endregion
 
         #region Tra cứu chuyến bay
-        private int _totalPassenger;
 
+        #region Variable
+        private int _totalPassenger;
         public int TotalPassenger
         {
             get => _totalPassenger;
@@ -112,7 +72,6 @@ namespace AirTicket.ViewModel
         }
 
         private DateTime? _dateDeparture;
-
         public DateTime? DateDeparture
         {
             get => _dateDeparture;
@@ -121,20 +80,20 @@ namespace AirTicket.ViewModel
                 _dateDeparture = value;
                 if (IsKhuHoi && _dateReturn < _dateDeparture) DateReturn = value;
             }
-            
+
         }
 
         private DateTime? _dateReturn;
-
         public DateTime? DateReturn
         {
             get => _dateReturn;
             set => SetProperty(ref _dateReturn, value);
         }
 
+        #endregion
 
-        public ObservableCollection<PassengerViewModel> listPassengerVM { get; set; }
-        public ObservableCollection<FlightViewModel> listFlightVM { get; set; }
+        #region ObservableCollection
+        public ObservableCollection<PassengerViewModel> ListPassengerVM { get; set; }
         private ObservableCollection<AirlineSelected> _listAirline;
         public ObservableCollection<AirlineSelected> ListAirline
         {
@@ -147,6 +106,12 @@ namespace AirTicket.ViewModel
             get => _listAirport;
             set => SetProperty(ref _listAirport, value);
         }
+        #endregion
+
+        #region commands
+        public ICommand SearchTicketCommand { get; set; }
+        public ICommand TabSearchLoadCommand { get; set; }
+        #endregion
 
         #region Combobox Departure
         public IEnumerable<SANBAY> ListDeparture
@@ -198,104 +163,125 @@ namespace AirTicket.ViewModel
         }
         #endregion
 
-        #region Detail Info Flight Selected
-        private string _infoDeparture;
-        public string InfoDeparture
+        private void HandleInitTabSearch()
         {
-            get => _infoDeparture;
-            set => SetProperty(ref _infoDeparture, value);
+            ListAirline = new ObservableCollection<AirlineSelected>();
+            var airlineList = DataProvider.Instance.DB.HANGHANGKHONGs;
+            foreach (var airline in airlineList)
+            {
+                AirlineSelected airlineSelected = new AirlineSelected();
+                airlineSelected.HHKModel = airline;
+                airlineSelected.isSelected = true;
+                ListAirline.Add(airlineSelected);
+            }
+
+            ListAirport = new ObservableCollection<SANBAY>(DataProvider.Instance.DB.SANBAYs);
+
+            TotalPassenger = 0;
+            ListPassengerVM = new ObservableCollection<PassengerViewModel>();
+            foreach (var p in DataProvider.Instance.DB.LOAIHANHKHACHes)
+            {
+                ListPassengerVM.Add(new PassengerViewModel() { LHKModel = p });
+                TotalPassenger += (int)p.SoLuongMin;
+            }
+            DateDeparture = DateTime.Today;
         }
 
-        private string _infoDestination;
-        public string InfoDestination
+        private void HandleEventTabSearch()
         {
-            get => _infoDestination;
-            set => SetProperty(ref _infoDestination, value);
+            TabSearchLoadCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                SelectTabSearch();
+            });
+
+            SearchTicketCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                if (IsKhuHoi)
+                {
+                    FlightListVMs.Add(new ListFlightViewModel());
+                }
+                else if (FlightListVMs.Count == 2) FlightListVMs.RemoveAt(1);
+                SelectTabChoose(true);
+            });
         }
 
-        public string InfoDateDeparture { get; set; }
+        //private void SearchTicket()
+        //{
+        //string url = "https://demo.datacom.vn/flight?Request="
+        //    + SelectedDeparture.MaSanBay + SelectedDestination.MaSanBay + String.Format("{0:ddMMyyyy}", DateDeparture); //HANSGN14042021-1-0-0&Airline=VN,VJ,QH,VU";
+        ////add num of each typ passenger in url
+        //foreach (PassengerViewModel pvm in listPassengerVM)
+        //{
+        //    url += "-" + pvm.NumberOfPassenger;
+        //}
+        //url += "&Airline=";
+        ////add airline you want search in url
+        //foreach (AirlineSelected airline in ListAirline)
+        //{
+        //    if (airline.isSelected)
+        //        url += airline.HHKModel.MaHang + ",";
+        //}
+        //url = url.TrimEnd(',');
+        //var chromeOption = new ChromeOptions();
+        //chromeOption.AddArguments("headless");
+        //var chromeDriverService = ChromeDriverService.CreateDefaultService();
+        //chromeDriverService.HideCommandPromptWindow = true;
+        //using (var browser = new ChromeDriver(chromeDriverService, chromeOption))
+        //{
+        //    try
+        //    {
+        //        browser.Navigate().GoToUrl(url);
+        //        var wait = new WebDriverWait(browser, new TimeSpan(0, 0, 30));
+        //        var allFlights = wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("dtc-flight-main")));
+        //        var doc = new HtmlDocument(); 
+        //        doc.LoadHtml(allFlights.GetAttribute("outerHTML"));
+        //        var htmlNodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'dtc-flight-item ')]");
+        //        if (htmlNodes != null)
+        //        {
+        //            var nodes = htmlNodes.ToArray();
+        //            for (int i = 0; i < nodes.Length; i++)
+        //            {
+        //                //string FlightName = nodes[i].SelectSingleNode(".//p").InnerText;
+        //                //if (FlightName.Contains("Pacific Airline"))
+        //                //    FlightName = "Pacific Airline";
 
-        public FlightViewModel FlightSelected { get; set; }
+        //                FlightViewModel flight = new FlightViewModel()
+        //                {
+        //                    ImgAirlineUrl = nodes[i].SelectSingleNode(".//img").Attributes[0].Value,
+        //                    flight = nodes[i].SelectSingleNode(".//div[@class='dtc-flight-numb dtc-color-text']").InnerText,
+        //                    departureTime = nodes[i].SelectNodes(".//div[@class='dtc-flight-time']")[0].InnerText,
+        //                    landingTime = nodes[i].SelectNodes(".//div[@class='dtc-flight-time']")[1].InnerText,
+        //                    priceFlight = nodes[i].SelectSingleNode(".//div[@class='dtc-flight-price']").InnerText
+        //                };
 
-        public ObservableCollection<PassengerViewModel> ListInfoPassengerVM { get; set; }
-        #endregion
+        //                App.Current.Dispatcher.Invoke((Action)delegate
+        //                {
+        //                    listFlightVM.Add(flight);
+        //                });
+        //            }
+        //        }
+        //        else
+        //        {
+        //            IsNoResult = "Visible";
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        IsNoResult = "Visible";
+        //    }
+        //    Done();
+        //    browser.Close();
+        //    browser.Quit();
+        //}
+        //}
 
-        #region commands
-        public ICommand ReturnCommand { get; set; }
-        public ICommand SearchTicketCommand { get; set; }
-        #endregion
-
-        private void SearchTicket()
+        public void SelectTabSearch()
         {
-
-            //string url = "https://demo.datacom.vn/flight?Request="
-            //    + SelectedDeparture.MaSanBay + SelectedDestination.MaSanBay + String.Format("{0:ddMMyyyy}", DateDeparture); //HANSGN14042021-1-0-0&Airline=VN,VJ,QH,VU";
-            ////add num of each typ passenger in url
-            //foreach (PassengerViewModel pvm in listPassengerVM)
-            //{
-            //    url += "-" + pvm.NumberOfPassenger;
-            //}
-            //url += "&Airline=";
-            ////add airline you want search in url
-            //foreach (AirlineSelected airline in ListAirline)
-            //{
-            //    if (airline.isSelected)
-            //        url += airline.HHKModel.MaHang + ",";
-            //}
-            //url = url.TrimEnd(',');
-            //var chromeOption = new ChromeOptions();
-            //chromeOption.AddArguments("headless");
-            //var chromeDriverService = ChromeDriverService.CreateDefaultService();
-            //chromeDriverService.HideCommandPromptWindow = true;
-            //using (var browser = new ChromeDriver(chromeDriverService, chromeOption))
-            //{
-            //    try
-            //    {
-            //        browser.Navigate().GoToUrl(url);
-            //        var wait = new WebDriverWait(browser, new TimeSpan(0, 0, 30));
-            //        var allFlights = wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("dtc-flight-main")));
-            //        var doc = new HtmlDocument(); 
-            //        doc.LoadHtml(allFlights.GetAttribute("outerHTML"));
-            //        var htmlNodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'dtc-flight-item ')]");
-            //        if (htmlNodes != null)
-            //        {
-            //            var nodes = htmlNodes.ToArray();
-            //            for (int i = 0; i < nodes.Length; i++)
-            //            {
-            //                //string FlightName = nodes[i].SelectSingleNode(".//p").InnerText;
-            //                //if (FlightName.Contains("Pacific Airline"))
-            //                //    FlightName = "Pacific Airline";
-
-            //                FlightViewModel flight = new FlightViewModel()
-            //                {
-            //                    ImgAirlineUrl = nodes[i].SelectSingleNode(".//img").Attributes[0].Value,
-            //                    flight = nodes[i].SelectSingleNode(".//div[@class='dtc-flight-numb dtc-color-text']").InnerText,
-            //                    departureTime = nodes[i].SelectNodes(".//div[@class='dtc-flight-time']")[0].InnerText,
-            //                    landingTime = nodes[i].SelectNodes(".//div[@class='dtc-flight-time']")[1].InnerText,
-            //                    priceFlight = nodes[i].SelectSingleNode(".//div[@class='dtc-flight-price']").InnerText
-            //                };
-
-            //                App.Current.Dispatcher.Invoke((Action)delegate
-            //                {
-            //                    listFlightVM.Add(flight);
-            //                });
-            //            }
-            //        }
-            //        else
-            //        {
-            //            IsNoResult = "Visible";
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        IsNoResult = "Visible";
-            //    }
-            //    Done();
-            //    browser.Close();
-            //    browser.Quit();
-            //}
-
+            IsEnableTabChoose = false;
+            IsEnableTabInfo = false;
+            SelectIndexTab = 0;
         }
+
         #endregion
 
         #region Chọn chuyến bay
@@ -305,12 +291,277 @@ namespace AirTicket.ViewModel
             get => _isEnableTabChoose;
             set => SetProperty(ref _isEnableTabChoose, value);
         }
+
+        /// <summary>
+        /// FlightListVMs[0] => list chuyến đi, FlightListVMs[1] => list chuyến về
+        /// </summary>
         public ObservableCollection<ListFlightViewModel> FlightListVMs { get; set; }
 
-        public void SelectTabChoose()
+        #region command
+        public ICommand SelectFlightCommand { get; set; }
+        public ICommand TabChooseLoadCommand { get; set; }
+        #endregion
+
+        private void HandleInitTabChoose()
+        {
+            FlightListVMs = new ObservableCollection<ListFlightViewModel>()
+            {
+                new ListFlightViewModel()
+            };
+        }
+
+        private void HandleEventTabChoose()
+        {
+            TabChooseLoadCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                if (SelectIndexTab == 0) return;
+                SelectTabChoose();
+            });
+
+            SelectFlightCommand = new RelayCommand<FlightModel>((p) => { return p != null; }, (p) =>
+            {
+                if (IsKhuHoi && FlightListVMs[1].ListFlightVM.Contains(p))
+                    FlightListVMs[1].FlightSelected = FlightListVMs[1].FlightSelected == null ? p : null;
+                else
+                    FlightListVMs[0].FlightSelected = FlightListVMs[0].FlightSelected == null ? p : null;
+
+                foreach (var listFlight in FlightListVMs)
+                    if (listFlight.FlightSelected == null) return;
+
+                // nếu đã chọn đủ chuyến bay chuyển sang tab thông tin hành khách 
+                SelectTabInfoPassenger();
+            });
+        }
+
+        public void SelectTabChoose(bool isSearch = false)
         {
             IsEnableTabChoose = true;
+            IsEnableTabInfo = false;
             SelectIndexTab = 1;
+
+            if (isSearch) SearchFlight();
+            else
+                // Nếu không phải chuyển từ trang search sang, thì clear chuyến bay đã chọn
+                foreach (var listFlight in FlightListVMs) listFlight.FlightSelected = null;
+        }
+
+        public async void SearchFlight()
+        {
+            int count = IsKhuHoi ? 2 : 1;
+
+            // trước khi xử lý
+            for (int i = 0; i < count; i++)
+            {
+                // 0 là chuyến đi, 1 là chuyến về
+                FlightListVMs[i].Departure = i == 0 ? SelectedDeparture.ThanhPho : SelectedDestination.ThanhPho;
+                FlightListVMs[i].Destination = i == 0 ? SelectedDestination.ThanhPho : SelectedDeparture.ThanhPho;
+                FlightListVMs[i].FlightDate = String.Format("{0:dd-MM}", i == 0 ? DateDeparture : DateReturn);
+                FlightListVMs[i].Load();
+            }
+
+            // chờ xử lý
+            var ListFlights = await GetDataFlightAsync();
+
+            // sau khi xử lý xong
+            for (int i = 0; i < count; i++)
+            {
+                FlightListVMs[i].ListFlightVM = ListFlights[i];
+                FlightListVMs[i].Done();
+            }
+        }
+
+        public async Task<List<ObservableCollection<FlightModel>>> GetDataFlightAsync()
+        {
+            List<ObservableCollection<FlightModel>> data = new List<ObservableCollection<FlightModel>>();
+
+            // set await trước hàm call api xử lý bất đồng bộ 
+            // xử lý data trả về
+
+            // Test data[0] => list chuyến đi, data[1] => list chuyến về
+            int count = IsKhuHoi ? 2 : 1;
+            for (int i = 0; i < count; i++)
+            {
+                ObservableCollection<FlightModel> listFlightVM = new ObservableCollection<FlightModel>();
+                listFlightVM.Add(new FlightModel() { AirlineID = "vu", ImgAirlineUrl = "https://plugin.datacom.vn/Resources/Images/Airline/vu.gif", Flight = "VU140", DepartureTime = "9:35", LandingTime = "14:00", PriceFlight = "600,000 VND" });
+                listFlightVM.Add(new FlightModel() { AirlineID = "vj", ImgAirlineUrl = "https://plugin.datacom.vn/Resources/Images/Airline/vj.gif", Flight = "VJ140", DepartureTime = "9:35", LandingTime = "14:00", PriceFlight = "700,000 VND" });
+                data.Add(listFlightVM);
+            }
+
+            return data;
+        }
+        #endregion
+
+        #region Thông tin hành khách
+
+        #region Variable
+        private bool _isEnableTabInfo;
+        public bool IsEnableTabInfo
+        {
+            get => _isEnableTabInfo;
+            set => SetProperty(ref _isEnableTabInfo, value);
+        }
+
+        private string _infoDateTimeDeparture;
+
+        public string InfoDateTimeDeparture
+        {
+            get => _infoDateTimeDeparture;
+            set => SetProperty(ref _infoDateTimeDeparture, value);
+        }
+
+        private decimal _totalPriceTicket;
+        public decimal TotalPriceTicket
+        {
+            get => _totalPriceTicket;
+            set => SetProperty(ref _totalPriceTicket, value);
+        }
+        private decimal _totalNetprofitTicket;
+        public decimal TotalNetprofitTicket
+        {
+            get => _totalNetprofitTicket;
+            set => SetProperty(ref _totalNetprofitTicket, value);
+        }
+        private decimal _totalcancellationcostTicket;
+        public decimal TotalCancellationCostTicket
+        {
+            get => _totalcancellationcostTicket;
+            set => SetProperty(ref _totalcancellationcostTicket, value);
+        }
+
+        public HOADON HDModel { get; set; }
+        #endregion
+
+        #region ObservableCollection
+        public ObservableCollection<DetailInfoPassenger> ListDetailInfo { get; set; }
+        public ObservableCollection<PassengerViewModel> ListPriceTicket { get; set; }
+        #endregion
+
+        #region Command
+        public ICommand btnBookClickCommand { get; set; }
+        public ICommand btnSelectAgainCommand { get; set; }
+        #endregion
+
+        private void HandleInitTabInfo()
+        {
+            HDModel = new HOADON();
+            ListDetailInfo = new ObservableCollection<DetailInfoPassenger>();
+            ListPriceTicket = new ObservableCollection<PassengerViewModel>();
+        }
+
+        private void HandleEventTabInfo()
+        {
+            btnBookClickCommand = new RelayCommand<object>((p) => { return ValidDependcyObject.IsValid(p as DependencyObject); }, (p) =>
+            {
+                BookTicket();
+            });
+
+            btnSelectAgainCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                SelectTabChoose();
+            });
+        }
+
+        public void SelectTabInfoPassenger()
+        {
+            IsEnableTabInfo = true;
+            SelectIndexTab = 2;
+            InitDataTabInfo();
+        }
+
+        public void InitDataTabInfo()
+        {
+            //var QuyDinhGiaVe = DataProvider.Instance.DB.QUYDINHGIAVEs.Where(x=>x.MaHang == FlightSelected.AirlineID);
+            int count = 1;
+            ListDetailInfo.Clear();
+            ListPriceTicket.Clear();
+            TotalPriceTicket = 0;
+            TotalNetprofitTicket = 0;
+            TotalCancellationCostTicket = 0;
+
+            foreach (PassengerViewModel pvm in ListPassengerVM)
+            {
+                if (pvm.NumberOfPassenger != 0)
+                {
+                    foreach (var listFlight in FlightListVMs)
+                    {
+                        var FlightSelected = listFlight.FlightSelected;
+
+                        // cần update để xử lý khứ hồi
+
+                        //decimal price = ParseStringToDecimal(FlightSelected.PriceFlight);
+                        //QUYDINHGIAVE QuyDinhGiaVe = pvm.LHKModel.QUYDINHGIAVEs.Where(x => x.MaHang == FlightSelected.AirlineID).First();
+                        //pvm.NetProfitTicket = (decimal)QuyDinhGiaVe.TienLaiVe;
+                        //pvm.CancellationCostTicket = (decimal)QuyDinhGiaVe.TienHuyVe;
+                        //pvm.PriceTicket = (decimal)(price * (decimal)QuyDinhGiaVe.TiLe - QuyDinhGiaVe.TienGiam + QuyDinhGiaVe.TienPhi) + pvm.NetProfitTicket;
+
+                        //TotalPriceTicket += pvm.TotalPriceTicket;
+                        //TotalNetprofitTicket += pvm.TotalNetProfitTicket;
+                        //TotalCancellationCostTicket += pvm.TotalCancellationCostTicket;
+                        //ListPriceTicket.Add(pvm);
+                    }
+                }
+
+                // xử lý thông tin danh sách hành khách
+                for (int i = 0; i < pvm.NumberOfPassenger; i++)
+                {
+                    DetailInfoPassenger detailInfo = new DetailInfoPassenger()
+                    {
+                        num = count,
+                    };
+                    detailInfo.VCBModel.LOAIHANHKHACH = pvm.LHKModel;
+                    detailInfo.VCBModel.GiaVe = pvm.PriceTicket;
+                    ListDetailInfo.Add(detailInfo);
+                    count++;
+                }
+
+                if (count > TotalPassenger) break;
+            }
+
+            // InfoDateTimeDeparture = FlightSelected.DepartureTime + " " + InfoDateDeparture;
+        }
+
+        public decimal ParseStringToDecimal(string Price)
+        {
+            int i = 0;
+            do
+            {
+                if (!char.IsNumber(Price[i]))
+                {
+                    Price = Price.Remove(i, 1);
+                }
+                else
+                    i++;
+            } while (i < Price.Length);
+            return decimal.Parse(Price);
+        }
+
+        public void BookTicket()
+        {
+            try
+            {
+                HDModel.TongTien = TotalPriceTicket;
+                HDModel.LoiNhuan = TotalNetprofitTicket;
+                HDModel.ChiPhiHuy = TotalCancellationCostTicket;
+                HDModel.TrangThai = "Thành công";
+                HDModel.ThoiGianTao = DateTime.Now;
+                HDModel.MaHoaDon = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDHD()").Single();
+                var VeChuyenBay = DataProvider.Instance.DB.VECHUYENBAYs;
+                HDModel.SoVe = ListDetailInfo.Count;
+                DataProvider.Instance.DB.HOADONs.Add(HDModel);
+                foreach (DetailInfoPassenger detailInfo in ListDetailInfo)
+                {
+                    VECHUYENBAY VCBModel = detailInfo.VCBModel;
+                    VCBModel.HOADON = HDModel;
+                    VCBModel.MaVe = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDVCB()").Single();
+                    VeChuyenBay.Add(VCBModel);
+                    DataProvider.Instance.DB.SaveChanges();
+                }
+                MessageBox.Show("thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch
+            {
+                MessageBox.Show("Thất bại", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #endregion
     }

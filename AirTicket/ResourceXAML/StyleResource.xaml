@@ -18,4 +18,45 @@
         <Setter Property="FontFamily"
                 Value="{DynamicResource MaterialDesignFont}" />
     </Style>
+
+    <Style x:Key="CellStyle"
+           TargetType="{x:Type DataGridCell}"
+           BasedOn="{StaticResource MaterialDesignDataGridCell}">
+        <Setter Property="BorderThickness"
+                Value="0" />
+    </Style>
+
+    <Style TargetType="TextBlock"
+           x:Key="textColumn">
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+    </Style>
+
+    <!--DataGridRow-->
+    <Style  TargetType="DataGridRow"
+            x:Key="RowStyle">
+        <Style.Triggers>
+            <!--Interlace color change-->
+            <Trigger Property="AlternationIndex"
+                     Value="0">
+                <Setter Property="Background"
+                        Value="White" />
+            </Trigger>
+            <Trigger Property="AlternationIndex"
+                     Value="1">
+                <Setter Property="Background"
+                        Value="#F6F6F6" />
+            </Trigger>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Background"
+                        Value="#F1F1F1" />
+            </Trigger>
+            <Trigger Property="Validation.HasError"
+                     Value="True">
+                <Setter Property="BorderBrush"
+                        Value="Red" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

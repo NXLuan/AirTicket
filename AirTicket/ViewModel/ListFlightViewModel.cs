@@ -1,9 +1,13 @@
-﻿using System;
+﻿using AirTicket.Model;
+using AirTicket.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace AirTicket.ViewModel
 {
@@ -25,12 +29,12 @@ namespace AirTicket.ViewModel
             set => SetProperty(ref _destination, value);
         }
 
-        private DateTime? _dateDeparture;
+        private string _flightDate;
 
-        public DateTime? DateDeparture
+        public string FlightDate
         {
-            get => _dateDeparture;
-            set => SetProperty(ref _dateDeparture, value);
+            get => _flightDate;
+            set => SetProperty(ref _flightDate, value);
         }
 
         private string _isLoading;
@@ -49,23 +53,45 @@ namespace AirTicket.ViewModel
             set => SetProperty(ref _isNoResult, value);
         }
 
-        public ObservableCollection<FlightViewModel> ListFlightVM { get; set; }
+        private ObservableCollection<FlightModel> _listFlightVM;
+        public ObservableCollection<FlightModel> ListFlightVM
+        {
+            get => _listFlightVM;
+            set => SetProperty(ref _listFlightVM, value);
+        }
+
+        private FlightModel _flightSelected;
+        public FlightModel FlightSelected
+        {
+            get => _flightSelected;
+            set
+            {
+                if (ListFlightVM != null && ListFlightVM.Count != 0)
+                {
+                    if (value != null)
+                        filter.AddFilter("FlightSelected", element => ((FlightModel)element).Equals(value));
+                    else filter.ClearFilters();
+                }
+                SetProperty(ref _flightSelected, value);
+            }
+        }
+
+        public FilterSupport filter { get; set; }
 
         public ListFlightViewModel()
         {
-            Done();
-            IsNoResult = "Hidden";
-            Departure = "Hà Nội";
-            Destination = "Đà Nẵng";
-            DateDeparture = DateTime.Today;
-            ListFlightVM = new ObservableCollection<FlightViewModel>();
-            ListFlightVM.Add(new FlightViewModel() { ImgAirlineUrl = "https://plugin.datacom.vn/Resources/Images/Airline/vu.gif", priceFlight = "600,000 VND" });
+            filter = new FilterSupport();
+        }
+
+        public void AddFlight(FlightModel flight)
+        {
+            ListFlightVM.Add(flight);
         }
 
         public void Load()
         {
-            if (ListFlightVM.Count != 0)
-                ListFlightVM.Clear();
+            if (ListFlightVM != null)
+                ListFlightVM = null;
             IsLoading = "Visible";
             IsNoResult = "Hidden";
         }
@@ -73,6 +99,10 @@ namespace AirTicket.ViewModel
         public void Done()
         {
             IsLoading = "Hidden";
+
+            if (ListFlightVM != null && ListFlightVM.Count != 0)
+                filter.FilterView = (CollectionView)CollectionViewSource.GetDefaultView(ListFlightVM);
+            else IsNoResult = "Visible";
         }
     }
 }

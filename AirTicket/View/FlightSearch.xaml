@@ -215,7 +215,7 @@
                              MaxHeight="182"
                              Margin="-60, 0,0,-145">
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding listPassengerVM}"
+                <ItemsControl ItemsSource="{Binding ListPassengerVM}"
                               Margin="10">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>

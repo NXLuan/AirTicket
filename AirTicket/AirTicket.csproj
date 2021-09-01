@@ -122,6 +122,7 @@
     <Compile Include="Model\DataChart.cs" />
     <Compile Include="Model\DataProvider.cs" />
     <Compile Include="Model\DetailInfoPassenger.cs" />
+    <Compile Include="Model\FlightModel.cs" />
     <Compile Include="Model\HANGHANGKHONG.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -163,6 +164,8 @@
     </Compile>
     <Compile Include="Utilities\BindingProxy.cs" />
     <Compile Include="Utilities\DependcyCustom.cs" />
+    <Compile Include="Utilities\FilterSupport.cs" />
+    <Compile Include="Utilities\ValidDependcyObject.cs" />
     <Compile Include="ValidRule\ComboboxAirportValidationRule.cs" />
     <Compile Include="ValidRule\DateOfBirthValidationRule.cs" />
     <Compile Include="ValidRule\EmailValidationRule.cs" />
@@ -170,11 +173,9 @@
     <Compile Include="ValidRule\NotEmptyValidationRule.cs" />
     <Compile Include="ValidRule\PhoneNumberValidationRule.cs" />
     <Compile Include="ViewModel\ACViewModel.cs" />
-    <Compile Include="ViewModel\FlightViewModel.cs" />
     <Compile Include="ViewModel\InfoAccount.cs" />
     <Compile Include="ViewModel\InfoRegulation.cs" />
     <Compile Include="ViewModel\InfoTicket.cs" />
-    <Compile Include="ViewModel\InfoPaViewModel.cs" />
     <Compile Include="ViewModel\ListFlightViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\PassengerViewModel.cs" />
