@@ -25,5 +25,10 @@ namespace AirTicket.Model
         public string LandingTime { get; set; }
 
         public string PriceFlight { get; set; }
+        public decimal ChildrenPrice { get; set; }
+        public decimal InfantPrice { get; set; }
+        
+        public string StartDate { get; set; }
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AirTicket.Model;
 using AirTicket.Utilities;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -10,6 +12,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -360,7 +364,7 @@ namespace AirTicket.ViewModel
             }
 
             // chờ xử lý
-            var ListFlights = await GetDataFlightAsync();
+            List<ObservableCollection<FlightModel>> ListFlights = await GetDataFlightAsync();
 
             // sau khi xử lý xong
             for (int i = 0; i < count; i++)
@@ -369,25 +373,131 @@ namespace AirTicket.ViewModel
                 FlightListVMs[i].Done();
             }
         }
+        
+        public DataFlightRequest CreateDataRequest(string AirlineCode)
+        {
+            var objDataFlightRequest = new DataFlightRequest
+            {
+                Adt = ListPassengerVM[0].NumberOfPassenger,
+                Chd = ListPassengerVM[1].NumberOfPassenger,
+                Inf = ListPassengerVM[2].NumberOfPassenger,
+                ProductKey = "r1e0q6z8md6akul",
+                ViewMode = false
+            };
+            if (IsKhuHoi)
+            {
+                objDataFlightRequest.ListFlight = new SearchFlightInfo[2]
+                {
+                    new SearchFlightInfo
+                    {
+                        Airline = AirlineCode,
+                        DepartDate = String.Format("{0:ddMMyyyy}", DateDeparture),
+                        EndPoint = SelectedDestination.MaSanBay,
+                        StartPoint = SelectedDeparture.MaSanBay,
+                    },
+                    new SearchFlightInfo
+                    {
+                        Airline = AirlineCode,
+                        DepartDate = String.Format("{0:ddMMyyyy}", DateReturn),
+                        EndPoint = SelectedDeparture.MaSanBay,
+                        StartPoint = SelectedDestination.MaSanBay,
+                    }
+                };
+            }
+            else
+            {
+                objDataFlightRequest.ListFlight = new SearchFlightInfo[1]
+                {
+                    new SearchFlightInfo
+                    {
+                        Airline = AirlineCode,
+                        DepartDate = String.Format("{0:ddMMyyyy}", DateDeparture),
+                        EndPoint = SelectedDestination.MaSanBay,
+                        StartPoint = SelectedDeparture.MaSanBay,
+                    }
+                };
+            }
+            return objDataFlightRequest;
+        }
+
+        public async Task<ObservableCollection<FlightModel>> GetListFlight(string AirlineCode)
+        {
+            var objDataFlightRequest = CreateDataRequest(AirlineCode);
+            HttpClient client = new HttpClient();
+            var stringPayload = JsonConvert.SerializeObject(objDataFlightRequest);
+            var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://plugin.datacom.vn/flightsearch", httpContent);
+            var responseString = await response.Content.ReadAsStringAsync();
+            JObject objJson = JObject.Parse(responseString);
+            ObservableCollection<FlightModel> lstFlightModels = new ObservableCollection<FlightModel>();
+            foreach (var data in objJson["DomesticDatas"])
+            {
+                lstFlightModels.Add(new FlightModel
+                {
+                    AirlineID = data["Airline"].ToString(),
+                    Flight = data["FlightNumber"].ToString(),
+                    DepartureTime = data["StartTime"].ToString(),
+                    LandingTime = data["EndTime"].ToString(),
+                    PriceFlight = data["FareAdtFull"].ToString(),
+                    ChildrenPrice = Convert.ToDecimal(data["FareChdFull"]),
+                    InfantPrice = Convert.ToDecimal(data["FareInfFull"]),
+                    StartDate = data["StartDate"].ToString()
+                });
+            }
+            return await Task.FromResult(lstFlightModels);
+        }
 
         public async Task<List<ObservableCollection<FlightModel>>> GetDataFlightAsync()
         {
             List<ObservableCollection<FlightModel>> data = new List<ObservableCollection<FlightModel>>();
+            ObservableCollection<FlightModel> lstDepart = new ObservableCollection<FlightModel>();
+            ObservableCollection<FlightModel> lstReturn = new ObservableCollection<FlightModel>();
+            foreach (AirlineSelected airline in ListAirline)
+            {
+                if (airline.isSelected) {
+                    ObservableCollection<FlightModel> lstFlight = await GetListFlight(airline.HHKModel.MaHang);
+                    if (IsKhuHoi)
+                    {
+                        int i;
+                        for (i = 0; i < lstFlight.Count; i++)
+                        {
+                            if (lstFlight[i].StartDate == String.Format("{0:dd-MM-yyyy}", DateDeparture))
+                            {
+                                lstDepart.Add(lstFlight[i]);
+                            }
+                            else
+                            {
+                                lstReturn.Add(lstFlight[i]);
+                            }
+                        }
+                    } 
+                    else
+                    {
+                        lstDepart = new ObservableCollection<FlightModel>(lstDepart.Concat(lstFlight));
+                    }
+                }
+            }
+
+
 
             // set await trước hàm call api xử lý bất đồng bộ 
             // xử lý data trả về
 
             // Test data[0] => list chuyến đi, data[1] => list chuyến về
-            int count = IsKhuHoi ? 2 : 1;
-            for (int i = 0; i < count; i++)
-            {
-                ObservableCollection<FlightModel> listFlightVM = new ObservableCollection<FlightModel>();
-                listFlightVM.Add(new FlightModel() { AirlineID = "vu", ImgAirlineUrl = "https://plugin.datacom.vn/Resources/Images/Airline/vu.gif", Flight = "VU140", DepartureTime = "9:35", LandingTime = "14:00", PriceFlight = "600,000 VND" });
-                listFlightVM.Add(new FlightModel() { AirlineID = "vj", ImgAirlineUrl = "https://plugin.datacom.vn/Resources/Images/Airline/vj.gif", Flight = "VJ140", DepartureTime = "9:35", LandingTime = "14:00", PriceFlight = "700,000 VND" });
-                data.Add(listFlightVM);
+            //int count = IsKhuHoi ? 2 : 1;
+            //for (int i = 0; i < count; i++)
+            //{
+            //    ObservableCollection<FlightModel> listFlightVM = new ObservableCollection<FlightModel>();
+            //    listFlightVM.Add(new FlightModel() { AirlineID = "vu", ImgAirlineUrl = "https://plugin.datacom.vn/Resources/Images/Airline/vu.gif", Flight = "VU140", DepartureTime = "9:35", LandingTime = "14:00", PriceFlight = "600,000 VND" });
+            //    listFlightVM.Add(new FlightModel() { AirlineID = "vj", ImgAirlineUrl = "https://plugin.datacom.vn/Resources/Images/Airline/vj.gif", Flight = "VJ140", DepartureTime = "9:35", LandingTime = "14:00", PriceFlight = "700,000 VND" });
+            //    data.Add(listFlightVM);
+            //}
+            data.Add(lstDepart);
+            if (IsKhuHoi)
+            {   
+                data.Add(lstReturn);
             }
-
-            return data;
+            return await Task.FromResult(data);
         }
         #endregion
 
