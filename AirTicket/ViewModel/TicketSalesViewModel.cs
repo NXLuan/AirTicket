@@ -425,11 +425,10 @@ namespace AirTicket.ViewModel
             }
             return objDataFlightRequest;
         }
-
+        private static readonly HttpClient client = new HttpClient();
         public async Task<ObservableCollection<FlightModel>> GetListFlight(string AirlineCode)
         {
             var objDataFlightRequest = CreateDataRequest(AirlineCode);
-            HttpClient client = new HttpClient();
             var stringPayload = JsonConvert.SerializeObject(objDataFlightRequest);
             var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://plugin.datacom.vn/flightsearch", httpContent);
