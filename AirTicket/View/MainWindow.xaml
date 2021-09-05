@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:AirTicket"
         mc:Ignorable="d"
         Title="Đại lý bán vé"
-        MinWidth="1200"
+        MinWidth="1300"
         MinHeight="800"
         DataContext="{StaticResource MainVM}"
         WindowStartupLocation="CenterScreen"

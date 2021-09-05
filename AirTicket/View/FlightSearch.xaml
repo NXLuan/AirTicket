@@ -119,7 +119,7 @@
                                       Margin="0,5"
                                       Background="{DynamicResource Success}"
                                       Foreground="{DynamicResource TextNormalColor}"
-                                      IsChecked="{Binding IsKhuHoi, UpdateSourceTrigger=PropertyChanged}"/>
+                                      IsChecked="{Binding IsKhuHoi, UpdateSourceTrigger=PropertyChanged}" />
                             <DatePicker materialDesign:CalendarAssist.IsHeaderVisible="False"
                                         x:Name="ReturnDatePicker"
                                         Width="200"
@@ -132,7 +132,7 @@
                                     <Binding Path="DateReturn"
                                              UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
-                                            <rule:FutureDateValidationRule ValidatesOnTargetUpdated="False" >
+                                            <rule:FutureDateValidationRule ValidatesOnTargetUpdated="False">
                                                 <rule:DateStart Value="{Binding Data, Source={StaticResource TargetProxy}}" />
                                             </rule:FutureDateValidationRule>
                                         </Binding.ValidationRules>

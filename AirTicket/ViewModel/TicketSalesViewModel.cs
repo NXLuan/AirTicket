@@ -202,7 +202,8 @@ namespace AirTicket.ViewModel
             {
                 if (IsKhuHoi)
                 {
-                    FlightListVMs.Add(new ListFlightViewModel());
+                    if (FlightListVMs.Count == 1)
+                        FlightListVMs.Add(new ListFlightViewModel());
                 }
                 else if (FlightListVMs.Count == 2) FlightListVMs.RemoveAt(1);
                 SelectTabChoose(true);
@@ -359,7 +360,12 @@ namespace AirTicket.ViewModel
                 // 0 là chuyến đi, 1 là chuyến về
                 FlightListVMs[i].Departure = i == 0 ? SelectedDeparture.ThanhPho : SelectedDestination.ThanhPho;
                 FlightListVMs[i].Destination = i == 0 ? SelectedDestination.ThanhPho : SelectedDeparture.ThanhPho;
-                FlightListVMs[i].FlightDate = String.Format("{0:dd-MM}", i == 0 ? DateDeparture : DateReturn);
+
+                var flightDate = i == 0 ? DateDeparture : DateReturn;
+                var culture = new CultureInfo("vi-VI");
+                var day = culture.DateTimeFormat.GetDayName(flightDate.Value.DayOfWeek);
+                FlightListVMs[i].FlightDate = String.Format("{0}, {1:dd-MM-yyyy}", day, flightDate);
+                FlightListVMs[i].DepartureDate = String.Format("{0:dd-MM}", flightDate);
                 FlightListVMs[i].Load();
             }
 
