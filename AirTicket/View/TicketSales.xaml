@@ -123,7 +123,7 @@
                                                                         Header="Giờ hạ cánh"
                                                                         Width="*"
                                                                         ElementStyle="{StaticResource textColumn}" />
-                                                    <DataGridTextColumn Binding="{Binding PriceFlight}"
+                                                    <DataGridTextColumn Binding="{Binding PriceFlight, Converter={StaticResource moneyVNConvert}}"
                                                                         IsReadOnly="True"
                                                                         Header="Giá chuyến bay"
                                                                         Width="*"

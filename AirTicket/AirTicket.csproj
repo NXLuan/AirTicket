@@ -170,6 +170,7 @@
     <Compile Include="Utilities\BindingProxy.cs" />
     <Compile Include="Utilities\DependcyCustom.cs" />
     <Compile Include="Utilities\FilterSupport.cs" />
+    <Compile Include="Utilities\MultiRequestHelper.cs" />
     <Compile Include="Utilities\ValidDependcyObject.cs" />
     <Compile Include="ValidRule\ComboboxAirportValidationRule.cs" />
     <Compile Include="ValidRule\DateOfBirthValidationRule.cs" />

@@ -12,6 +12,7 @@ namespace AirTicket.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value.GetType().Name == "String") value = decimal.Parse(value.ToString());
             return String.Format("{0:#,#}", value);
         }
 

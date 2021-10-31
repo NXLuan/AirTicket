@@ -1,5 +1,6 @@
 ﻿using AirTicket.Model;
 using AirTicket.Utilities;
+using Estant.Material.Utilities;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -379,7 +380,7 @@ namespace AirTicket.ViewModel
                 FlightListVMs[i].Done();
             }
         }
-        
+
         public DataFlightRequest CreateDataRequest(string AirlineCode)
         {
             var objDataFlightRequest = new DataFlightRequest
@@ -425,31 +426,35 @@ namespace AirTicket.ViewModel
             }
             return objDataFlightRequest;
         }
-        private static readonly HttpClient client = new HttpClient();
         public async Task<ObservableCollection<FlightModel>> GetListFlight(string AirlineCode)
         {
             var objDataFlightRequest = CreateDataRequest(AirlineCode);
             var stringPayload = JsonConvert.SerializeObject(objDataFlightRequest);
             var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://plugin.datacom.vn/flightsearch", httpContent);
-            var responseString = await response.Content.ReadAsStringAsync();
-            JObject objJson = JObject.Parse(responseString);
-            ObservableCollection<FlightModel> lstFlightModels = new ObservableCollection<FlightModel>();
-            foreach (var data in objJson["DomesticDatas"])
+            using (HttpClient client = new HttpClient())
             {
-                lstFlightModels.Add(new FlightModel
+                var response = await client.PostAsync("https://plugin.datacom.vn/flightsearch", httpContent);
+                var responseString = await response.Content.ReadAsStringAsync();
+                JObject objJson = JObject.Parse(responseString);
+                ObservableCollection<FlightModel> lstFlightModels = new ObservableCollection<FlightModel>();
+                foreach (var data in objJson["DomesticDatas"])
                 {
-                    AirlineID = data["Airline"].ToString(),
-                    Flight = data["FlightNumber"].ToString(),
-                    DepartureTime = data["StartTime"].ToString(),
-                    LandingTime = data["EndTime"].ToString(),
-                    PriceFlight = data["FareAdtFull"].ToString(),
-                    ChildrenPrice = Convert.ToDecimal(data["FareChdFull"]),
-                    InfantPrice = Convert.ToDecimal(data["FareInfFull"]),
-                    StartDate = data["StartDate"].ToString()
-                });
+                    lstFlightModels.Add(new FlightModel
+                    {
+                        ImgAirlineUrl = "https://plugin.datacom.vn/Resources/Images/Airline/" + AirlineCode + ".gif",
+                        AirlineID = data["Airline"].ToString(),
+                        Flight = data["FlightNumber"].ToString(),
+                        DepartureTime = data["StartTime"].ToString(),
+                        LandingTime = data["EndTime"].ToString(),
+                        PriceFlight = data["FareAdtFull"].ToString(),
+                        ChildrenPrice = Convert.ToDecimal(data["FareChdFull"]),
+                        InfantPrice = Convert.ToDecimal(data["FareInfFull"]),
+                        StartDate = data["StartDate"].ToString()
+                    });
+
+                }
+                return lstFlightModels;
             }
-            return await Task.FromResult(lstFlightModels);
         }
 
         public async Task<List<ObservableCollection<FlightModel>>> GetDataFlightAsync()
@@ -457,33 +462,39 @@ namespace AirTicket.ViewModel
             List<ObservableCollection<FlightModel>> data = new List<ObservableCollection<FlightModel>>();
             ObservableCollection<FlightModel> lstDepart = new ObservableCollection<FlightModel>();
             ObservableCollection<FlightModel> lstReturn = new ObservableCollection<FlightModel>();
+
+            var requestHelper = new MultiRequestHelper<ObservableCollection<FlightModel>>();
             foreach (AirlineSelected airline in ListAirline)
             {
-                if (airline.isSelected) {
-                    ObservableCollection<FlightModel> lstFlight = await GetListFlight(airline.HHKModel.MaHang);
-                    if (IsKhuHoi)
-                    {
-                        int i;
-                        for (i = 0; i < lstFlight.Count; i++)
-                        {
-                            if (lstFlight[i].StartDate == String.Format("{0:dd-MM-yyyy}", DateDeparture))
-                            {
-                                lstDepart.Add(lstFlight[i]);
-                            }
-                            else
-                            {
-                                lstReturn.Add(lstFlight[i]);
-                            }
-                        }
-                    } 
-                    else
-                    {
-                        lstDepart = new ObservableCollection<FlightModel>(lstDepart.Concat(lstFlight));
-                    }
+                if (airline.isSelected)
+                {
+                    requestHelper.AddRequest(GetListFlight(airline.HHKModel.MaHang));
                 }
             }
 
-
+            var responses = await requestHelper.Execute();
+            foreach (var lstFlight in responses)
+            {
+                if (IsKhuHoi)
+                {
+                    int i;
+                    for (i = 0; i < lstFlight.Count; i++)
+                    {
+                        if (lstFlight[i].StartDate == String.Format("{0:dd-MM-yyyy}", DateDeparture))
+                        {
+                            lstDepart.Add(lstFlight[i]);
+                        }
+                        else
+                        {
+                            lstReturn.Add(lstFlight[i]);
+                        }
+                    }
+                }
+                else
+                {
+                    lstDepart = new ObservableCollection<FlightModel>(lstDepart.Concat(lstFlight));
+                }
+            }
 
             // set await trước hàm call api xử lý bất đồng bộ 
             // xử lý data trả về
@@ -499,10 +510,10 @@ namespace AirTicket.ViewModel
             //}
             data.Add(lstDepart);
             if (IsKhuHoi)
-            {   
+            {
                 data.Add(lstReturn);
             }
-            return await Task.FromResult(data);
+            return data;
         }
         #endregion
 
@@ -544,6 +555,8 @@ namespace AirTicket.ViewModel
         }
 
         public HOADON HDModel { get; set; }
+
+        private List<PassengerViewModel> tickets;
         #endregion
 
         #region ObservableCollection
@@ -593,6 +606,8 @@ namespace AirTicket.ViewModel
             TotalNetprofitTicket = 0;
             TotalCancellationCostTicket = 0;
 
+            // xử lý thông tin vé
+            tickets = new List<PassengerViewModel>();
             foreach (PassengerViewModel pvm in ListPassengerVM)
             {
                 if (pvm.NumberOfPassenger != 0)
@@ -600,36 +615,39 @@ namespace AirTicket.ViewModel
                     foreach (var listFlight in FlightListVMs)
                     {
                         var FlightSelected = listFlight.FlightSelected;
+                        var ticket = new PassengerViewModel()
+                        {
+                            LHKModel = pvm.LHKModel,
+                            NumberOfPassenger = pvm.NumberOfPassenger,
+                        };
 
-                        // cần update để xử lý khứ hồi
+                        decimal price = ParseStringToDecimal(FlightSelected.PriceFlight);
+                        QUYDINHGIAVE QuyDinhGiaVe = pvm.LHKModel.QUYDINHGIAVEs.Where(x => x.MaHang.ToLower() == FlightSelected.AirlineID.ToLower()).First();
+                        ticket.NetProfitTicket = (decimal)QuyDinhGiaVe.TienLaiVe;
+                        ticket.CancellationCostTicket = (decimal)QuyDinhGiaVe.TienHuyVe;
+                        ticket.PriceTicket = (decimal)(price * (decimal)QuyDinhGiaVe.TiLe - QuyDinhGiaVe.TienGiam + QuyDinhGiaVe.TienPhi) + ticket.NetProfitTicket;
 
-                        //decimal price = ParseStringToDecimal(FlightSelected.PriceFlight);
-                        //QUYDINHGIAVE QuyDinhGiaVe = pvm.LHKModel.QUYDINHGIAVEs.Where(x => x.MaHang == FlightSelected.AirlineID).First();
-                        //pvm.NetProfitTicket = (decimal)QuyDinhGiaVe.TienLaiVe;
-                        //pvm.CancellationCostTicket = (decimal)QuyDinhGiaVe.TienHuyVe;
-                        //pvm.PriceTicket = (decimal)(price * (decimal)QuyDinhGiaVe.TiLe - QuyDinhGiaVe.TienGiam + QuyDinhGiaVe.TienPhi) + pvm.NetProfitTicket;
+                        pvm.PriceTicket += ticket.PriceTicket;
+                        TotalPriceTicket += ticket.TotalPriceTicket;
+                        TotalNetprofitTicket += ticket.TotalNetProfitTicket;
+                        TotalCancellationCostTicket += ticket.TotalCancellationCostTicket;
 
-                        //TotalPriceTicket += pvm.TotalPriceTicket;
-                        //TotalNetprofitTicket += pvm.TotalNetProfitTicket;
-                        //TotalCancellationCostTicket += pvm.TotalCancellationCostTicket;
-                        //ListPriceTicket.Add(pvm);
+                        tickets.Add(ticket);
+                    }
+                    ListPriceTicket.Add(pvm);
+
+                    // xử lý thông tin danh sách hành khách
+                    for (int i = 0; i < pvm.NumberOfPassenger; i++)
+                    {
+                        DetailInfoPassenger detailInfo = new DetailInfoPassenger()
+                        {
+                            num = count,
+                        };
+                        detailInfo.VCBModel.LOAIHANHKHACH = pvm.LHKModel;
+                        ListDetailInfo.Add(detailInfo);
+                        count++;
                     }
                 }
-
-                // xử lý thông tin danh sách hành khách
-                for (int i = 0; i < pvm.NumberOfPassenger; i++)
-                {
-                    DetailInfoPassenger detailInfo = new DetailInfoPassenger()
-                    {
-                        num = count,
-                    };
-                    detailInfo.VCBModel.LOAIHANHKHACH = pvm.LHKModel;
-                    detailInfo.VCBModel.GiaVe = pvm.PriceTicket;
-                    ListDetailInfo.Add(detailInfo);
-                    count++;
-                }
-
-                if (count > TotalPassenger) break;
             }
 
             // InfoDateTimeDeparture = FlightSelected.DepartureTime + " " + InfoDateDeparture;
@@ -661,21 +679,32 @@ namespace AirTicket.ViewModel
                 HDModel.ThoiGianTao = DateTime.Now;
                 HDModel.MaHoaDon = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDHD()").Single();
                 var VeChuyenBay = DataProvider.Instance.DB.VECHUYENBAYs;
-                HDModel.SoVe = ListDetailInfo.Count;
+                HDModel.SoVe = tickets.Count;
                 DataProvider.Instance.DB.HOADONs.Add(HDModel);
-                foreach (DetailInfoPassenger detailInfo in ListDetailInfo)
+                var details = ListDetailInfo.ToList();
+                foreach (var ticket in tickets)
                 {
-                    VECHUYENBAY VCBModel = detailInfo.VCBModel;
-                    VCBModel.HOADON = HDModel;
-                    VCBModel.MaVe = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDVCB()").Single();
+                    var detail = details.Find(o => o.VCBModel.LOAIHANHKHACH.MaLoai == ticket.LHKModel.MaLoai);
+
+                    var VCBModel = new VECHUYENBAY()
+                    {
+                        HOADON = HDModel,
+                        MaVe = DataProvider.Instance.DB.Database.SqlQuery<string>("select dbo.AUTO_IDVCB()").Single(),
+                        GiaVe = ticket.PriceTicket,
+                        LOAIHANHKHACH = ticket.LHKModel,
+                        GioTinh = detail.VCBModel.GioTinh,
+                        HoTen = detail.VCBModel.HoTen,
+                        NgaySinh = detail.VCBModel.NgaySinh
+                    };
                     VeChuyenBay.Add(VCBModel);
                     DataProvider.Instance.DB.SaveChanges();
                 }
-                MessageBox.Show("thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Đặt vé thành công mã HD: " + HDModel.MaHoaDon, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                SelectTabSearch();
             }
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show("Thất bại", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Thất bại: " + e.Message, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion
